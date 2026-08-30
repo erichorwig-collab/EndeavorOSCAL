@@ -14,6 +14,7 @@ from .xccdf import inspect_xccdf
 from .arf import inspect_arf
 from .evidence import normalize_arf, normalize_xccdf
 from .xccdf_mapping import mapping_report as xccdf_mapping_report, parse_mapping as parse_xccdf_mapping
+from .xccdf_convert import assessment_results as xccdf_assessment_results
 from .mapping import mapping_report, parse_mapping
 from .oval import OvalInputError, parse_definitions, parse_results
 from .report import mapping_report_html
@@ -41,7 +42,7 @@ class _ArgumentParser(argparse.ArgumentParser):
 def _parser() -> argparse.ArgumentParser:
     parser = _ArgumentParser(prog="endeavor", description="Convert OVAL evidence to OSCAL Assessment Results.")
     sub = parser.add_subparsers(dest="command", required=True, parser_class=_ArgumentParser)
-    for name in ("inspect", "convert", "mapping-report", "report", "diff", "findings", "inspect-xccdf", "inspect-arf", "inspect-evidence", "mapping-report-xccdf"):
+    for name in ("inspect", "convert", "mapping-report", "report", "diff", "findings", "inspect-xccdf", "inspect-arf", "inspect-evidence", "mapping-report-xccdf", "convert-xccdf"):
         command = sub.add_parser(name)
         command.add_argument("--format", choices=("text", "json"), default="text", help="format handled diagnostics as text or JSON")
         if name == "diff":
@@ -62,6 +63,11 @@ def _parser() -> argparse.ArgumentParser:
         if name == "mapping-report-xccdf":
             command.add_argument("--results", required=True, type=Path)
             command.add_argument("--mapping", required=True, type=Path)
+            continue
+        if name == "convert-xccdf":
+            command.add_argument("--results", required=True, type=Path)
+            command.add_argument("--mapping", required=True, type=Path)
+            command.add_argument("--output", required=True, type=Path)
             continue
         command.add_argument("--results", required=True, type=Path)
         command.add_argument("--definitions", required=True, type=Path)
@@ -114,6 +120,20 @@ def main(argv: list[str] | None = None) -> int:
             return ExitCode.SUCCESS
         if args.command == "mapping-report-xccdf":
             print(json.dumps(xccdf_mapping_report(inspect_xccdf(args.results), parse_xccdf_mapping(args.mapping)), indent=2, sort_keys=True))
+            return ExitCode.SUCCESS
+        if args.command == "convert-xccdf":
+            payload = xccdf_assessment_results(inspect_xccdf(args.results), parse_xccdf_mapping(args.mapping))
+            args.output.parent.mkdir(parents=True, exist_ok=True)
+            descriptor, temporary_name = tempfile.mkstemp(prefix=".endeavor-", suffix=".tmp", dir=args.output.parent)
+            temporary_path = Path(temporary_name)
+            try:
+                with os.fdopen(descriptor, "w", encoding="utf-8") as stream:
+                    os.fchmod(stream.fileno(), 0o600)
+                    stream.write(json.dumps(payload, indent=2, sort_keys=True) + "\n")
+                os.replace(temporary_path, args.output)
+            except Exception:
+                temporary_path.unlink(missing_ok=True)
+                raise
             return ExitCode.SUCCESS
         results = parse_results(args.results)
         definitions = parse_definitions(args.definitions)

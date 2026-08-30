@@ -106,6 +106,14 @@ class VerticalSliceTests(unittest.TestCase):
         self.assertEqual(len(result["findings"]), 1)
         self.assertEqual(result["findings"][0]["target"]["status"], {"state": "not-satisfied", "reason": "fail"})
 
+    def test_convert_xccdf_writes_schema_valid_output(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "xccdf.json"
+            completed = subprocess.run([sys.executable, "-m", "endeavor", "convert-xccdf", "--results", str(XCCDF_FIXTURE), "--mapping", str(ROOT / "fixtures" / "mappings" / "xccdf-example-v1.json"), "--output", str(output)], cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(completed.returncode, 0, completed.stderr)
+            validate = subprocess.run(["npm", "run", "validate:oscal", "--", "endeavor/schemas/oscal-1.2.0/assessment-results.schema.json", str(output)], cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(validate.returncode, 0, validate.stderr)
+
     def test_inspect_evidence_matches_cross_format_goldens(self) -> None:
         for flag, fixture, golden in (("--xccdf", XCCDF_FIXTURE, EVIDENCE_GOLDEN / "xccdf.json"), ("--arf", ARF_FIXTURE, EVIDENCE_GOLDEN / "arf.json")):
             with self.subTest(flag=flag):
