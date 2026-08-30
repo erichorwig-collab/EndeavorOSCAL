@@ -97,19 +97,30 @@ def _text(element: ET._Element | None, default: str = "") -> str:
     return (element.text or default).strip() if element is not None else default
 
 
+def _safe_name(path: Path) -> str:
+    """Return the only path component permitted in user-facing diagnostics."""
+
+    return path.name or "input"
+
+
 def _read_xml(path: Path) -> bytes:
     try:
         metadata = path.lstat()
     except FileNotFoundError as exc:
-        raise OvalInputError(f"input does not exist: {path}") from exc
+        raise OvalInputError(f"input does not exist: {_safe_name(path)}") from exc
+    except OSError as exc:
+        raise OvalInputError(f"input cannot be read: {_safe_name(path)}") from exc
     if stat.S_ISLNK(metadata.st_mode) or not stat.S_ISREG(metadata.st_mode):
-        raise OvalInputError(f"input must be a regular non-symlink file: {path}")
+        raise OvalInputError(f"input must be a regular non-symlink file: {_safe_name(path)}")
     size = metadata.st_size
     if size > MAX_XML_BYTES:
-        raise OvalInputError(f"input exceeds {MAX_XML_BYTES} byte limit: {path}")
-    data = path.read_bytes()
+        raise OvalInputError(f"input exceeds {MAX_XML_BYTES} byte limit: {_safe_name(path)}")
+    try:
+        data = path.read_bytes()
+    except OSError as exc:
+        raise OvalInputError(f"input cannot be read: {_safe_name(path)}") from exc
     if FORBIDDEN_XML.search(data):
-        raise OvalInputError(f"DOCTYPE and ENTITY declarations are not supported: {path}")
+        raise OvalInputError(f"DOCTYPE and ENTITY declarations are not supported: {_safe_name(path)}")
     return data
 
 
@@ -132,9 +143,9 @@ def _parse_root(path: Path, expected_namespace: str, expected_name: str) -> tupl
     try:
         root = ET.fromstring(data, parser=ET.XMLParser(resolve_entities=False, load_dtd=False, no_network=True, huge_tree=False, recover=False))
     except ET.XMLSyntaxError as exc:
-        raise OvalInputError(f"malformed XML in {path}: {exc}") from exc
+        raise OvalInputError(f"malformed XML in {_safe_name(path)}: {exc}") from exc
     if root.tag != _q(expected_namespace, expected_name):
-        raise OvalInputError(f"unsupported root element in {path}: {root.tag}")
+        raise OvalInputError(f"unsupported root element in {_safe_name(path)}: {root.tag}")
     version = _declared_core_schema_version(root, path)
     tree = ET.ElementTree(root)
     schema = _schema(version, expected_namespace)
@@ -149,7 +160,7 @@ def _generator_element(root: ET._Element, path: Path) -> ET._Element:
     if generator is None:
         generator = root.find(_q(OVAL_DEFINITIONS_NS, "generator"))
     if generator is None:
-        raise OvalInputError(f"missing generator in {path}")
+        raise OvalInputError(f"missing generator in {_safe_name(path)}")
     return generator
 
 
@@ -161,10 +172,10 @@ def _declared_core_schema_version(root: ET._Element, path: Path) -> str:
         if item.get("platform") is None
     ]
     if len(core_versions) != 1:
-        raise OvalInputError(f"generator must declare exactly one core schema_version in {path}")
+        raise OvalInputError(f"generator must declare exactly one core schema_version in {_safe_name(path)}")
     version = core_versions[0]
     if version not in SUPPORTED_CORE_SCHEMA_VERSIONS:
-        raise OvalInputError(f"unsupported OVAL core schema version {version!r} in {path}")
+        raise OvalInputError(f"unsupported OVAL core schema version {version!r} in {_safe_name(path)}")
     return version
 
 
@@ -177,11 +188,11 @@ def _generator(root: ET._Element, path: Path) -> Generator:
         "timestamp": _text(generator.find(_q(OVAL_COMMON_NS, "timestamp"))),
     }
     if not all(values.values()):
-        raise OvalInputError(f"generator is incomplete in {path}")
+        raise OvalInputError(f"generator is incomplete in {_safe_name(path)}")
     try:
         datetime.fromisoformat(values["timestamp"].replace("Z", "+00:00"))
     except ValueError as exc:
-        raise OvalInputError(f"generator timestamp is invalid in {path}") from exc
+        raise OvalInputError(f"generator timestamp is invalid in {_safe_name(path)}") from exc
     return Generator(**values)
 
 
@@ -209,7 +220,7 @@ def _require_unique_identifiers(definitions: list[OvalDefinition], path: Path) -
     seen: set[str] = set()
     duplicate = next((item.identifier for item in definitions if item.identifier in seen or seen.add(item.identifier)), None)
     if duplicate is not None:
-        raise OvalInputError(f"duplicate definition identifier {duplicate!r} in {path}")
+        raise OvalInputError(f"duplicate definition identifier {duplicate!r} in {_safe_name(path)}")
 
 
 def parse_results(path: Path) -> OvalDocument:
@@ -218,14 +229,14 @@ def parse_results(path: Path) -> OvalDocument:
     for item in root.findall(f".//{_q(OVAL_RESULTS_NS, 'definition')}"):
         result = item.get("result", "")
         if result not in VALID_RESULTS:
-            raise OvalInputError(f"unsupported definition result {result!r} in {path}")
+            raise OvalInputError(f"unsupported definition result {result!r} in {_safe_name(path)}")
         identifier = item.get("definition_id", "")
         if not identifier:
-            raise OvalInputError(f"definition without definition_id in {path}")
+            raise OvalInputError(f"definition without definition_id in {_safe_name(path)}")
         message = _text(item.find(_q(OVAL_RESULTS_NS, "message"))) or None
         definitions.append(OvalDefinition(identifier, result, identifier, "OVAL evaluation result.", item.get("class", "unknown"), message))
     if not definitions:
-        raise OvalInputError(f"no evaluated definitions in {path}")
+        raise OvalInputError(f"no evaluated definitions in {_safe_name(path)}")
     _require_unique_identifiers(definitions, path)
     return OvalDocument(path, hashlib.sha256(data).hexdigest(), _generator(root, path), tuple(definitions), _system_identity(root))
 
@@ -236,11 +247,11 @@ def parse_definitions(path: Path) -> OvalDocument:
     for item in root.findall(f".//{_q(OVAL_DEFINITIONS_NS, 'definition')}"):
         identifier = item.get("id", "")
         if not identifier:
-            raise OvalInputError(f"definition without id in {path}")
+            raise OvalInputError(f"definition without id in {_safe_name(path)}")
         metadata = item.find(_q(OVAL_DEFINITIONS_NS, "metadata"))
         definitions.append(OvalDefinition(identifier, "", _text(metadata.find(_q(OVAL_DEFINITIONS_NS, "title")) if metadata is not None else None, identifier), _text(metadata.find(_q(OVAL_DEFINITIONS_NS, "description")) if metadata is not None else None, "No source description."), item.get("class", "unknown"), None))
     if not definitions:
-        raise OvalInputError(f"no definitions in {path}")
+        raise OvalInputError(f"no definitions in {_safe_name(path)}")
     _require_unique_identifiers(definitions, path)
     return OvalDocument(path, hashlib.sha256(data).hexdigest(), _generator(root, path), tuple(definitions))
 

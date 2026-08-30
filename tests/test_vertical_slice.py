@@ -60,9 +60,40 @@ class VerticalSliceTests(unittest.TestCase):
             output = Path(directory) / "result.json"
             path.write_text('<!DOCTYPE x [<!ENTITY e "boom">]><oval_results/>', encoding="utf-8")
             completed = subprocess.run([sys.executable, "-m", "endeavor", "convert", "--results", str(path), "--definitions", str(DEFINITIONS), "--output", str(output)], cwd=ROOT, text=True, capture_output=True, check=False)
-            self.assertEqual(completed.returncode, 2)
+            self.assertEqual(completed.returncode, 3)
             self.assertIn("DOCTYPE and ENTITY declarations", completed.stderr)
             self.assertFalse(output.exists())
+
+    def test_json_input_diagnostic_is_single_line_and_redacts_absolute_path(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="endeavor-secret-path-") as directory:
+            path = Path(directory) / "malicious.xml"
+            output = Path(directory) / "result.json"
+            path.write_text('<!DOCTYPE x [<!ENTITY e "boom">]><oval_results/>', encoding="utf-8")
+            completed = subprocess.run([sys.executable, "-m", "endeavor", "convert", "--format", "json", "--results", str(path), "--definitions", str(DEFINITIONS), "--output", str(output)], cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(completed.returncode, 3)
+            self.assertEqual(completed.stdout, "")
+            self.assertEqual(len(completed.stderr.splitlines()), 1)
+            diagnostic = json.loads(completed.stderr)
+            self.assertEqual(diagnostic["error"]["code"], "input-invalid")
+            self.assertEqual(diagnostic["error"]["exit-code"], 3)
+            self.assertIn("malicious.xml", diagnostic["error"]["message"])
+            self.assertNotIn(directory, completed.stderr)
+            self.assertNotIn("<!DOCTYPE", completed.stderr)
+            self.assertFalse(output.exists())
+
+    def test_usage_error_has_stable_exit_code(self) -> None:
+        completed = subprocess.run([sys.executable, "-m", "endeavor", "convert"], cwd=ROOT, text=True, capture_output=True, check=False)
+        self.assertEqual(completed.returncode, 2)
+        self.assertEqual(completed.stdout, "")
+        self.assertIn("endeavor: usage:", completed.stderr)
+
+    def test_inspect_reports_only_safe_filenames(self) -> None:
+        completed = subprocess.run([sys.executable, "-m", "endeavor", "inspect", "--results", str(RESULTS / "pass.xml"), "--definitions", str(DEFINITIONS)], cwd=ROOT, text=True, capture_output=True, check=False)
+        self.assertEqual(completed.returncode, 0, completed.stderr)
+        payload = json.loads(completed.stdout)
+        self.assertEqual(payload["results"]["path"], "pass.xml")
+        self.assertEqual(payload["definitions"]["path"], "definitions.xml")
+        self.assertNotIn(str(ROOT), completed.stdout)
 
     def test_conversion_is_byte_stable(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -80,7 +111,7 @@ class VerticalSliceTests(unittest.TestCase):
             output = Path(directory) / "result.json"
             path.write_text((RESULTS / "pass.xml").read_text(encoding="utf-8").replace("<oval-sc:oval_system_characteristics>", "<oval-sc:removed>").replace("</oval-sc:oval_system_characteristics>", "</oval-sc:removed>"), encoding="utf-8")
             completed = subprocess.run([sys.executable, "-m", "endeavor", "convert", "--results", str(path), "--definitions", str(DEFINITIONS), "--output", str(output)], cwd=ROOT, text=True, capture_output=True, check=False)
-            self.assertEqual(completed.returncode, 2)
+            self.assertEqual(completed.returncode, 3)
             self.assertIn("XSD validation failed", completed.stderr)
             self.assertFalse(output.exists())
 
@@ -116,7 +147,7 @@ class VerticalSliceTests(unittest.TestCase):
             definition = '<definition definition_id="oval:org.endeavor:def:1" version="1" class="inventory" result="true"/>'
             path.write_text(source.replace(definition, definition + definition), encoding="utf-8")
             completed = subprocess.run([sys.executable, "-m", "endeavor", "convert", "--results", str(path), "--definitions", str(DEFINITIONS), "--output", str(output)], cwd=ROOT, text=True, capture_output=True, check=False)
-            self.assertEqual(completed.returncode, 2)
+            self.assertEqual(completed.returncode, 3)
             self.assertIn("XSD validation failed", completed.stderr)
             self.assertFalse(output.exists())
 
@@ -126,7 +157,7 @@ class VerticalSliceTests(unittest.TestCase):
             output = Path(directory) / "result.json"
             path.symlink_to(RESULTS / "pass.xml")
             completed = subprocess.run([sys.executable, "-m", "endeavor", "convert", "--results", str(path), "--definitions", str(DEFINITIONS), "--output", str(output)], cwd=ROOT, text=True, capture_output=True, check=False)
-            self.assertEqual(completed.returncode, 2)
+            self.assertEqual(completed.returncode, 3)
             self.assertIn("regular non-symlink", completed.stderr)
             self.assertFalse(output.exists())
 
@@ -137,7 +168,7 @@ class VerticalSliceTests(unittest.TestCase):
             source = (RESULTS / "pass.xml").read_text(encoding="utf-8")
             path.write_text(source.replace(">5.11.3</oval:schema_version>", ">5.11</oval:schema_version>"), encoding="utf-8")
             completed = subprocess.run([sys.executable, "-m", "endeavor", "convert", "--results", str(path), "--definitions", str(DEFINITIONS), "--output", str(output)], cwd=ROOT, text=True, capture_output=True, check=False)
-            self.assertEqual(completed.returncode, 2)
+            self.assertEqual(completed.returncode, 3)
             self.assertIn("unsupported OVAL core schema version", completed.stderr)
             self.assertFalse(output.exists())
 
@@ -150,7 +181,7 @@ class VerticalSliceTests(unittest.TestCase):
             source = source.replace("<results>", "<results><evil:unknown/>")
             path.write_text(source, encoding="utf-8")
             completed = subprocess.run([sys.executable, "-m", "endeavor", "convert", "--results", str(path), "--definitions", str(DEFINITIONS), "--output", str(output)], cwd=ROOT, text=True, capture_output=True, check=False)
-            self.assertEqual(completed.returncode, 2)
+            self.assertEqual(completed.returncode, 3)
             self.assertIn("XSD validation failed", completed.stderr)
             self.assertFalse(output.exists())
 
