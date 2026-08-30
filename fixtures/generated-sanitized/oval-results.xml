@@ -2,9 +2,9 @@
 <oval_results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5" xmlns="http://oval.mitre.org/XMLSchema/oval-results-5" xsi:schemaLocation="http://oval.mitre.org/XMLSchema/oval-results-5 oval-results-schema.xsd http://oval.mitre.org/XMLSchema/oval-common-5 oval-common-schema.xsd">
   <generator>
     <oval:product_name>cpe:/a:open-scap:oscap</oval:product_name>
-    <oval:product_version>1.4.2</oval:product_version>
+    <oval:product_version>1.4.4</oval:product_version>
     <oval:schema_version>5.11.3</oval:schema_version>
-    <oval:timestamp>2026-08-30T03:16:23</oval:timestamp>
+    <oval:timestamp>2026-08-30T03:23:11</oval:timestamp>
   </generator>
   <directives>
     <definition_true reported="true" content="full"/>
@@ -58,7 +58,7 @@
       </definitions>
       <tests>
         <test test_id="oval:org.endeavor.fixture:tst:1" version="1" check="all" result="true">
-          <tested_item item_id="1000492" result="true"/>
+          <tested_item item_id="1000422" result="true"/>
         </test>
       </tests>
       <oval_system_characteristics xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5" xmlns:unix-sys="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#unix" xmlns:ind-sys="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#independent" xmlns:lin-sys="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#linux" xmlns:win-sys="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#windows" xmlns="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5" xsi:schemaLocation="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5 oval-system-characteristics-schema.xsd http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#independent independent-system-characteristics-schema.xsd http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#unix unix-system-characteristics-schema.xsd http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#linux linux-system-characteristics-schema.xsd http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#windows windows-system-characteristics-schema.xsd http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#macos macos-system-characteristics-schema.xsd http://oval.mitre.org/XMLSchema/oval-common-5 oval-common-schema.xsd">
@@ -66,21 +66,21 @@
           <oval:product_name>cpe:/a:open-scap:oscap</oval:product_name>
           <oval:product_version>0.1.0</oval:product_version>
           <oval:schema_version>5.11.3</oval:schema_version>
-          <oval:timestamp>2026-08-30T03:16:23</oval:timestamp>
+          <oval:timestamp>2026-08-30T03:23:11</oval:timestamp>
         </generator>
         <system_info>
           <os_name>Fedora Linux</os_name>
-          <os_version>41 (Container Image)</os_version>
+          <os_version>43 (Container Image)</os_version>
           <architecture>x86_64</architecture>
           <primary_host_name>endeavor-oval-fixture</primary_host_name>
           <interfaces><interface><interface_name>loopback</interface_name><ip_address>127.0.0.1</ip_address><mac_address>00:00:00:00:00:00</mac_address></interface></interfaces></system_info>
         <collected_objects>
           <object id="oval:org.endeavor.fixture:obj:1" version="1" flag="complete">
-            <reference item_ref="1000492"/>
+            <reference item_ref="1000422"/>
           </object>
         </collected_objects>
         <system_data>
-          <ind-sys:family_item id="1000492" status="exists">
+          <ind-sys:family_item id="1000422" status="exists">
             <ind-sys:family>unix</ind-sys:family>
           </ind-sys:family_item>
         </system_data>

@@ -170,6 +170,6 @@ class VerticalSliceTests(unittest.TestCase):
             convert = subprocess.run([sys.executable, "-m", "endeavor", "convert", "--results", str(generated / "oval-results.xml"), "--definitions", str(generated / "oval-definitions.xml"), "--output", str(output)], cwd=ROOT, text=True, capture_output=True, check=False)
             self.assertEqual(convert.returncode, 0, convert.stderr)
             document = json.loads(output.read_text())
-            self.assertEqual(document["assessment-results"]["metadata"]["last-modified"], "2026-08-30T03:16:23Z")
+            self.assertEqual(document["assessment-results"]["metadata"]["last-modified"], "2026-08-30T03:23:11Z")
             validate = subprocess.run(["npm", "run", "validate:oscal", "--", "endeavor/schemas/oscal-1.2.0/assessment-results.schema.json", str(output)], cwd=ROOT, text=True, capture_output=True, check=False)
             self.assertEqual(validate.returncode, 0, validate.stderr)
