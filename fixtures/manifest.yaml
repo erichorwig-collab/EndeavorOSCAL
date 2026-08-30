@@ -1,0 +1,56 @@
+schema: endeavor-fixtures/v1
+oval_schema: "5.12.2"
+license_basis: "Synthetic fixtures authored by Endeavor; OVAL Terms of Use for any vendored definitions"
+conversion_contract: "../docs/v0.1-oval-results-mapping.md"
+fixtures:
+  - id: pass
+    results: oval-results/pass.xml
+    definition_result: "true"
+    expected_observation_property:
+      ns: https://endeavor.dev/ns/oval
+      name: oval-result
+      value: "true"
+    semantic_case: matching characteristics
+  - id: fail
+    results: oval-results/fail.xml
+    definition_result: "false"
+    expected_observation_property:
+      ns: https://endeavor.dev/ns/oval
+      name: oval-result
+      value: "false"
+    semantic_case: non-matching characteristics
+  - id: unknown
+    results: oval-results/unknown.xml
+    definition_result: unknown
+    expected_observation_property:
+      ns: https://endeavor.dev/ns/oval
+      name: oval-result
+      value: unknown
+    semantic_case: missing or uncollected object
+  - id: error
+    results: oval-results/error.xml
+    definition_result: error
+    expected_observation_property:
+      ns: https://endeavor.dev/ns/oval
+      name: oval-result
+      value: error
+    semantic_case: collection or evaluation error with a source message
+  - id: not-applicable
+    results: oval-results/not-applicable.xml
+    definition_result: not applicable
+    expected_observation_property:
+      ns: https://endeavor.dev/ns/oval
+      name: oval-result
+      value: not applicable
+    semantic_case: definition does not apply to target platform
+  - id: not-evaluated
+    results: oval-results/not-evaluated.xml
+    definition_result: not evaluated
+    expected_observation_property:
+      ns: https://endeavor.dev/ns/oval
+      name: oval-result
+      value: not evaluated
+    semantic_case: evaluator did not evaluate the definition
+definitions:
+  file: oval-definitions/definitions.xml
+  license_basis: "Synthetic fixture authored by Endeavor"

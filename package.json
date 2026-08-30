@@ -1,0 +1,11 @@
+{
+  "name": "endeavor-oscal-validation",
+  "private": true,
+  "version": "0.1.0",
+  "devDependencies": {
+    "ajv": "8.17.1"
+  },
+  "scripts": {
+    "validate:oscal": "node scripts/validate-oscal.mjs"
+  }
+}

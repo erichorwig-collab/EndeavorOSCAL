@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "endeavor-oscal"
+version = "0.1.0a0"
+description = "Provenance-preserving OVAL Results to OSCAL Assessment Results converter"
+requires-python = ">=3.11"
+dependencies = ["lxml>=6,<7"]
+license = {text = "Apache-2.0"}
+
+[project.scripts]
+endeavor = "endeavor.cli:main"
+
+[tool.setuptools]
+packages = ["endeavor"]
+
+[tool.setuptools.package-data]
+endeavor = ["schemas/**/*.json", "schemas/**/*.xsd"]

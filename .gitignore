@@ -20,6 +20,9 @@ build/
 *.pem
 *.key
 
+# JavaScript dependencies
+node_modules/
+
 # Editor and operating-system files
 .vscode/
 .idea/
