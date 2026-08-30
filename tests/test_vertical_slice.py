@@ -198,6 +198,32 @@ class VerticalSliceTests(unittest.TestCase):
             self.assertEqual(report["stale-mappings"], ["oval:org.endeavor:def:stale"])
             self.assertNotIn(directory, completed.stdout)
 
+    def test_explicit_mapping_emits_schema_valid_finding_with_provenance(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "result.json"
+            completed = subprocess.run([sys.executable, "-m", "endeavor", "convert", "--results", str(RESULTS / "fail.xml"), "--definitions", str(DEFINITIONS), "--mapping", str(MAPPING), "--output", str(output)], cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(completed.returncode, 0, completed.stderr)
+            document = json.loads(output.read_text())
+            result = document["assessment-results"]["results"][0]
+            finding = result["findings"][0]
+            self.assertEqual(finding["target"], {"type": "objective-id", "target-id": "ac-2.1_obj.1", "status": {"state": "not-satisfied", "reason": "fail"}})
+            properties = finding["props"]
+            self.assertIn({"name": "oval-result", "ns": "https://endeavor.dev/ns/oval", "value": "false"}, properties)
+            self.assertIn({"name": "mapping-version", "ns": "https://endeavor.dev/ns/oval", "value": "1.0.0"}, properties)
+            self.assertIn({"name": "source-observation-uuid", "ns": "https://endeavor.dev/ns/oval", "value": result["observations"][0]["uuid"]}, properties)
+            self.assertNotIn("related-observations", finding)
+            self.assertEqual(document["assessment-results"]["back-matter"]["resources"][2]["rlinks"][0]["href"], "example-v1.json")
+            validate = subprocess.run(["npm", "run", "validate:oscal", "--", "endeavor/schemas/oscal-1.2.0/assessment-results.schema.json", str(output)], cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(validate.returncode, 0, validate.stderr)
+
+    def test_mapping_does_not_infer_finding_for_unknown_oval_result(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "result.json"
+            completed = subprocess.run([sys.executable, "-m", "endeavor", "convert", "--results", str(RESULTS / "unknown.xml"), "--definitions", str(DEFINITIONS), "--mapping", str(MAPPING), "--output", str(output)], cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(completed.returncode, 0, completed.stderr)
+            result = json.loads(output.read_text())["assessment-results"]["results"][0]
+            self.assertNotIn("findings", result)
+
     def test_invalid_mapping_is_rejected_without_path_disclosure(self) -> None:
         with tempfile.TemporaryDirectory(prefix="endeavor-private-map-") as directory:
             path = Path(directory) / "invalid-map.json"

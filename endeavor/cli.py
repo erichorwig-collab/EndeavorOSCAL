@@ -41,6 +41,7 @@ def _parser() -> argparse.ArgumentParser:
         command.add_argument("--format", choices=("text", "json"), default="text", help="format handled diagnostics as text or JSON")
         if name == "convert":
             command.add_argument("--output", required=True, type=Path)
+            command.add_argument("--mapping", type=Path, help="explicit versioned OVAL-to-OSCAL mapping")
         if name == "mapping-report":
             command.add_argument("--mapping", required=True, type=Path)
     return parser
@@ -74,7 +75,7 @@ def main(argv: list[str] | None = None) -> int:
         elif args.command == "mapping-report":
             print(json.dumps(mapping_report(results, definitions, parse_mapping(args.mapping)), indent=2, sort_keys=True))
         else:
-            payload = assessment_results(results, definitions)
+            payload = assessment_results(results, definitions, parse_mapping(args.mapping) if args.mapping else None)
             args.output.parent.mkdir(parents=True, exist_ok=True)
             descriptor, temporary_name = tempfile.mkstemp(prefix=".endeavor-", suffix=".tmp", dir=args.output.parent)
             temporary_path = Path(temporary_name)
