@@ -25,10 +25,16 @@ XCCDF_GOLDEN = ROOT / "fixtures" / "xccdf-results" / "openscap-1.4.4-results-xcc
 XCCDF_PROVENANCE_FIXTURE = ROOT / "fixtures" / "xccdf-results" / "provenance-companion-xccdf12.xml"
 ARF_FIXTURE = ROOT / "fixtures" / "arf" / "openscap-1.4.4-xccdf-overrides.arf.xml"
 ARF_GOLDEN = ROOT / "fixtures" / "arf" / "openscap-1.4.4-xccdf-overrides.manifest.json"
+COMPATIBILITY_MATRIX = ROOT / "docs" / "compatibility-matrix.md"
 XSD_NS = "{http://www.w3.org/2001/XMLSchema}"
 
 
 class VerticalSliceTests(unittest.TestCase):
+    def test_compatibility_matrix_names_tested_profiles(self) -> None:
+        matrix = COMPATIBILITY_MATRIX.read_text(encoding="utf-8")
+        for value in ("OVAL 5.11.3", "XCCDF 1.2.1", "ARF 1.1", "OpenSCAP 1.4.4", "fixtures/generated-sanitized/", "fixtures/xccdf-results/", "fixtures/arf/"):
+            self.assertIn(value, matrix)
+
     def test_inspect_arf_reports_pinned_collection_manifest(self) -> None:
         completed = subprocess.run([sys.executable, "-m", "endeavor", "inspect-arf", "--results", str(ARF_FIXTURE)], cwd=ROOT, text=True, capture_output=True, check=False)
         self.assertEqual(completed.returncode, 0, completed.stderr)

@@ -23,6 +23,7 @@ Endeavor converts OpenSCAP assessment evidence into valid, provenance-preserving
 - [v0.2 OVAL-to-OSCAL mapping contract](docs/v0.2-oval-oscal-mapping.md)
 - [representative alpha workflow validation](docs/alpha-workflow-validation.md)
 - [v0.1 upstream fixture research and intake requirements](docs/v0.1-upstream-fixture-research.md)
+- [tested source-format compatibility matrix](docs/compatibility-matrix.md)
 
 ## Status
 
@@ -35,6 +36,9 @@ with pinned AJV. OVAL 5.12/5.12.2 work is retained as a future-release
 compatibility track. It is not yet a production converter: platform-specific
 content is represented only by safe target-identity and extension-presence
 provenance, not semantically mapped into controls or findings.
+
+The Phase 4 ARF/XCCDF intake profile is inventory and provenance only; its
+tested source-format boundaries are listed in the compatibility matrix.
 
 ## Try the vertical slice
 
