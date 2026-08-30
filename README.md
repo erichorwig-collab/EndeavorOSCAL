@@ -18,6 +18,7 @@ Endeavor converts OpenSCAP assessment evidence into valid, provenance-preserving
 - [v0.1 fixture corpus contract](fixtures/README.md)
 - [v0.1 implementation architecture](docs/v0.1-implementation-architecture.md)
 - [v0.1 CLI contract](docs/v0.1-cli-contract.md)
+- [dependency and SBOM policy](docs/dependency-policy.md)
 - [v0.1 upstream fixture research and intake requirements](docs/v0.1-upstream-fixture-research.md)
 
 ## Status
