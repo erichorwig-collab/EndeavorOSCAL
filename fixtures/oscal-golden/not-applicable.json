@@ -1,0 +1,142 @@
+{
+  "assessment-results": {
+    "back-matter": {
+      "resources": [
+        {
+          "props": [
+            {
+              "name": "source-artifact-type",
+              "ns": "https://endeavor.dev/ns/oval",
+              "value": "oval-results"
+            }
+          ],
+          "rlinks": [
+            {
+              "hashes": [
+                {
+                  "algorithm": "SHA-256",
+                  "value": "f88a4e4bbfa8ab478aa5ba71c8769ffee2f3494bd69d6d2fa5619a274c6bc3e0"
+                }
+              ],
+              "href": "not-applicable.xml",
+              "media-type": "application/xml"
+            }
+          ],
+          "title": "Source oval-results: not-applicable.xml",
+          "uuid": "1eecf030-ca25-5a68-a5c4-27d3f316aa06"
+        },
+        {
+          "props": [
+            {
+              "name": "source-artifact-type",
+              "ns": "https://endeavor.dev/ns/oval",
+              "value": "oval-definitions"
+            }
+          ],
+          "rlinks": [
+            {
+              "hashes": [
+                {
+                  "algorithm": "SHA-256",
+                  "value": "7bdabe4ba271aae3123cc45c5e918de07bbfdc06a9c8821b65be0df3a6022dd6"
+                }
+              ],
+              "href": "definitions.xml",
+              "media-type": "application/xml"
+            }
+          ],
+          "title": "Source oval-definitions: definitions.xml",
+          "uuid": "5386c37d-5159-55bb-bf6a-f69686c99a10"
+        }
+      ]
+    },
+    "import-ap": {
+      "href": "REQUIRED-ASSESSMENT-PLAN.oscal.json",
+      "remarks": "v0.1 requires the caller to associate this evidence with an Assessment Plan before authorization use."
+    },
+    "metadata": {
+      "last-modified": "2026-08-29T00:00:00Z",
+      "oscal-version": "1.2.0",
+      "title": "Endeavor OVAL assessment results",
+      "version": "0.1.0a0"
+    },
+    "results": [
+      {
+        "description": "Evidence converted from OVAL Results without inferring control findings.",
+        "end": "2026-08-29T00:00:00Z",
+        "observations": [
+          {
+            "collected": "2026-08-29T00:00:00Z",
+            "description": "A synthetic definition used only to test evidence status preservation.",
+            "methods": [
+              "TEST"
+            ],
+            "props": [
+              {
+                "name": "oval-definition-id",
+                "ns": "https://endeavor.dev/ns/oval",
+                "value": "oval:org.endeavor:def:1"
+              },
+              {
+                "name": "oval-result",
+                "ns": "https://endeavor.dev/ns/oval",
+                "value": "not applicable"
+              },
+              {
+                "name": "oval-definition-class",
+                "ns": "https://endeavor.dev/ns/oval",
+                "value": "inventory"
+              },
+              {
+                "name": "target-os-name",
+                "ns": "https://endeavor.dev/ns/oval",
+                "value": "Synthetic"
+              },
+              {
+                "name": "target-os-version",
+                "ns": "https://endeavor.dev/ns/oval",
+                "value": "0"
+              },
+              {
+                "name": "target-architecture",
+                "ns": "https://endeavor.dev/ns/oval",
+                "value": "x86_64"
+              },
+              {
+                "name": "target-host-name",
+                "ns": "https://endeavor.dev/ns/oval",
+                "value": "fixture"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "description": "OVAL Results source evidence.",
+                "href": "#1eecf030-ca25-5a68-a5c4-27d3f316aa06"
+              },
+              {
+                "description": "OVAL Definitions source evidence.",
+                "href": "#5386c37d-5159-55bb-bf6a-f69686c99a10"
+              }
+            ],
+            "title": "Endeavor synthetic inventory definition",
+            "types": [
+              "discovery"
+            ],
+            "uuid": "a9efa836-4bee-5bc6-bf85-b1db5e14e19b"
+          }
+        ],
+        "reviewed-controls": {
+          "control-selections": [
+            {
+              "include-all": {}
+            }
+          ]
+        },
+        "start": "2026-08-29T00:00:00Z",
+        "title": "OVAL evaluation evidence",
+        "uuid": "f3ebaf35-66f2-5f16-ad59-03a2f609ae55"
+      }
+    ],
+    "uuid": "beb6ea7c-44ba-5f77-a795-e485966776cc"
+  }
+}

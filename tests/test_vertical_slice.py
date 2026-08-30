@@ -15,6 +15,7 @@ from endeavor.oval import MAX_XML_BYTES, OVAL_RESULTS_NS, _schema
 ROOT = Path(__file__).resolve().parents[1]
 RESULTS = ROOT / "fixtures" / "oval-results"
 DEFINITIONS = ROOT / "fixtures" / "oval-definitions" / "definitions.xml"
+GOLDEN = ROOT / "fixtures" / "oscal-golden"
 SCHEMA_ROOT = ROOT / "endeavor" / "schemas" / "oval" / "5.11.3"
 XSD_NS = "{http://www.w3.org/2001/XMLSchema}"
 
@@ -53,6 +54,7 @@ class VerticalSliceTests(unittest.TestCase):
                     self.assertIn({"name": "target-host-name", "ns": "https://endeavor.dev/ns/oval", "value": "fixture"}, observation["props"])
                     self.assertEqual(observation["methods"], ["TEST"])
                     self.assertEqual(observation["types"], ["discovery"])
+                    self.assertEqual(output.read_bytes(), (GOLDEN / name.replace(".xml", ".json")).read_bytes())
 
     def test_doctype_is_rejected_without_output(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

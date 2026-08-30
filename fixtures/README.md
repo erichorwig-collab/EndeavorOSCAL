@@ -11,6 +11,22 @@ and system-characteristics context to make its result credible, and a paired
 Definitions artifact. Tests must verify the emitted OSCAL document against the
 contract and the pinned OSCAL schema.
 
+`oscal-golden/` contains the canonical byte output for all six supported OVAL
+result statuses. The test suite regenerates every artifact and compares it
+byte-for-byte, so a mapping or serialization change is an explicit corpus
+change rather than a silent behavior shift. Regenerate the corpus only after
+reviewing such a contract change:
+
+```bash
+mkdir -p fixtures/oscal-golden
+for fixture in pass fail unknown error not-applicable not-evaluated; do
+  python3 -m endeavor convert \
+    --results "fixtures/oval-results/${fixture}.xml" \
+    --definitions fixtures/oval-definitions/definitions.xml \
+    --output "fixtures/oscal-golden/${fixture}.json"
+done
+```
+
 If a canonical OVAL Definitions file is vendored, record its exact source URL,
 retrieval date, SHA-256, and license basis in this manifest. Do not vendor
 third-party scan results without an explicit redistribution review.
