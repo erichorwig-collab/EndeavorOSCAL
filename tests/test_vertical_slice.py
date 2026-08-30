@@ -131,6 +131,19 @@ class VerticalSliceTests(unittest.TestCase):
             self.assertEqual(completed.returncode, 3)
             self.assertIn("exactly one component", completed.stderr)
 
+    def test_inspect_arf_rejects_archives_and_ignores_schema_hints(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            archive = Path(directory) / "report.arf"
+            archive.write_bytes(b"PK\x03\x04not-an-arf")
+            completed = subprocess.run([sys.executable, "-m", "endeavor", "inspect-arf", "--results", str(archive)], cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(completed.returncode, 3)
+            self.assertIn("archive containers", completed.stderr)
+            hinted = Path(directory) / "hinted.arf.xml"
+            source = ARF_FIXTURE.read_text(encoding="utf-8").replace('<arf:asset-report-collection ', '<arf:asset-report-collection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://scap.nist.gov/schema/asset-reporting-format/1.1 https://invalid.example/arf.xsd" ', 1)
+            hinted.write_text(source, encoding="utf-8")
+            completed = subprocess.run([sys.executable, "-m", "endeavor", "inspect-arf", "--results", str(hinted)], cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(completed.returncode, 0, completed.stderr)
+
     def test_inspect_arf_rejects_remote_component_and_ambiguous_xccdf_linkage(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             remote = Path(directory) / "remote.arf.xml"

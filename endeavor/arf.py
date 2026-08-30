@@ -65,6 +65,8 @@ def _read(path: Path) -> bytes:
     if metadata.st_size > MAX_ARF_BYTES:
         raise OvalInputError(f"ARF input exceeds {MAX_ARF_BYTES} byte limit: {_safe(path)}")
     data = path.read_bytes()
+    if data.startswith(b"PK\x03\x04"):
+        raise OvalInputError(f"ARF archive containers are not supported: {_safe(path)}")
     if FORBIDDEN_XML.search(data):
         raise OvalInputError(f"DOCTYPE and ENTITY declarations are not supported: {_safe(path)}")
     return data

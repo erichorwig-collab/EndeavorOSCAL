@@ -22,7 +22,7 @@ fixture in `fixtures/*/PROVENANCE.md`.
 
 ## Deferred before Governance
 
-1. ARF archive/container limits and schema validation.
+1. ARF archive/container ingestion beyond the explicit archive rejection.
 2. A generated-sanitized ARF tailoring result from the pinned OpenSCAP 1.4.4
    baseline/tailoring inputs in `fixtures/xccdf-tailoring/`, and normalization
    of tailoring decisions.
