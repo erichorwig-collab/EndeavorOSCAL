@@ -48,6 +48,26 @@ class VerticalSliceTests(unittest.TestCase):
             self.assertEqual(completed.returncode, 3)
             self.assertIn("DOCTYPE and ENTITY", completed.stderr)
 
+    def test_inspect_xccdf_ignores_attacker_schema_hint(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "hinted-xccdf.xml"
+            source = XCCDF_FIXTURE.read_text(encoding="utf-8").replace('resolved="1">', 'resolved="1" xsi:schemaLocation="http://checklists.nist.gov/xccdf/1.2 https://invalid.example/attacker.xsd">')
+            path.write_text(source, encoding="utf-8")
+            completed = subprocess.run([sys.executable, "-m", "endeavor", "inspect-xccdf", "--results", str(path)], cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(completed.returncode, 0, completed.stderr)
+
+    def test_inspect_xccdf_rejects_xinclude_and_oversized_input(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            xinclude = Path(directory) / "xinclude.xml"
+            source = XCCDF_FIXTURE.read_text(encoding="utf-8").replace('xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"', 'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xi="http://www.w3.org/2001/XInclude"').replace('<TestResult ', '<xi:include href="file:///not-opened.xml"/><TestResult ')
+            xinclude.write_text(source, encoding="utf-8")
+            rejected = subprocess.run([sys.executable, "-m", "endeavor", "inspect-xccdf", "--results", str(xinclude)], cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(rejected.returncode, 3)
+            oversized = Path(directory) / "oversized.xml"
+            oversized.write_bytes(b" " * (5 * 1024 * 1024 + 1))
+            limited = subprocess.run([sys.executable, "-m", "endeavor", "inspect-xccdf", "--results", str(oversized)], cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(limited.returncode, 3)
+
     def test_results_wrapper_has_exact_pinned_import_graph(self) -> None:
         wrapper = SCHEMA_ROOT / "endeavor-results-wrapper.xsd"
         imports = ET.parse(str(wrapper)).getroot().findall(f"{XSD_NS}import")
