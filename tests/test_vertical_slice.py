@@ -23,10 +23,34 @@ XCCDF_SCHEMA = ROOT / "endeavor" / "schemas" / "xccdf" / "1.2" / "xccdf_1.2.xsd"
 XCCDF_FIXTURE = ROOT / "fixtures" / "xccdf-results" / "openscap-1.4.4-results-xccdf12.xml"
 XCCDF_GOLDEN = ROOT / "fixtures" / "xccdf-results" / "openscap-1.4.4-results-xccdf12.inventory.json"
 XCCDF_PROVENANCE_FIXTURE = ROOT / "fixtures" / "xccdf-results" / "provenance-companion-xccdf12.xml"
+ARF_FIXTURE = ROOT / "fixtures" / "arf" / "openscap-1.4.4-xccdf-overrides.arf.xml"
+ARF_GOLDEN = ROOT / "fixtures" / "arf" / "openscap-1.4.4-xccdf-overrides.manifest.json"
 XSD_NS = "{http://www.w3.org/2001/XMLSchema}"
 
 
 class VerticalSliceTests(unittest.TestCase):
+    def test_inspect_arf_reports_pinned_collection_manifest(self) -> None:
+        completed = subprocess.run([sys.executable, "-m", "endeavor", "inspect-arf", "--results", str(ARF_FIXTURE)], cwd=ROOT, text=True, capture_output=True, check=False)
+        self.assertEqual(completed.returncode, 0, completed.stderr)
+        payload = json.loads(completed.stdout)
+        self.assertEqual(payload["source"]["sha256"], "7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab")
+        self.assertEqual([item["id"] for item in payload["reports"]], ["xccdf1", "oval2", "oval3", "oval4"])
+        self.assertEqual(payload["reports"][0]["content"]["name"], "TestResult")
+        self.assertEqual(completed.stdout.encode(), ARF_GOLDEN.read_bytes())
+
+    def test_inspect_arf_rejects_doctype_and_multiple_content(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            doctype = Path(directory) / "malicious.arf.xml"
+            doctype.write_text('<!DOCTYPE x [<!ENTITY e "boom">]><x/>', encoding="utf-8")
+            completed = subprocess.run([sys.executable, "-m", "endeavor", "inspect-arf", "--results", str(doctype)], cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(completed.returncode, 3)
+            ambiguous = Path(directory) / "ambiguous.arf.xml"
+            source = ARF_FIXTURE.read_text(encoding="utf-8").replace("</arf:content></arf:report>", "<extra/></arf:content></arf:report>", 1)
+            ambiguous.write_text(source, encoding="utf-8")
+            completed = subprocess.run([sys.executable, "-m", "endeavor", "inspect-arf", "--results", str(ambiguous)], cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(completed.returncode, 3)
+            self.assertIn("exactly one component", completed.stderr)
+
     def test_vendored_xccdf_schema_bundle_compiles(self) -> None:
         self.assertIsNotNone(ET.XMLSchema(ET.parse(str(XCCDF_SCHEMA))))
 

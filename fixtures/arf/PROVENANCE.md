@@ -19,3 +19,9 @@ XCCDF TestResult with profile, identity, target facts, rule metadata, and
 scores. It contains no tailoring reference or evaluator `test-system`; those
 remain separately required before ARF-to-normalized-evidence support is claimed.
 It does not alter the representative alpha workflow inputs.
+
+The expected collection manifest is
+`openscap-1.4.4-xccdf-overrides.manifest.json` (SHA-256
+`a75e617d19dc7579b7f41508d08869fe1789b371973318c1abd73396eb1a8a8f`).
+Embedded content hashes use XML C14N without comments, making them stable for
+the exact parsed component rather than a filesystem path or fetched resource.
