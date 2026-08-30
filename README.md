@@ -21,6 +21,7 @@ Endeavor converts OpenSCAP assessment evidence into valid, provenance-preserving
 - [dependency and SBOM policy](docs/dependency-policy.md)
 - [evidence handling and redaction boundary](docs/evidence-handling.md)
 - [v0.2 OVAL-to-OSCAL mapping contract](docs/v0.2-oval-oscal-mapping.md)
+- [representative alpha workflow validation](docs/alpha-workflow-validation.md)
 - [v0.1 upstream fixture research and intake requirements](docs/v0.1-upstream-fixture-research.md)
 
 ## Status

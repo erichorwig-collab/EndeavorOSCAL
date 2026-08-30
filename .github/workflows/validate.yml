@@ -28,3 +28,5 @@ jobs:
         run: python -m unittest discover -s tests -v
       - name: Verify committed SBOM
         run: python scripts/generate-sbom.py --check sbom.cdx.json
+      - name: Exercise representative alpha workflow
+        run: python scripts/validate-alpha-workflow.py
