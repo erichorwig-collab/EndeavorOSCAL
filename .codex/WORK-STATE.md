@@ -42,7 +42,8 @@ Secure validation boundary for v0.1 OVAL Results to OSCAL Assessment Results.
 Before enabling non-synthetic input, obtain representative real producer
 fixtures with an explicit redistribution review. Then decide whether any
 platform-specific details should be mapped into OSCAL observations. CI is
-present but needs a remote push to exercise.
+present and passed remotely on commit `12765e0` (GitHub Actions run
+`33289162253`).
 
 The official OpenSCAP repository is LGPL-2.1, but its inspected
 `tests/API/OVAL/results-good.xml` fixture declares OVAL 5.5, outside this
