@@ -11,6 +11,7 @@ replacement, remediation, or automatic OSCAL control mapping.
 | XCCDF provenance fields | Schema-valid sanitized companion | `fixtures/xccdf-results/provenance-companion-xccdf12.xml` | `inspect-xccdf` | Profile, tailoring reference, evaluator, identity, target facts, rule timing/weight, score | Companion is not a production assessment and does not expand producer support |
 | ARF collection | OpenSCAP 1.4.4; ARF 1.1 | `fixtures/arf/openscap-1.4.4-xccdf-overrides.arf.xml` | `inspect-arf`, `convert-arf-xccdf` | Bounded manifest; local component resolution; canonical component hashes; XCCDF report/asset/collection/benchmark/profile traceability; schema-valid conversion of the one linked XCCDF report using an explicit mapping | No remote dereference or archive support; embedded OVAL remains unconverted |
 | ARF embedded OVAL reports | Same ARF fixture | `fixtures/arf/openscap-1.4.4-xccdf-overrides.arf.xml` | `inspect-arf` | Exact OVAL definition IDs/statuses and canonical report-content hash | Fixture has no authoritative, unique definitions-component relationship; Endeavor leaves it unlinked |
+| Authored ARF linkage manifest | Generated-sanitized OpenSCAP 1.4.4 tailoring ARF | `fixtures/linkage/openscap-1.4.4-tailoring-v1.json` | `inspect-arf-linkage` | SHA-256-bound, exact local OVAL Results-to-Definitions and TestResult-to-Tailoring provenance resolution | OVAL 5.11 is outside the pinned 5.11.3 converter profile; tailoring linkage is provenance, not decision interpretation |
 
 ## CI evidence
 

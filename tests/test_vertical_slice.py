@@ -35,6 +35,8 @@ ARF_FIXTURE = ROOT / "fixtures" / "arf" / "openscap-1.4.4-xccdf-overrides.arf.xm
 ARF_GOLDEN = ROOT / "fixtures" / "arf" / "openscap-1.4.4-xccdf-overrides.manifest.json"
 ARF_MAPPING = ROOT / "fixtures" / "mappings" / "arf-xccdf-example-v1.json"
 ARF_TAILORING = ROOT / "fixtures" / "arf" / "openscap-1.4.4-tailoring-sanitized.arf.xml"
+ARF_LINKAGE = ROOT / "fixtures" / "linkage" / "openscap-1.4.4-tailoring-v1.json"
+ARF_LINKAGE_GOLDEN = ROOT / "fixtures" / "linkage" / "openscap-1.4.4-tailoring-v1.resolution.json"
 COMPATIBILITY_MATRIX = ROOT / "docs" / "compatibility-matrix.md"
 EVIDENCE_GOLDEN = ROOT / "fixtures" / "evidence-golden"
 XSD_NS = "{http://www.w3.org/2001/XMLSchema}"
@@ -65,6 +67,29 @@ class VerticalSliceTests(unittest.TestCase):
     def test_tailoring_arf_generator_has_valid_shell_syntax(self) -> None:
         completed = subprocess.run(["bash", "-n", "scripts/generate-openscap-tailoring-arf.sh"], cwd=ROOT, text=True, capture_output=True, check=False)
         self.assertEqual(completed.returncode, 0, completed.stderr)
+
+    def test_authored_arf_linkage_is_hash_bound_and_non_interpretive(self) -> None:
+        completed = subprocess.run([sys.executable, "-m", "endeavor", "inspect-arf-linkage", "--results", str(ARF_TAILORING), "--linkage", str(ARF_LINKAGE)], cwd=ROOT, text=True, capture_output=True, check=False)
+        self.assertEqual(completed.returncode, 0, completed.stderr)
+        payload = json.loads(completed.stdout)
+        self.assertEqual(payload["oval-results-to-definitions"][0]["definition-count"], 2)
+        self.assertFalse(payload["oval-results-to-definitions"][0]["conversion-supported"])
+        self.assertFalse(payload["test-result-to-tailoring"][0]["source-profile-confirmed"])
+        self.assertFalse(payload["test-result-to-tailoring"][0]["interpretation-supported"])
+        self.assertEqual(completed.stdout.encode(), ARF_LINKAGE_GOLDEN.read_bytes())
+        with tempfile.TemporaryDirectory() as directory:
+            stale = Path(directory) / "stale.json"
+            value = json.loads(ARF_LINKAGE.read_text(encoding="utf-8"))
+            value["source"]["arf-sha256"] = "0" * 64
+            stale.write_text(json.dumps(value), encoding="utf-8")
+            completed = subprocess.run([sys.executable, "-m", "endeavor", "inspect-arf-linkage", "--results", str(ARF_TAILORING), "--linkage", str(stale)], cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(completed.returncode, 3)
+            self.assertIn("ARF hash does not match", completed.stderr)
+            duplicate = Path(directory) / "duplicate.json"
+            duplicate.write_text(ARF_LINKAGE.read_text(encoding="utf-8").replace('"version": "1.0.0",', '"version": "1.0.0", "version": "1.0.0",', 1), encoding="utf-8")
+            completed = subprocess.run([sys.executable, "-m", "endeavor", "inspect-arf-linkage", "--results", str(ARF_TAILORING), "--linkage", str(duplicate)], cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(completed.returncode, 3)
+            self.assertIn("not valid JSON", completed.stderr)
 
     def test_compatibility_matrix_names_tested_profiles(self) -> None:
         matrix = COMPATIBILITY_MATRIX.read_text(encoding="utf-8")

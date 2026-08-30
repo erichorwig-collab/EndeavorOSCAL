@@ -1,0 +1,30 @@
+{
+  "format": "endeavor-arf-linkage-manifest",
+  "version": "1.0.0",
+  "source": {
+    "arf-sha256": "05d00bf7cc83d32dc04ebe0bdb9b9404780878b6992dc2e2d5d57d6f2c865543"
+  },
+  "links": {
+    "oval-results-to-definitions": [{
+      "report-id": "oval0",
+      "report-sha256": "aeb3d64c9f1df59e8831a598220a1ff550b8b67c6031804a2808ceb368d41520",
+      "report-request-id": "collection1",
+      "data-stream-id": "scap_org.open-scap_datastream_from_xccdf_--work--openscap-1.4.4-baseline.xccdf.xml",
+      "component-ref-id": "scap_org.open-scap_cref_--work--baseline.oval.xml",
+      "component-id": "scap_org.open-scap_comp_--work--baseline.oval.xml",
+      "component-sha256": "a30b162471fda3813e16b695ccca13feb2d6de2c744223d37725501655f2c17c"
+    }],
+    "test-result-to-tailoring": [{
+      "report-id": "xccdf1",
+      "test-result-id": "xccdf_org.open-scap_testresult_default-profile",
+      "tailoring-id": "xccdf_scap-workbench_tailoring_default",
+      "profile-id": "xccdf_com.example.www_profile_customized",
+      "report-sha256": "ea6fa7c58733c524f0076018ef59a90f80ab17eb4616dc9a380e5f8ae8ea1ece",
+      "report-request-id": "collection1",
+      "data-stream-id": "scap_org.open-scap_datastream_from_xccdf_--work--openscap-1.4.4-baseline.xccdf.xml",
+      "component-ref-id": "scap_org.open-scap_cref_--work--openscap-1.4.4-baseline.tailoring.xml_tailoring",
+      "component-id": "scap_org.open-scap_comp_--work--openscap-1.4.4-baseline.tailoring.xml_tailoring",
+      "component-sha256": "60bc9913b3aa3f3479f9fec35fc746ea8773c1d648c5eba990c0b01a768f6326"
+    }]
+  }
+}

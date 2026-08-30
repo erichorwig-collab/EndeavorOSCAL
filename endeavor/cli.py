@@ -12,6 +12,7 @@ from .diff import assessment_results_diff
 from .findings import findings_report
 from .xccdf import inspect_xccdf
 from .arf import inspect_arf
+from .arf_linkage import parse_linkage, resolve_linkage
 from .evidence import normalize_arf, normalize_xccdf
 from .xccdf_mapping import mapping_report as xccdf_mapping_report, parse_mapping as parse_xccdf_mapping
 from .xccdf_convert import assessment_results as xccdf_assessment_results, assessment_results_from_arf
@@ -42,7 +43,7 @@ class _ArgumentParser(argparse.ArgumentParser):
 def _parser() -> argparse.ArgumentParser:
     parser = _ArgumentParser(prog="endeavor", description="Convert OVAL evidence to OSCAL Assessment Results.")
     sub = parser.add_subparsers(dest="command", required=True, parser_class=_ArgumentParser)
-    for name in ("inspect", "convert", "mapping-report", "report", "diff", "findings", "inspect-xccdf", "inspect-arf", "inspect-evidence", "mapping-report-xccdf", "convert-xccdf", "convert-arf-xccdf"):
+    for name in ("inspect", "convert", "mapping-report", "report", "diff", "findings", "inspect-xccdf", "inspect-arf", "inspect-arf-linkage", "inspect-evidence", "mapping-report-xccdf", "convert-xccdf", "convert-arf-xccdf"):
         command = sub.add_parser(name)
         command.add_argument("--format", choices=("text", "json"), default="text", help="format handled diagnostics as text or JSON")
         if name == "diff":
@@ -54,6 +55,10 @@ def _parser() -> argparse.ArgumentParser:
             continue
         if name in ("inspect-xccdf", "inspect-arf"):
             command.add_argument("--results", required=True, type=Path)
+            continue
+        if name == "inspect-arf-linkage":
+            command.add_argument("--results", required=True, type=Path)
+            command.add_argument("--linkage", required=True, type=Path)
             continue
         if name == "inspect-evidence":
             source = command.add_mutually_exclusive_group(required=True)
@@ -113,6 +118,9 @@ def main(argv: list[str] | None = None) -> int:
             return ExitCode.SUCCESS
         if args.command == "inspect-arf":
             print(json.dumps(inspect_arf(args.results), indent=2, sort_keys=True))
+            return ExitCode.SUCCESS
+        if args.command == "inspect-arf-linkage":
+            print(json.dumps(resolve_linkage(args.results, parse_linkage(args.linkage)), indent=2, sort_keys=True))
             return ExitCode.SUCCESS
         if args.command == "inspect-evidence":
             payload = normalize_xccdf(inspect_xccdf(args.xccdf)) if args.xccdf else normalize_arf(inspect_arf(args.arf))

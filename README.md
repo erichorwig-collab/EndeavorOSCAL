@@ -27,6 +27,7 @@ Endeavor converts OpenSCAP assessment evidence into valid, provenance-preserving
 - [v0.2 cross-format evidence contract](docs/v0.2-cross-format-evidence-contract.md)
 - [v0.2 XCCDF-to-OSCAL mapping contract](docs/v0.2-xccdf-oscal-mapping.md)
 - [v0.2 upstream ARF linkage research](docs/v0.2-upstream-arf-linkage-research.md)
+- [v0.2 ARF linkage-manifest contract](docs/v0.2-arf-linkage-manifest.md)
 
 ## Status
 
