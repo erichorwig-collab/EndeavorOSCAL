@@ -1,0 +1,199 @@
+{
+  "assessment-results": {
+    "back-matter": {
+      "resources": [
+        {
+          "props": [
+            {
+              "name": "source-artifact-type",
+              "ns": "https://endeavor.dev/ns/xccdf",
+              "value": "xccdf-results"
+            }
+          ],
+          "rlinks": [
+            {
+              "hashes": [
+                {
+                  "algorithm": "SHA-256",
+                  "value": "38e72324eefab5554d711afb0eec6bd9c502066d6bdebc09be73f3ebcf1ef4c2"
+                }
+              ],
+              "href": "openscap-1.4.4-results-xccdf12.xml",
+              "media-type": "application/xml"
+            }
+          ],
+          "title": "Source XCCDF Results: openscap-1.4.4-results-xccdf12.xml",
+          "uuid": "2077a3d9-f7e4-5365-aca1-e07ff838d12c"
+        },
+        {
+          "props": [
+            {
+              "name": "source-artifact-type",
+              "ns": "https://endeavor.dev/ns/xccdf",
+              "value": "xccdf-oscal-mapping"
+            }
+          ],
+          "rlinks": [
+            {
+              "hashes": [
+                {
+                  "algorithm": "SHA-256",
+                  "value": "076fc37ba5d92a7b94c344e8445a34e67f97c32767f13562e3ea3cacf50f1ae5"
+                }
+              ],
+              "href": "xccdf-example-v1.json",
+              "media-type": "application/json"
+            }
+          ],
+          "title": "Source XCCDF mapping: xccdf-example-v1.json",
+          "uuid": "210191a0-a14d-5de2-8e2e-2dc79088d2c8"
+        }
+      ]
+    },
+    "import-ap": {
+      "href": "REQUIRED-ASSESSMENT-PLAN.oscal.json"
+    },
+    "metadata": {
+      "last-modified": "2012-12-10T13:47:29Z",
+      "oscal-version": "1.2.0",
+      "title": "Endeavor XCCDF assessment results",
+      "version": "0.2.0a0"
+    },
+    "results": [
+      {
+        "description": "Evidence converted from XCCDF Results without inferring control findings.",
+        "end": "2012-12-10T13:47:29Z",
+        "findings": [
+          {
+            "description": "Explicit mapping of XCCDF rule xccdf_moc.elpmaxe.www_rule_1 to objective-id ac-2.1_obj.1.",
+            "props": [
+              {
+                "name": "xccdf-rule-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_moc.elpmaxe.www_rule_1"
+              },
+              {
+                "name": "xccdf-result",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "fail"
+              },
+              {
+                "name": "mapping-sha256",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "076fc37ba5d92a7b94c344e8445a34e67f97c32767f13562e3ea3cacf50f1ae5"
+              },
+              {
+                "name": "source-observation-uuid",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "80d40f8c-f8e3-57f9-bb98-ce62aeb841a8"
+              }
+            ],
+            "target": {
+              "status": {
+                "reason": "fail",
+                "state": "not-satisfied"
+              },
+              "target-id": "ac-2.1_obj.1",
+              "type": "objective-id"
+            },
+            "title": "Mapped XCCDF evaluation: xccdf_moc.elpmaxe.www_rule_1",
+            "uuid": "8a052103-3b9e-5500-8408-41769c9cc7d0"
+          }
+        ],
+        "observations": [
+          {
+            "collected": "2012-12-10T13:47:29Z",
+            "description": "Evidence converted from XCCDF without inferring a control finding.",
+            "methods": [
+              "TEST"
+            ],
+            "props": [
+              {
+                "name": "xccdf-benchmark-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_moc.elpmaxe.www_benchmark_test"
+              },
+              {
+                "name": "xccdf-test-result-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.open-scap_testresult_default-profile"
+              },
+              {
+                "name": "xccdf-rule-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_moc.elpmaxe.www_rule_1"
+              },
+              {
+                "name": "xccdf-result",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "fail"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "description": "XCCDF Results source evidence.",
+                "href": "#2077a3d9-f7e4-5365-aca1-e07ff838d12c"
+              }
+            ],
+            "title": "XCCDF rule result: xccdf_moc.elpmaxe.www_rule_1",
+            "types": [
+              "discovery"
+            ],
+            "uuid": "80d40f8c-f8e3-57f9-bb98-ce62aeb841a8"
+          },
+          {
+            "collected": "2012-12-10T13:47:29Z",
+            "description": "Evidence converted from XCCDF without inferring a control finding.",
+            "methods": [
+              "TEST"
+            ],
+            "props": [
+              {
+                "name": "xccdf-benchmark-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_moc.elpmaxe.www_benchmark_test"
+              },
+              {
+                "name": "xccdf-test-result-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.open-scap_testresult_default-profile"
+              },
+              {
+                "name": "xccdf-rule-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_moc.elpmaxe.www_rule_2"
+              },
+              {
+                "name": "xccdf-result",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "pass"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "description": "XCCDF Results source evidence.",
+                "href": "#2077a3d9-f7e4-5365-aca1-e07ff838d12c"
+              }
+            ],
+            "title": "XCCDF rule result: xccdf_moc.elpmaxe.www_rule_2",
+            "types": [
+              "discovery"
+            ],
+            "uuid": "ba506a5c-a33e-50f6-8ab0-000ef25df889"
+          }
+        ],
+        "reviewed-controls": {
+          "control-selections": [
+            {
+              "include-all": {}
+            }
+          ]
+        },
+        "start": "2012-12-10T13:47:29Z",
+        "title": "XCCDF evaluation evidence",
+        "uuid": "a9824235-1790-5fa4-8978-81aee0d7308f"
+      }
+    ],
+    "uuid": "5a9ef8c0-9c51-5be7-a0be-4182a684e3b4"
+  }
+}
