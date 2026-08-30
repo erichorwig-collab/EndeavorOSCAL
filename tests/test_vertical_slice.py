@@ -43,6 +43,12 @@ class VerticalSliceTests(unittest.TestCase):
         self.assertEqual(linked["profile"], "xccdf_org.ssgproject.content_profile_common")
         self.assertEqual(linked["benchmark"]["component-id"], "scap_org.open-scap_comp_ssg-fedora-xccdf-1.2.xml")
         self.assertIn(linked["profile"], payload["report-requests"][0]["collection"]["data-streams"][0]["components"][1]["payload"]["profile-ids"])
+        self.assertEqual(linked["identity"], {"authenticated": "false", "name": "root", "privileged": "false"})
+        self.assertEqual(linked["title"], "OSCAP Scan Result")
+        self.assertEqual(linked["platforms"], ["cpe:/o:fedoraproject:fedora:20"])
+        self.assertEqual(linked["scores"], [{"maximum": "100.000000", "system": "urn:xccdf:scoring:default", "value": "34.722221"}])
+        self.assertEqual(linked["target-addresses"], ["127.0.0.1", "0:0:0:0:0:0:0:1"])
+        self.assertEqual(linked["target-references"], [{"href": "", "name": "asset0", "system": "http://scap.nist.gov/schema/asset-identification/1.1"}])
         self.assertEqual({item["result"] for item in linked["rule-results"]}, {"pass", "fail", "notchecked", "notselected"})
         self.assertEqual(completed.stdout.encode(), ARF_GOLDEN.read_bytes())
 

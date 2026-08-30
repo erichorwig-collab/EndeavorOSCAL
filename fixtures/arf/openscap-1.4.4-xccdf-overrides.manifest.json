@@ -122,6 +122,14 @@
         },
         "end-time": "2014-10-17T09:07:55",
         "id": "xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common",
+        "identity": {
+          "authenticated": "false",
+          "name": "root",
+          "privileged": "false"
+        },
+        "platforms": [
+          "cpe:/o:fedoraproject:fedora:20"
+        ],
         "profile": "xccdf_org.ssgproject.content_profile_common",
         "rule-results": [
           {
@@ -321,10 +329,44 @@
             "weight": "1.000000"
           }
         ],
+        "scores": [
+          {
+            "maximum": "100.000000",
+            "system": "urn:xccdf:scoring:default",
+            "value": "34.722221"
+          }
+        ],
         "start-time": "2014-10-17T09:07:43",
+        "target-addresses": [
+          "127.0.0.1",
+          "0:0:0:0:0:0:0:1"
+        ],
+        "target-facts": [
+          {
+            "name": "urn:xccdf:fact:scanner:name",
+            "value": "OpenSCAP"
+          },
+          {
+            "name": "urn:xccdf:fact:scanner:version",
+            "value": "1.0.9"
+          },
+          {
+            "name": "urn:xccdf:fact:ethernet:MAC",
+            "value": "00:00:00:00:00:00"
+          }
+        ],
+        "target-references": [
+          {
+            "href": "",
+            "name": "asset0",
+            "system": "http://scap.nist.gov/schema/asset-identification/1.1"
+          }
+        ],
         "targets": [
           "localhost.localdomain"
-        ]
+        ],
+        "test-system": null,
+        "title": "OSCAP Scan Result"
       }
     },
     {

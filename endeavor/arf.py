@@ -129,11 +129,23 @@ def _linked_xccdf_result(report: ET._Element, collection: dict[str, object], pat
     for rule in result.findall(_q(XCCDF_NS, "rule-result")):
         outcome = rule.find(_q(XCCDF_NS, "result"))
         rules.append({"idref": rule.get("idref"), "result": (outcome.text or "").strip() if outcome is not None else None, "time": rule.get("time"), "severity": rule.get("severity"), "weight": rule.get("weight")})
+    identity = result.find(_q(XCCDF_NS, "identity"))
+    title = result.find(_q(XCCDF_NS, "title"))
+    target_facts = [{"name": item.get("name"), "value": (item.text or "").strip() or None} for item in result.findall(f"{_q(XCCDF_NS, 'target-facts')}/{_q(XCCDF_NS, 'fact')}")]
+    target_references = [{"system": item.get("system"), "href": item.get("href"), "name": item.get("name")} for item in result.findall(_q(XCCDF_NS, "target-id-ref"))]
     return {
         "id": result.get("id"), "benchmark": {"id": benchmark_id, "href": benchmark.get("href") if benchmark is not None else None, "component-id": matches[0]["component-id"]},
         "profile": profile_id,
+        "title": (title.text or "").strip() or None if title is not None else None,
+        "test-system": result.get("test-system"),
+        "identity": {"name": (identity.text or "").strip() or None, "authenticated": identity.get("authenticated"), "privileged": identity.get("privileged")} if identity is not None else None,
         "start-time": result.get("start-time"), "end-time": result.get("end-time"),
         "targets": [(item.text or "").strip() for item in result.findall(_q(XCCDF_NS, "target")) if (item.text or "").strip()],
+        "target-addresses": [(item.text or "").strip() for item in result.findall(_q(XCCDF_NS, "target-address")) if (item.text or "").strip()],
+        "target-facts": target_facts,
+        "target-references": target_references,
+        "platforms": [item.get("idref") for item in result.findall(_q(XCCDF_NS, "platform")) if item.get("idref")],
+        "scores": [{"system": item.get("system"), "maximum": item.get("maximum"), "value": (item.text or "").strip() or None} for item in result.findall(_q(XCCDF_NS, "score"))],
         "rule-results": rules,
     }
 
