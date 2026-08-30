@@ -1,0 +1,18 @@
+{
+  "format": "endeavor-oval-oscal-mapping",
+  "version": "1.0.0",
+  "oscal-version": "1.2.0",
+  "mappings": [
+    {
+      "oval-definition-id": "oval:org.endeavor:def:1",
+      "target": {
+        "type": "objective-id",
+        "target-id": "ac-2.1_obj.1"
+      },
+      "outcomes": {
+        "true": {"state": "satisfied", "reason": "pass"},
+        "false": {"state": "not-satisfied", "reason": "fail"}
+      }
+    }
+  ]
+}

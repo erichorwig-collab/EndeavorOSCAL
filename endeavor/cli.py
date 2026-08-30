@@ -8,6 +8,7 @@ import sys
 import tempfile
 
 from .convert import assessment_results
+from .mapping import mapping_report, parse_mapping
 from .oval import OvalInputError, parse_definitions, parse_results
 
 
@@ -33,13 +34,15 @@ class _ArgumentParser(argparse.ArgumentParser):
 def _parser() -> argparse.ArgumentParser:
     parser = _ArgumentParser(prog="endeavor", description="Convert OVAL evidence to OSCAL Assessment Results.")
     sub = parser.add_subparsers(dest="command", required=True, parser_class=_ArgumentParser)
-    for name in ("inspect", "convert"):
+    for name in ("inspect", "convert", "mapping-report"):
         command = sub.add_parser(name)
         command.add_argument("--results", required=True, type=Path)
         command.add_argument("--definitions", required=True, type=Path)
         command.add_argument("--format", choices=("text", "json"), default="text", help="format handled diagnostics as text or JSON")
         if name == "convert":
             command.add_argument("--output", required=True, type=Path)
+        if name == "mapping-report":
+            command.add_argument("--mapping", required=True, type=Path)
     return parser
 
 
@@ -68,6 +71,8 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "inspect":
             payload = {"results": {"path": results.path.name, "sha256": results.sha256, "generator": results.generator.__dict__, "definition-results": [{"id": item.identifier, "result": item.result} for item in results.definitions]}, "definitions": {"path": definitions.path.name, "sha256": definitions.sha256, "generator": definitions.generator.__dict__, "definition-count": len(definitions.definitions)}}
             print(json.dumps(payload, indent=2, sort_keys=True))
+        elif args.command == "mapping-report":
+            print(json.dumps(mapping_report(results, definitions, parse_mapping(args.mapping)), indent=2, sort_keys=True))
         else:
             payload = assessment_results(results, definitions)
             args.output.parent.mkdir(parents=True, exist_ok=True)

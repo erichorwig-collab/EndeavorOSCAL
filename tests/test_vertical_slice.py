@@ -17,6 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 RESULTS = ROOT / "fixtures" / "oval-results"
 DEFINITIONS = ROOT / "fixtures" / "oval-definitions" / "definitions.xml"
 GOLDEN = ROOT / "fixtures" / "oscal-golden"
+MAPPING = ROOT / "fixtures" / "mappings" / "example-v1.json"
 SCHEMA_ROOT = ROOT / "endeavor" / "schemas" / "oval" / "5.11.3"
 XSD_NS = "{http://www.w3.org/2001/XMLSchema}"
 
@@ -169,6 +170,43 @@ class VerticalSliceTests(unittest.TestCase):
         self.assertEqual(payload["results"]["path"], "pass.xml")
         self.assertEqual(payload["definitions"]["path"], "definitions.xml")
         self.assertNotIn(str(ROOT), completed.stdout)
+
+    def test_mapping_report_is_deterministic_and_preserves_mapping_visibility(self) -> None:
+        command = [sys.executable, "-m", "endeavor", "mapping-report", "--results", str(RESULTS / "fail.xml"), "--definitions", str(DEFINITIONS), "--mapping", str(MAPPING)]
+        first = subprocess.run(command, cwd=ROOT, text=True, capture_output=True, check=False)
+        second = subprocess.run(command, cwd=ROOT, text=True, capture_output=True, check=False)
+        self.assertEqual(first.returncode, 0, first.stderr)
+        self.assertEqual(first.stdout, second.stdout)
+        report = json.loads(first.stdout)
+        self.assertEqual(report["summary"], {"evaluated": 1, "mapped": 1, "unmapped": 0, "stale-mappings": 0})
+        self.assertEqual(report["mapping"]["path"], "example-v1.json")
+        self.assertEqual(report["mapped"][0]["oval-definition-id"], "oval:org.endeavor:def:1")
+        self.assertEqual(report["mapped"][0]["result"], "false")
+        self.assertEqual(report["mapped"][0]["targets"], [{"type": "objective-id", "target-id": "ac-2.1_obj.1"}])
+        self.assertNotIn(str(ROOT), first.stdout)
+
+    def test_mapping_report_shows_unmapped_and_stale_ids(self) -> None:
+        mapping = {"format": "endeavor-oval-oscal-mapping", "version": "1.0.0", "oscal-version": "1.2.0", "mappings": [{"oval-definition-id": "oval:org.endeavor:def:stale", "target": {"type": "statement-id", "target-id": "ac-2_smt.a"}, "outcomes": {"false": {"state": "not-satisfied", "reason": "fail"}}}]}
+        with tempfile.TemporaryDirectory(prefix="endeavor-private-map-") as directory:
+            path = Path(directory) / "mapping.json"
+            path.write_text(json.dumps(mapping), encoding="utf-8")
+            completed = subprocess.run([sys.executable, "-m", "endeavor", "mapping-report", "--results", str(RESULTS / "fail.xml"), "--definitions", str(DEFINITIONS), "--mapping", str(path)], cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(completed.returncode, 0, completed.stderr)
+            report = json.loads(completed.stdout)
+            self.assertEqual(report["summary"], {"evaluated": 1, "mapped": 0, "unmapped": 1, "stale-mappings": 1})
+            self.assertEqual(report["unmapped"][0]["oval-definition-id"], "oval:org.endeavor:def:1")
+            self.assertEqual(report["stale-mappings"], ["oval:org.endeavor:def:stale"])
+            self.assertNotIn(directory, completed.stdout)
+
+    def test_invalid_mapping_is_rejected_without_path_disclosure(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="endeavor-private-map-") as directory:
+            path = Path(directory) / "invalid-map.json"
+            path.write_text("[]", encoding="utf-8")
+            completed = subprocess.run([sys.executable, "-m", "endeavor", "mapping-report", "--format", "json", "--results", str(RESULTS / "fail.xml"), "--definitions", str(DEFINITIONS), "--mapping", str(path)], cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(completed.returncode, 3)
+            diagnostic = json.loads(completed.stderr)
+            self.assertEqual(diagnostic["error"]["code"], "input-invalid")
+            self.assertNotIn(directory, completed.stderr)
 
     def test_conversion_is_byte_stable(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
