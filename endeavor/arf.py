@@ -210,7 +210,10 @@ def inspect_arf(path: Path) -> dict[str, object]:
         content = report["content"]
         if content["namespace"] == XCCDF_NS and content["name"] == "TestResult":
             collection_id = _single_relationship(relationships, "arfvocab:createdFor", report["id"], path)
-            asset_id = _single_relationship(relationships, "arfrel:isAbout", report["id"], path)
+            asset_relationship = next((kind for kind in ("arfrel:isAbout", "arfvocab:isAbout") if any(item["type"] == kind and item["subject"] == report["id"] for item in relationships)), None)
+            if asset_relationship is None:
+                raise OvalInputError(f"ARF report linkage is ambiguous or missing: {_safe(path)}")
+            asset_id = _single_relationship(relationships, asset_relationship, report["id"], path)
             if collection_id not in request_ids or asset_id not in asset_ids:
                 raise OvalInputError(f"ARF report linkage does not resolve locally: {_safe(path)}")
             report["collection-id"] = collection_id
