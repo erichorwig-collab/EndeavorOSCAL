@@ -22,7 +22,7 @@ candidate:
    the source OVAL status remains visible.
 4. Confirm the diff identifies the changed definition and both source statuses.
 5. Record the command output, commit SHA, reviewer, and any known schema limits
-   in the alpha acceptance note.
+   in a copy of the [alpha acceptance template](alpha-acceptance-template.md).
 
 The pinned OSCAL schema currently rejects the standard related-observation
 reference object; the converter therefore records the source observation UUID
