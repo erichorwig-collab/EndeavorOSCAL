@@ -16,7 +16,7 @@ from endeavor.arf import inspect_arf
 from endeavor.evidence import normalize_arf, normalize_oval, normalize_xccdf
 from endeavor.xccdf import inspect_xccdf
 from endeavor.xccdf_mapping import parse_mapping as parse_xccdf_mapping
-from endeavor.xccdf_convert import assessment_results as xccdf_assessment_results
+from endeavor.xccdf_convert import assessment_results as xccdf_assessment_results, assessment_results_from_arf
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -33,6 +33,7 @@ XCCDF_TAILORING = ROOT / "fixtures" / "xccdf-tailoring" / "openscap-1.4.4-baseli
 XCCDF_BASELINE = ROOT / "fixtures" / "xccdf-tailoring" / "openscap-1.4.4-baseline.xccdf.xml"
 ARF_FIXTURE = ROOT / "fixtures" / "arf" / "openscap-1.4.4-xccdf-overrides.arf.xml"
 ARF_GOLDEN = ROOT / "fixtures" / "arf" / "openscap-1.4.4-xccdf-overrides.manifest.json"
+ARF_MAPPING = ROOT / "fixtures" / "mappings" / "arf-xccdf-example-v1.json"
 ARF_TAILORING = ROOT / "fixtures" / "arf" / "openscap-1.4.4-tailoring-sanitized.arf.xml"
 COMPATIBILITY_MATRIX = ROOT / "docs" / "compatibility-matrix.md"
 EVIDENCE_GOLDEN = ROOT / "fixtures" / "evidence-golden"
@@ -115,6 +116,22 @@ class VerticalSliceTests(unittest.TestCase):
             self.assertEqual(validate.returncode, 0, validate.stderr)
             self.assertEqual(output.read_bytes(), (GOLDEN / "xccdf-mapped.json").read_bytes())
 
+    def test_convert_arf_xccdf_writes_schema_valid_output(self) -> None:
+        document = assessment_results_from_arf(inspect_arf(ARF_FIXTURE), parse_xccdf_mapping(ARF_MAPPING))
+        result = document["assessment-results"]["results"][0]
+        self.assertEqual(len(result["observations"]), 28)
+        self.assertEqual(len(result["findings"]), 1)
+        self.assertEqual(result["findings"][0]["target"]["status"], {"state": "not-satisfied", "reason": "fail"})
+        properties = result["observations"][0]["props"]
+        self.assertEqual({item["name"] for item in properties if item["name"].startswith("arf-")}, {"arf-report-id", "arf-asset-id", "arf-collection-id", "arf-report-sha256"})
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "arf.json"
+            completed = subprocess.run([sys.executable, "-m", "endeavor", "convert-arf-xccdf", "--results", str(ARF_FIXTURE), "--mapping", str(ARF_MAPPING), "--output", str(output)], cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(completed.returncode, 0, completed.stderr)
+            validate = subprocess.run(["npm", "run", "validate:oscal", "--", "endeavor/schemas/oscal-1.2.0/assessment-results.schema.json", str(output)], cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(validate.returncode, 0, validate.stderr)
+            self.assertEqual(output.read_bytes(), (GOLDEN / "arf-xccdf-mapped.json").read_bytes())
+
     def test_inspect_evidence_matches_cross_format_goldens(self) -> None:
         for flag, fixture, golden in (("--xccdf", XCCDF_FIXTURE, EVIDENCE_GOLDEN / "xccdf.json"), ("--arf", ARF_FIXTURE, EVIDENCE_GOLDEN / "arf.json")):
             with self.subTest(flag=flag):
@@ -159,7 +176,7 @@ class VerticalSliceTests(unittest.TestCase):
             ambiguous.write_text(source, encoding="utf-8")
             completed = subprocess.run([sys.executable, "-m", "endeavor", "inspect-arf", "--results", str(ambiguous)], cwd=ROOT, text=True, capture_output=True, check=False)
             self.assertEqual(completed.returncode, 3)
-            self.assertIn("exactly one component", completed.stderr)
+            self.assertIn("ARF 1.1 validation failed", completed.stderr)
 
     def test_inspect_arf_rejects_archives_and_ignores_schema_hints(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

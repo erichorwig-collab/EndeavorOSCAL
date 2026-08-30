@@ -5,6 +5,7 @@ import uuid
 from datetime import datetime, timezone
 
 from .xccdf_mapping import MappingDocument
+from .oval import OvalInputError
 
 NAMESPACE = "https://endeavor.dev/ns/xccdf"
 UUID_NAMESPACE = uuid.UUID("0b5c72b8-3a31-4ba2-b5c9-703dc149d51b")
@@ -38,3 +39,18 @@ def assessment_results(inventory: dict[str, object], mapping: MappingDocument) -
     result = {"uuid": _uuid(run_id, "result"), "title": "XCCDF evaluation evidence", "description": "Evidence converted from XCCDF Results without inferring control findings.", "start": start, "end": start, "reviewed-controls": {"control-selections": [{"include-all": {}}]}, "observations": observations}
     if findings: result["findings"] = findings
     return {"assessment-results": {"uuid": run_id, "metadata": {"title": "Endeavor XCCDF assessment results", "last-modified": start, "version": "0.2.0a0", "oscal-version": "1.2.0"}, "import-ap": {"href": "REQUIRED-ASSESSMENT-PLAN.oscal.json"}, "results": [result], "back-matter": {"resources": resources}}}
+
+
+def assessment_results_from_arf(manifest: dict[str, object], mapping: MappingDocument) -> dict[str, object]:
+    reports = [item for item in manifest["reports"] if "xccdf-result" in item]
+    if len(reports) != 1:
+        raise OvalInputError("ARF conversion requires exactly one linked XCCDF report")
+    report = reports[0]
+    inventory = {"source": manifest["source"], "test-results": [report["xccdf-result"]]}
+    document = assessment_results(inventory, mapping)
+    resource = document["assessment-results"]["back-matter"]["resources"][0]
+    resource["title"] = f"Source ARF: {manifest['source']['path']}"
+    resource["props"][0]["value"] = "arf"
+    for observation in document["assessment-results"]["results"][0]["observations"]:
+        observation["props"].extend([{"name": "arf-report-id", "ns": NAMESPACE, "value": report["id"]}, {"name": "arf-asset-id", "ns": NAMESPACE, "value": report["asset-id"]}, {"name": "arf-collection-id", "ns": NAMESPACE, "value": report["collection-id"]}, {"name": "arf-report-sha256", "ns": NAMESPACE, "value": report["content"]["sha256"]}])
+    return document

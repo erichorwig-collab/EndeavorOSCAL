@@ -1,0 +1,1799 @@
+{
+  "assessment-results": {
+    "back-matter": {
+      "resources": [
+        {
+          "props": [
+            {
+              "name": "source-artifact-type",
+              "ns": "https://endeavor.dev/ns/xccdf",
+              "value": "arf"
+            }
+          ],
+          "rlinks": [
+            {
+              "hashes": [
+                {
+                  "algorithm": "SHA-256",
+                  "value": "7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab"
+                }
+              ],
+              "href": "openscap-1.4.4-xccdf-overrides.arf.xml",
+              "media-type": "application/xml"
+            }
+          ],
+          "title": "Source ARF: openscap-1.4.4-xccdf-overrides.arf.xml",
+          "uuid": "b2adab81-5df3-567d-a400-53c41c5d5207"
+        },
+        {
+          "props": [
+            {
+              "name": "source-artifact-type",
+              "ns": "https://endeavor.dev/ns/xccdf",
+              "value": "xccdf-oscal-mapping"
+            }
+          ],
+          "rlinks": [
+            {
+              "hashes": [
+                {
+                  "algorithm": "SHA-256",
+                  "value": "13638bb7931bbc7ed6c296291dd5bc389b7fc6e8d3094a102b5fed26fbecb954"
+                }
+              ],
+              "href": "arf-xccdf-example-v1.json",
+              "media-type": "application/json"
+            }
+          ],
+          "title": "Source XCCDF mapping: arf-xccdf-example-v1.json",
+          "uuid": "10ab30a2-3b8d-594e-a832-6298ddc5b933"
+        }
+      ]
+    },
+    "import-ap": {
+      "href": "REQUIRED-ASSESSMENT-PLAN.oscal.json"
+    },
+    "metadata": {
+      "last-modified": "2014-10-17T09:07:43Z",
+      "oscal-version": "1.2.0",
+      "title": "Endeavor XCCDF assessment results",
+      "version": "0.2.0a0"
+    },
+    "results": [
+      {
+        "description": "Evidence converted from XCCDF Results without inferring control findings.",
+        "end": "2014-10-17T09:07:43Z",
+        "findings": [
+          {
+            "description": "Explicit mapping of XCCDF rule xccdf_org.ssgproject.content_rule_disable_prelink to objective-id ac-2.1_obj.1.",
+            "props": [
+              {
+                "name": "xccdf-rule-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_rule_disable_prelink"
+              },
+              {
+                "name": "xccdf-result",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "fail"
+              },
+              {
+                "name": "mapping-sha256",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "13638bb7931bbc7ed6c296291dd5bc389b7fc6e8d3094a102b5fed26fbecb954"
+              },
+              {
+                "name": "source-observation-uuid",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "0c0ed404-9638-502a-8770-76704abd6472"
+              }
+            ],
+            "target": {
+              "status": {
+                "reason": "fail",
+                "state": "not-satisfied"
+              },
+              "target-id": "ac-2.1_obj.1",
+              "type": "objective-id"
+            },
+            "title": "Mapped XCCDF evaluation: xccdf_org.ssgproject.content_rule_disable_prelink",
+            "uuid": "b7a7e4ec-9be2-5c8f-8095-6e29464a73c6"
+          }
+        ],
+        "observations": [
+          {
+            "collected": "2014-10-17T09:07:43Z",
+            "description": "Evidence converted from XCCDF without inferring a control finding.",
+            "methods": [
+              "TEST"
+            ],
+            "props": [
+              {
+                "name": "xccdf-benchmark-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_benchmark_FEDORA"
+              },
+              {
+                "name": "xccdf-test-result-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common"
+              },
+              {
+                "name": "xccdf-rule-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_rule_disable_prelink"
+              },
+              {
+                "name": "xccdf-result",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "fail"
+              },
+              {
+                "name": "arf-report-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf1"
+              },
+              {
+                "name": "arf-asset-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "asset0"
+              },
+              {
+                "name": "arf-collection-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "collection1"
+              },
+              {
+                "name": "arf-report-sha256",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "f53856a770dcfa7eaa29ab0d2e1c10ec2ed345c9bef9b3da3471a19ead277d83"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "description": "XCCDF Results source evidence.",
+                "href": "#b2adab81-5df3-567d-a400-53c41c5d5207"
+              }
+            ],
+            "title": "XCCDF rule result: xccdf_org.ssgproject.content_rule_disable_prelink",
+            "types": [
+              "discovery"
+            ],
+            "uuid": "0c0ed404-9638-502a-8770-76704abd6472"
+          },
+          {
+            "collected": "2014-10-17T09:07:43Z",
+            "description": "Evidence converted from XCCDF without inferring a control finding.",
+            "methods": [
+              "TEST"
+            ],
+            "props": [
+              {
+                "name": "xccdf-benchmark-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_benchmark_FEDORA"
+              },
+              {
+                "name": "xccdf-test-result-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common"
+              },
+              {
+                "name": "xccdf-rule-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_rule_ensure_gpgcheck_globally_activated"
+              },
+              {
+                "name": "xccdf-result",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "pass"
+              },
+              {
+                "name": "arf-report-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf1"
+              },
+              {
+                "name": "arf-asset-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "asset0"
+              },
+              {
+                "name": "arf-collection-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "collection1"
+              },
+              {
+                "name": "arf-report-sha256",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "f53856a770dcfa7eaa29ab0d2e1c10ec2ed345c9bef9b3da3471a19ead277d83"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "description": "XCCDF Results source evidence.",
+                "href": "#b2adab81-5df3-567d-a400-53c41c5d5207"
+              }
+            ],
+            "title": "XCCDF rule result: xccdf_org.ssgproject.content_rule_ensure_gpgcheck_globally_activated",
+            "types": [
+              "discovery"
+            ],
+            "uuid": "725c7a04-ab36-5049-b64e-580fc3d588c8"
+          },
+          {
+            "collected": "2014-10-17T09:07:43Z",
+            "description": "Evidence converted from XCCDF without inferring a control finding.",
+            "methods": [
+              "TEST"
+            ],
+            "props": [
+              {
+                "name": "xccdf-benchmark-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_benchmark_FEDORA"
+              },
+              {
+                "name": "xccdf-test-result-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common"
+              },
+              {
+                "name": "xccdf-rule-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_rule_ensure_gpgcheck_never_disabled"
+              },
+              {
+                "name": "xccdf-result",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "pass"
+              },
+              {
+                "name": "arf-report-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf1"
+              },
+              {
+                "name": "arf-asset-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "asset0"
+              },
+              {
+                "name": "arf-collection-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "collection1"
+              },
+              {
+                "name": "arf-report-sha256",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "f53856a770dcfa7eaa29ab0d2e1c10ec2ed345c9bef9b3da3471a19ead277d83"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "description": "XCCDF Results source evidence.",
+                "href": "#b2adab81-5df3-567d-a400-53c41c5d5207"
+              }
+            ],
+            "title": "XCCDF rule result: xccdf_org.ssgproject.content_rule_ensure_gpgcheck_never_disabled",
+            "types": [
+              "discovery"
+            ],
+            "uuid": "b2026f71-acf4-5845-8962-7641109bcc50"
+          },
+          {
+            "collected": "2014-10-17T09:07:51Z",
+            "description": "Evidence converted from XCCDF without inferring a control finding.",
+            "methods": [
+              "TEST"
+            ],
+            "props": [
+              {
+                "name": "xccdf-benchmark-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_benchmark_FEDORA"
+              },
+              {
+                "name": "xccdf-test-result-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common"
+              },
+              {
+                "name": "xccdf-rule-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_rule_file_permissions_library_dirs"
+              },
+              {
+                "name": "xccdf-result",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "fail"
+              },
+              {
+                "name": "arf-report-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf1"
+              },
+              {
+                "name": "arf-asset-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "asset0"
+              },
+              {
+                "name": "arf-collection-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "collection1"
+              },
+              {
+                "name": "arf-report-sha256",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "f53856a770dcfa7eaa29ab0d2e1c10ec2ed345c9bef9b3da3471a19ead277d83"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "description": "XCCDF Results source evidence.",
+                "href": "#b2adab81-5df3-567d-a400-53c41c5d5207"
+              }
+            ],
+            "title": "XCCDF rule result: xccdf_org.ssgproject.content_rule_file_permissions_library_dirs",
+            "types": [
+              "discovery"
+            ],
+            "uuid": "c281b0a4-3377-5c17-abe5-5ed294b3e21d"
+          },
+          {
+            "collected": "2014-10-17T09:07:53Z",
+            "description": "Evidence converted from XCCDF without inferring a control finding.",
+            "methods": [
+              "TEST"
+            ],
+            "props": [
+              {
+                "name": "xccdf-benchmark-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_benchmark_FEDORA"
+              },
+              {
+                "name": "xccdf-test-result-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common"
+              },
+              {
+                "name": "xccdf-rule-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_rule_file_ownership_library_dirs"
+              },
+              {
+                "name": "xccdf-result",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "pass"
+              },
+              {
+                "name": "arf-report-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf1"
+              },
+              {
+                "name": "arf-asset-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "asset0"
+              },
+              {
+                "name": "arf-collection-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "collection1"
+              },
+              {
+                "name": "arf-report-sha256",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "f53856a770dcfa7eaa29ab0d2e1c10ec2ed345c9bef9b3da3471a19ead277d83"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "description": "XCCDF Results source evidence.",
+                "href": "#b2adab81-5df3-567d-a400-53c41c5d5207"
+              }
+            ],
+            "title": "XCCDF rule result: xccdf_org.ssgproject.content_rule_file_ownership_library_dirs",
+            "types": [
+              "discovery"
+            ],
+            "uuid": "a66c83f1-dfcf-5bdb-853c-83eec98018af"
+          },
+          {
+            "collected": "2014-10-17T09:07:55Z",
+            "description": "Evidence converted from XCCDF without inferring a control finding.",
+            "methods": [
+              "TEST"
+            ],
+            "props": [
+              {
+                "name": "xccdf-benchmark-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_benchmark_FEDORA"
+              },
+              {
+                "name": "xccdf-test-result-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common"
+              },
+              {
+                "name": "xccdf-rule-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_rule_file_permissions_binary_dirs"
+              },
+              {
+                "name": "xccdf-result",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "pass"
+              },
+              {
+                "name": "arf-report-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf1"
+              },
+              {
+                "name": "arf-asset-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "asset0"
+              },
+              {
+                "name": "arf-collection-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "collection1"
+              },
+              {
+                "name": "arf-report-sha256",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "f53856a770dcfa7eaa29ab0d2e1c10ec2ed345c9bef9b3da3471a19ead277d83"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "description": "XCCDF Results source evidence.",
+                "href": "#b2adab81-5df3-567d-a400-53c41c5d5207"
+              }
+            ],
+            "title": "XCCDF rule result: xccdf_org.ssgproject.content_rule_file_permissions_binary_dirs",
+            "types": [
+              "discovery"
+            ],
+            "uuid": "d3698728-6b5e-5dcd-bc9d-aaa5b83c3663"
+          },
+          {
+            "collected": "2014-10-17T09:07:55Z",
+            "description": "Evidence converted from XCCDF without inferring a control finding.",
+            "methods": [
+              "TEST"
+            ],
+            "props": [
+              {
+                "name": "xccdf-benchmark-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_benchmark_FEDORA"
+              },
+              {
+                "name": "xccdf-test-result-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common"
+              },
+              {
+                "name": "xccdf-rule-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_rule_file_ownership_binary_dirs"
+              },
+              {
+                "name": "xccdf-result",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "pass"
+              },
+              {
+                "name": "arf-report-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf1"
+              },
+              {
+                "name": "arf-asset-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "asset0"
+              },
+              {
+                "name": "arf-collection-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "collection1"
+              },
+              {
+                "name": "arf-report-sha256",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "f53856a770dcfa7eaa29ab0d2e1c10ec2ed345c9bef9b3da3471a19ead277d83"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "description": "XCCDF Results source evidence.",
+                "href": "#b2adab81-5df3-567d-a400-53c41c5d5207"
+              }
+            ],
+            "title": "XCCDF rule result: xccdf_org.ssgproject.content_rule_file_ownership_binary_dirs",
+            "types": [
+              "discovery"
+            ],
+            "uuid": "a4c4f9f7-d0db-5e47-8046-45f17d8474f2"
+          },
+          {
+            "collected": "2014-10-17T09:07:55Z",
+            "description": "Evidence converted from XCCDF without inferring a control finding.",
+            "methods": [
+              "TEST"
+            ],
+            "props": [
+              {
+                "name": "xccdf-benchmark-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_benchmark_FEDORA"
+              },
+              {
+                "name": "xccdf-test-result-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common"
+              },
+              {
+                "name": "xccdf-rule-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_rule_no_direct_root_logins"
+              },
+              {
+                "name": "xccdf-result",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "notchecked"
+              },
+              {
+                "name": "arf-report-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf1"
+              },
+              {
+                "name": "arf-asset-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "asset0"
+              },
+              {
+                "name": "arf-collection-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "collection1"
+              },
+              {
+                "name": "arf-report-sha256",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "f53856a770dcfa7eaa29ab0d2e1c10ec2ed345c9bef9b3da3471a19ead277d83"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "description": "XCCDF Results source evidence.",
+                "href": "#b2adab81-5df3-567d-a400-53c41c5d5207"
+              }
+            ],
+            "title": "XCCDF rule result: xccdf_org.ssgproject.content_rule_no_direct_root_logins",
+            "types": [
+              "discovery"
+            ],
+            "uuid": "22d97d14-486e-5dfe-b037-ef114bf613b7"
+          },
+          {
+            "collected": "2014-10-17T09:07:55Z",
+            "description": "Evidence converted from XCCDF without inferring a control finding.",
+            "methods": [
+              "TEST"
+            ],
+            "props": [
+              {
+                "name": "xccdf-benchmark-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_benchmark_FEDORA"
+              },
+              {
+                "name": "xccdf-test-result-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common"
+              },
+              {
+                "name": "xccdf-rule-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_rule_securetty_root_login_console_only"
+              },
+              {
+                "name": "xccdf-result",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "fail"
+              },
+              {
+                "name": "arf-report-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf1"
+              },
+              {
+                "name": "arf-asset-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "asset0"
+              },
+              {
+                "name": "arf-collection-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "collection1"
+              },
+              {
+                "name": "arf-report-sha256",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "f53856a770dcfa7eaa29ab0d2e1c10ec2ed345c9bef9b3da3471a19ead277d83"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "description": "XCCDF Results source evidence.",
+                "href": "#b2adab81-5df3-567d-a400-53c41c5d5207"
+              }
+            ],
+            "title": "XCCDF rule result: xccdf_org.ssgproject.content_rule_securetty_root_login_console_only",
+            "types": [
+              "discovery"
+            ],
+            "uuid": "5c6187f7-4308-5aba-848e-74754c6ebf1b"
+          },
+          {
+            "collected": "2014-10-17T09:07:55Z",
+            "description": "Evidence converted from XCCDF without inferring a control finding.",
+            "methods": [
+              "TEST"
+            ],
+            "props": [
+              {
+                "name": "xccdf-benchmark-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_benchmark_FEDORA"
+              },
+              {
+                "name": "xccdf-test-result-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common"
+              },
+              {
+                "name": "xccdf-rule-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_rule_restrict_serial_port_logins"
+              },
+              {
+                "name": "xccdf-result",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "pass"
+              },
+              {
+                "name": "arf-report-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf1"
+              },
+              {
+                "name": "arf-asset-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "asset0"
+              },
+              {
+                "name": "arf-collection-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "collection1"
+              },
+              {
+                "name": "arf-report-sha256",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "f53856a770dcfa7eaa29ab0d2e1c10ec2ed345c9bef9b3da3471a19ead277d83"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "description": "XCCDF Results source evidence.",
+                "href": "#b2adab81-5df3-567d-a400-53c41c5d5207"
+              }
+            ],
+            "title": "XCCDF rule result: xccdf_org.ssgproject.content_rule_restrict_serial_port_logins",
+            "types": [
+              "discovery"
+            ],
+            "uuid": "f9ca343d-962a-5c60-8ddd-28dda4854cf9"
+          },
+          {
+            "collected": "2014-10-17T09:07:55Z",
+            "description": "Evidence converted from XCCDF without inferring a control finding.",
+            "methods": [
+              "TEST"
+            ],
+            "props": [
+              {
+                "name": "xccdf-benchmark-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_benchmark_FEDORA"
+              },
+              {
+                "name": "xccdf-test-result-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common"
+              },
+              {
+                "name": "xccdf-rule-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_rule_no_root_webbrowsing"
+              },
+              {
+                "name": "xccdf-result",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "notselected"
+              },
+              {
+                "name": "arf-report-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf1"
+              },
+              {
+                "name": "arf-asset-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "asset0"
+              },
+              {
+                "name": "arf-collection-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "collection1"
+              },
+              {
+                "name": "arf-report-sha256",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "f53856a770dcfa7eaa29ab0d2e1c10ec2ed345c9bef9b3da3471a19ead277d83"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "description": "XCCDF Results source evidence.",
+                "href": "#b2adab81-5df3-567d-a400-53c41c5d5207"
+              }
+            ],
+            "title": "XCCDF rule result: xccdf_org.ssgproject.content_rule_no_root_webbrowsing",
+            "types": [
+              "discovery"
+            ],
+            "uuid": "b26d0476-bc31-5ed3-92a2-65a434d17f75"
+          },
+          {
+            "collected": "2014-10-17T09:07:55Z",
+            "description": "Evidence converted from XCCDF without inferring a control finding.",
+            "methods": [
+              "TEST"
+            ],
+            "props": [
+              {
+                "name": "xccdf-benchmark-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_benchmark_FEDORA"
+              },
+              {
+                "name": "xccdf-test-result-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common"
+              },
+              {
+                "name": "xccdf-rule-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_rule_no_shelllogin_for_systemaccounts"
+              },
+              {
+                "name": "xccdf-result",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "notselected"
+              },
+              {
+                "name": "arf-report-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf1"
+              },
+              {
+                "name": "arf-asset-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "asset0"
+              },
+              {
+                "name": "arf-collection-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "collection1"
+              },
+              {
+                "name": "arf-report-sha256",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "f53856a770dcfa7eaa29ab0d2e1c10ec2ed345c9bef9b3da3471a19ead277d83"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "description": "XCCDF Results source evidence.",
+                "href": "#b2adab81-5df3-567d-a400-53c41c5d5207"
+              }
+            ],
+            "title": "XCCDF rule result: xccdf_org.ssgproject.content_rule_no_shelllogin_for_systemaccounts",
+            "types": [
+              "discovery"
+            ],
+            "uuid": "c731387f-6ac8-545c-8ee6-d25e49b75fbb"
+          },
+          {
+            "collected": "2014-10-17T09:07:55Z",
+            "description": "Evidence converted from XCCDF without inferring a control finding.",
+            "methods": [
+              "TEST"
+            ],
+            "props": [
+              {
+                "name": "xccdf-benchmark-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_benchmark_FEDORA"
+              },
+              {
+                "name": "xccdf-test-result-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common"
+              },
+              {
+                "name": "xccdf-rule-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_rule_no_uidzero_except_root"
+              },
+              {
+                "name": "xccdf-result",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "pass"
+              },
+              {
+                "name": "arf-report-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf1"
+              },
+              {
+                "name": "arf-asset-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "asset0"
+              },
+              {
+                "name": "arf-collection-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "collection1"
+              },
+              {
+                "name": "arf-report-sha256",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "f53856a770dcfa7eaa29ab0d2e1c10ec2ed345c9bef9b3da3471a19ead277d83"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "description": "XCCDF Results source evidence.",
+                "href": "#b2adab81-5df3-567d-a400-53c41c5d5207"
+              }
+            ],
+            "title": "XCCDF rule result: xccdf_org.ssgproject.content_rule_no_uidzero_except_root",
+            "types": [
+              "discovery"
+            ],
+            "uuid": "fbdb269a-c5d6-5831-8833-b198bb4f5387"
+          },
+          {
+            "collected": "2014-10-17T09:07:55Z",
+            "description": "Evidence converted from XCCDF without inferring a control finding.",
+            "methods": [
+              "TEST"
+            ],
+            "props": [
+              {
+                "name": "xccdf-benchmark-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_benchmark_FEDORA"
+              },
+              {
+                "name": "xccdf-test-result-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common"
+              },
+              {
+                "name": "xccdf-rule-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_rule_root_path_default"
+              },
+              {
+                "name": "xccdf-result",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "notselected"
+              },
+              {
+                "name": "arf-report-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf1"
+              },
+              {
+                "name": "arf-asset-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "asset0"
+              },
+              {
+                "name": "arf-collection-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "collection1"
+              },
+              {
+                "name": "arf-report-sha256",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "f53856a770dcfa7eaa29ab0d2e1c10ec2ed345c9bef9b3da3471a19ead277d83"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "description": "XCCDF Results source evidence.",
+                "href": "#b2adab81-5df3-567d-a400-53c41c5d5207"
+              }
+            ],
+            "title": "XCCDF rule result: xccdf_org.ssgproject.content_rule_root_path_default",
+            "types": [
+              "discovery"
+            ],
+            "uuid": "ac45b922-fd6e-5b61-93a4-f1e811b10921"
+          },
+          {
+            "collected": "2014-10-17T09:07:55Z",
+            "description": "Evidence converted from XCCDF without inferring a control finding.",
+            "methods": [
+              "TEST"
+            ],
+            "props": [
+              {
+                "name": "xccdf-benchmark-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_benchmark_FEDORA"
+              },
+              {
+                "name": "xccdf-test-result-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common"
+              },
+              {
+                "name": "xccdf-rule-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_rule_no_empty_passwords"
+              },
+              {
+                "name": "xccdf-result",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "fail"
+              },
+              {
+                "name": "arf-report-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf1"
+              },
+              {
+                "name": "arf-asset-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "asset0"
+              },
+              {
+                "name": "arf-collection-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "collection1"
+              },
+              {
+                "name": "arf-report-sha256",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "f53856a770dcfa7eaa29ab0d2e1c10ec2ed345c9bef9b3da3471a19ead277d83"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "description": "XCCDF Results source evidence.",
+                "href": "#b2adab81-5df3-567d-a400-53c41c5d5207"
+              }
+            ],
+            "title": "XCCDF rule result: xccdf_org.ssgproject.content_rule_no_empty_passwords",
+            "types": [
+              "discovery"
+            ],
+            "uuid": "863f3d63-6cb1-53b0-aa6c-246ed394ed99"
+          },
+          {
+            "collected": "2014-10-17T09:07:55Z",
+            "description": "Evidence converted from XCCDF without inferring a control finding.",
+            "methods": [
+              "TEST"
+            ],
+            "props": [
+              {
+                "name": "xccdf-benchmark-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_benchmark_FEDORA"
+              },
+              {
+                "name": "xccdf-test-result-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common"
+              },
+              {
+                "name": "xccdf-rule-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_rule_no_hashes_outside_shadow"
+              },
+              {
+                "name": "xccdf-result",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "pass"
+              },
+              {
+                "name": "arf-report-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf1"
+              },
+              {
+                "name": "arf-asset-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "asset0"
+              },
+              {
+                "name": "arf-collection-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "collection1"
+              },
+              {
+                "name": "arf-report-sha256",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "f53856a770dcfa7eaa29ab0d2e1c10ec2ed345c9bef9b3da3471a19ead277d83"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "description": "XCCDF Results source evidence.",
+                "href": "#b2adab81-5df3-567d-a400-53c41c5d5207"
+              }
+            ],
+            "title": "XCCDF rule result: xccdf_org.ssgproject.content_rule_no_hashes_outside_shadow",
+            "types": [
+              "discovery"
+            ],
+            "uuid": "1c994e8c-848e-54dd-b957-41ba66839c1c"
+          },
+          {
+            "collected": "2014-10-17T09:07:55Z",
+            "description": "Evidence converted from XCCDF without inferring a control finding.",
+            "methods": [
+              "TEST"
+            ],
+            "props": [
+              {
+                "name": "xccdf-benchmark-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_benchmark_FEDORA"
+              },
+              {
+                "name": "xccdf-test-result-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common"
+              },
+              {
+                "name": "xccdf-rule-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_rule_gid_passwd_group_same"
+              },
+              {
+                "name": "xccdf-result",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "notselected"
+              },
+              {
+                "name": "arf-report-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf1"
+              },
+              {
+                "name": "arf-asset-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "asset0"
+              },
+              {
+                "name": "arf-collection-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "collection1"
+              },
+              {
+                "name": "arf-report-sha256",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "f53856a770dcfa7eaa29ab0d2e1c10ec2ed345c9bef9b3da3471a19ead277d83"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "description": "XCCDF Results source evidence.",
+                "href": "#b2adab81-5df3-567d-a400-53c41c5d5207"
+              }
+            ],
+            "title": "XCCDF rule result: xccdf_org.ssgproject.content_rule_gid_passwd_group_same",
+            "types": [
+              "discovery"
+            ],
+            "uuid": "6381cac0-4aab-5133-b6be-21ffb3a968e7"
+          },
+          {
+            "collected": "2014-10-17T09:07:55Z",
+            "description": "Evidence converted from XCCDF without inferring a control finding.",
+            "methods": [
+              "TEST"
+            ],
+            "props": [
+              {
+                "name": "xccdf-benchmark-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_benchmark_FEDORA"
+              },
+              {
+                "name": "xccdf-test-result-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common"
+              },
+              {
+                "name": "xccdf-rule-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_rule_no_netrc_files"
+              },
+              {
+                "name": "xccdf-result",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "pass"
+              },
+              {
+                "name": "arf-report-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf1"
+              },
+              {
+                "name": "arf-asset-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "asset0"
+              },
+              {
+                "name": "arf-collection-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "collection1"
+              },
+              {
+                "name": "arf-report-sha256",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "f53856a770dcfa7eaa29ab0d2e1c10ec2ed345c9bef9b3da3471a19ead277d83"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "description": "XCCDF Results source evidence.",
+                "href": "#b2adab81-5df3-567d-a400-53c41c5d5207"
+              }
+            ],
+            "title": "XCCDF rule result: xccdf_org.ssgproject.content_rule_no_netrc_files",
+            "types": [
+              "discovery"
+            ],
+            "uuid": "c92c0d89-8f2b-5c07-8bb7-b549f9931fd3"
+          },
+          {
+            "collected": "2014-10-17T09:07:55Z",
+            "description": "Evidence converted from XCCDF without inferring a control finding.",
+            "methods": [
+              "TEST"
+            ],
+            "props": [
+              {
+                "name": "xccdf-benchmark-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_benchmark_FEDORA"
+              },
+              {
+                "name": "xccdf-test-result-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common"
+              },
+              {
+                "name": "xccdf-rule-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_rule_accounts_password_minlen_login_defs"
+              },
+              {
+                "name": "xccdf-result",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "fail"
+              },
+              {
+                "name": "arf-report-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf1"
+              },
+              {
+                "name": "arf-asset-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "asset0"
+              },
+              {
+                "name": "arf-collection-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "collection1"
+              },
+              {
+                "name": "arf-report-sha256",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "f53856a770dcfa7eaa29ab0d2e1c10ec2ed345c9bef9b3da3471a19ead277d83"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "description": "XCCDF Results source evidence.",
+                "href": "#b2adab81-5df3-567d-a400-53c41c5d5207"
+              }
+            ],
+            "title": "XCCDF rule result: xccdf_org.ssgproject.content_rule_accounts_password_minlen_login_defs",
+            "types": [
+              "discovery"
+            ],
+            "uuid": "f4c52879-c580-5c4a-bab5-250f252b0d5c"
+          },
+          {
+            "collected": "2014-10-17T09:07:55Z",
+            "description": "Evidence converted from XCCDF without inferring a control finding.",
+            "methods": [
+              "TEST"
+            ],
+            "props": [
+              {
+                "name": "xccdf-benchmark-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_benchmark_FEDORA"
+              },
+              {
+                "name": "xccdf-test-result-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common"
+              },
+              {
+                "name": "xccdf-rule-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_rule_accounts_minimum_age_login_defs"
+              },
+              {
+                "name": "xccdf-result",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "fail"
+              },
+              {
+                "name": "arf-report-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf1"
+              },
+              {
+                "name": "arf-asset-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "asset0"
+              },
+              {
+                "name": "arf-collection-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "collection1"
+              },
+              {
+                "name": "arf-report-sha256",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "f53856a770dcfa7eaa29ab0d2e1c10ec2ed345c9bef9b3da3471a19ead277d83"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "description": "XCCDF Results source evidence.",
+                "href": "#b2adab81-5df3-567d-a400-53c41c5d5207"
+              }
+            ],
+            "title": "XCCDF rule result: xccdf_org.ssgproject.content_rule_accounts_minimum_age_login_defs",
+            "types": [
+              "discovery"
+            ],
+            "uuid": "e405d0ea-791d-5e2f-bf22-675557ca3c57"
+          },
+          {
+            "collected": "2014-10-17T09:07:55Z",
+            "description": "Evidence converted from XCCDF without inferring a control finding.",
+            "methods": [
+              "TEST"
+            ],
+            "props": [
+              {
+                "name": "xccdf-benchmark-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_benchmark_FEDORA"
+              },
+              {
+                "name": "xccdf-test-result-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common"
+              },
+              {
+                "name": "xccdf-rule-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_rule_accounts_maximum_age_login_defs"
+              },
+              {
+                "name": "xccdf-result",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "fail"
+              },
+              {
+                "name": "arf-report-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf1"
+              },
+              {
+                "name": "arf-asset-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "asset0"
+              },
+              {
+                "name": "arf-collection-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "collection1"
+              },
+              {
+                "name": "arf-report-sha256",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "f53856a770dcfa7eaa29ab0d2e1c10ec2ed345c9bef9b3da3471a19ead277d83"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "description": "XCCDF Results source evidence.",
+                "href": "#b2adab81-5df3-567d-a400-53c41c5d5207"
+              }
+            ],
+            "title": "XCCDF rule result: xccdf_org.ssgproject.content_rule_accounts_maximum_age_login_defs",
+            "types": [
+              "discovery"
+            ],
+            "uuid": "607bbf8a-460a-555a-a995-ddfece98baf1"
+          },
+          {
+            "collected": "2014-10-17T09:07:55Z",
+            "description": "Evidence converted from XCCDF without inferring a control finding.",
+            "methods": [
+              "TEST"
+            ],
+            "props": [
+              {
+                "name": "xccdf-benchmark-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_benchmark_FEDORA"
+              },
+              {
+                "name": "xccdf-test-result-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common"
+              },
+              {
+                "name": "xccdf-rule-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_rule_accounts_password_warn_age_login_defs"
+              },
+              {
+                "name": "xccdf-result",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "pass"
+              },
+              {
+                "name": "arf-report-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf1"
+              },
+              {
+                "name": "arf-asset-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "asset0"
+              },
+              {
+                "name": "arf-collection-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "collection1"
+              },
+              {
+                "name": "arf-report-sha256",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "f53856a770dcfa7eaa29ab0d2e1c10ec2ed345c9bef9b3da3471a19ead277d83"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "description": "XCCDF Results source evidence.",
+                "href": "#b2adab81-5df3-567d-a400-53c41c5d5207"
+              }
+            ],
+            "title": "XCCDF rule result: xccdf_org.ssgproject.content_rule_accounts_password_warn_age_login_defs",
+            "types": [
+              "discovery"
+            ],
+            "uuid": "89889189-cc4e-5cc9-b5e1-dc19bce9de9a"
+          },
+          {
+            "collected": "2014-10-17T09:07:55Z",
+            "description": "Evidence converted from XCCDF without inferring a control finding.",
+            "methods": [
+              "TEST"
+            ],
+            "props": [
+              {
+                "name": "xccdf-benchmark-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_benchmark_FEDORA"
+              },
+              {
+                "name": "xccdf-test-result-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common"
+              },
+              {
+                "name": "xccdf-rule-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_rule_service_ntpd_enabled"
+              },
+              {
+                "name": "xccdf-result",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "fail"
+              },
+              {
+                "name": "arf-report-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf1"
+              },
+              {
+                "name": "arf-asset-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "asset0"
+              },
+              {
+                "name": "arf-collection-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "collection1"
+              },
+              {
+                "name": "arf-report-sha256",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "f53856a770dcfa7eaa29ab0d2e1c10ec2ed345c9bef9b3da3471a19ead277d83"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "description": "XCCDF Results source evidence.",
+                "href": "#b2adab81-5df3-567d-a400-53c41c5d5207"
+              }
+            ],
+            "title": "XCCDF rule result: xccdf_org.ssgproject.content_rule_service_ntpd_enabled",
+            "types": [
+              "discovery"
+            ],
+            "uuid": "46834d96-0dc6-580c-a1b3-42c284fbfb8e"
+          },
+          {
+            "collected": "2014-10-17T09:07:55Z",
+            "description": "Evidence converted from XCCDF without inferring a control finding.",
+            "methods": [
+              "TEST"
+            ],
+            "props": [
+              {
+                "name": "xccdf-benchmark-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_benchmark_FEDORA"
+              },
+              {
+                "name": "xccdf-test-result-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common"
+              },
+              {
+                "name": "xccdf-rule-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_rule_ntpd_specify_remote_server"
+              },
+              {
+                "name": "xccdf-result",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "fail"
+              },
+              {
+                "name": "arf-report-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf1"
+              },
+              {
+                "name": "arf-asset-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "asset0"
+              },
+              {
+                "name": "arf-collection-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "collection1"
+              },
+              {
+                "name": "arf-report-sha256",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "f53856a770dcfa7eaa29ab0d2e1c10ec2ed345c9bef9b3da3471a19ead277d83"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "description": "XCCDF Results source evidence.",
+                "href": "#b2adab81-5df3-567d-a400-53c41c5d5207"
+              }
+            ],
+            "title": "XCCDF rule result: xccdf_org.ssgproject.content_rule_ntpd_specify_remote_server",
+            "types": [
+              "discovery"
+            ],
+            "uuid": "bec63cb7-b8f9-51e2-bfeb-2cb64ab595a9"
+          },
+          {
+            "collected": "2014-10-17T09:07:55Z",
+            "description": "Evidence converted from XCCDF without inferring a control finding.",
+            "methods": [
+              "TEST"
+            ],
+            "props": [
+              {
+                "name": "xccdf-benchmark-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_benchmark_FEDORA"
+              },
+              {
+                "name": "xccdf-test-result-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common"
+              },
+              {
+                "name": "xccdf-rule-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_rule_sshd_disable_root_login"
+              },
+              {
+                "name": "xccdf-result",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "fail"
+              },
+              {
+                "name": "arf-report-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf1"
+              },
+              {
+                "name": "arf-asset-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "asset0"
+              },
+              {
+                "name": "arf-collection-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "collection1"
+              },
+              {
+                "name": "arf-report-sha256",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "f53856a770dcfa7eaa29ab0d2e1c10ec2ed345c9bef9b3da3471a19ead277d83"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "description": "XCCDF Results source evidence.",
+                "href": "#b2adab81-5df3-567d-a400-53c41c5d5207"
+              }
+            ],
+            "title": "XCCDF rule result: xccdf_org.ssgproject.content_rule_sshd_disable_root_login",
+            "types": [
+              "discovery"
+            ],
+            "uuid": "688fe770-9fff-501b-b30d-887b7f003a38"
+          },
+          {
+            "collected": "2014-10-17T09:07:55Z",
+            "description": "Evidence converted from XCCDF without inferring a control finding.",
+            "methods": [
+              "TEST"
+            ],
+            "props": [
+              {
+                "name": "xccdf-benchmark-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_benchmark_FEDORA"
+              },
+              {
+                "name": "xccdf-test-result-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common"
+              },
+              {
+                "name": "xccdf-rule-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_rule_sshd_disable_empty_passwords"
+              },
+              {
+                "name": "xccdf-result",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "pass"
+              },
+              {
+                "name": "arf-report-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf1"
+              },
+              {
+                "name": "arf-asset-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "asset0"
+              },
+              {
+                "name": "arf-collection-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "collection1"
+              },
+              {
+                "name": "arf-report-sha256",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "f53856a770dcfa7eaa29ab0d2e1c10ec2ed345c9bef9b3da3471a19ead277d83"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "description": "XCCDF Results source evidence.",
+                "href": "#b2adab81-5df3-567d-a400-53c41c5d5207"
+              }
+            ],
+            "title": "XCCDF rule result: xccdf_org.ssgproject.content_rule_sshd_disable_empty_passwords",
+            "types": [
+              "discovery"
+            ],
+            "uuid": "768ffba5-ffaa-5b50-9fe3-e59568a3174e"
+          },
+          {
+            "collected": "2014-10-17T09:07:55Z",
+            "description": "Evidence converted from XCCDF without inferring a control finding.",
+            "methods": [
+              "TEST"
+            ],
+            "props": [
+              {
+                "name": "xccdf-benchmark-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_benchmark_FEDORA"
+              },
+              {
+                "name": "xccdf-test-result-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common"
+              },
+              {
+                "name": "xccdf-rule-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_rule_sshd_set_idle_timeout"
+              },
+              {
+                "name": "xccdf-result",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "fail"
+              },
+              {
+                "name": "arf-report-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf1"
+              },
+              {
+                "name": "arf-asset-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "asset0"
+              },
+              {
+                "name": "arf-collection-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "collection1"
+              },
+              {
+                "name": "arf-report-sha256",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "f53856a770dcfa7eaa29ab0d2e1c10ec2ed345c9bef9b3da3471a19ead277d83"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "description": "XCCDF Results source evidence.",
+                "href": "#b2adab81-5df3-567d-a400-53c41c5d5207"
+              }
+            ],
+            "title": "XCCDF rule result: xccdf_org.ssgproject.content_rule_sshd_set_idle_timeout",
+            "types": [
+              "discovery"
+            ],
+            "uuid": "c2d91c3b-98c7-5c77-8650-ba8e15dc1aeb"
+          },
+          {
+            "collected": "2014-10-17T09:07:55Z",
+            "description": "Evidence converted from XCCDF without inferring a control finding.",
+            "methods": [
+              "TEST"
+            ],
+            "props": [
+              {
+                "name": "xccdf-benchmark-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_benchmark_FEDORA"
+              },
+              {
+                "name": "xccdf-test-result-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common"
+              },
+              {
+                "name": "xccdf-rule-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf_org.ssgproject.content_rule_sshd_set_keepalive"
+              },
+              {
+                "name": "xccdf-result",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "fail"
+              },
+              {
+                "name": "arf-report-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "xccdf1"
+              },
+              {
+                "name": "arf-asset-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "asset0"
+              },
+              {
+                "name": "arf-collection-id",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "collection1"
+              },
+              {
+                "name": "arf-report-sha256",
+                "ns": "https://endeavor.dev/ns/xccdf",
+                "value": "f53856a770dcfa7eaa29ab0d2e1c10ec2ed345c9bef9b3da3471a19ead277d83"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "description": "XCCDF Results source evidence.",
+                "href": "#b2adab81-5df3-567d-a400-53c41c5d5207"
+              }
+            ],
+            "title": "XCCDF rule result: xccdf_org.ssgproject.content_rule_sshd_set_keepalive",
+            "types": [
+              "discovery"
+            ],
+            "uuid": "1ade0d8c-4803-5a8d-a8b0-73abbaa0872a"
+          }
+        ],
+        "reviewed-controls": {
+          "control-selections": [
+            {
+              "include-all": {}
+            }
+          ]
+        },
+        "start": "2014-10-17T09:07:43Z",
+        "title": "XCCDF evaluation evidence",
+        "uuid": "37ff3d0d-4118-5b9a-aaa4-5ed73325385d"
+      }
+    ],
+    "uuid": "66aa09cf-0383-5f11-a007-b1c7d6a98dd8"
+  }
+}

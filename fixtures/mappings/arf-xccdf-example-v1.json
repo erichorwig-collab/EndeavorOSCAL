@@ -1,0 +1,11 @@
+{
+  "format": "endeavor-xccdf-oscal-mapping",
+  "version": "1.0.0",
+  "oscal-version": "1.2.0",
+  "mappings": [{
+    "benchmark-id": "xccdf_org.ssgproject.content_benchmark_FEDORA",
+    "rule-id": "xccdf_org.ssgproject.content_rule_disable_prelink",
+    "target": {"type": "objective-id", "target-id": "ac-2.1_obj.1"},
+    "outcomes": {"fail": {"state": "not-satisfied", "reason": "fail"}}
+  }]
+}
