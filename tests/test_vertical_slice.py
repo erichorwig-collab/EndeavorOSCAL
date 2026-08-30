@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+import random
 import subprocess
 import sys
 import tempfile
@@ -9,7 +10,7 @@ import unittest
 
 from lxml import etree as ET
 
-from endeavor.oval import MAX_XML_BYTES, OVAL_RESULTS_NS, _schema
+from endeavor.oval import MAX_XML_BYTES, MAX_XML_ELEMENTS, OVAL_RESULTS_NS, _schema
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -126,6 +127,34 @@ class VerticalSliceTests(unittest.TestCase):
             self.assertEqual(completed.returncode, 3)
             self.assertIn("malformed XML", completed.stderr)
             self.assertFalse(output.exists())
+
+    def test_excessive_xml_width_is_rejected_without_output(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "too-wide.xml"
+            output = Path(directory) / "result.json"
+            path.write_text("<x>" + "<y/>" * MAX_XML_ELEMENTS + "</x>", encoding="utf-8")
+            completed = subprocess.run([sys.executable, "-m", "endeavor", "convert", "--results", str(path), "--definitions", str(DEFINITIONS), "--output", str(output)], cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(completed.returncode, 3)
+            self.assertIn(f"exceeds {MAX_XML_ELEMENTS} element limit", completed.stderr)
+            self.assertFalse(output.exists())
+
+    def test_deterministic_malformed_input_corpus_is_handled_without_output(self) -> None:
+        generator = random.Random(20260830)
+        payloads = [b"", b"<", b"\x00", b"<?xml version='1.0'?><x>\xff</x>"]
+        payloads.extend(generator.randbytes(size) for size in range(1, 33))
+        source = (RESULTS / "pass.xml").read_bytes()
+        payloads.extend(source[:offset] for offset in (0, source.find(b"?>") + 2, source.find(b"<results>") + 4, len(source) // 2, source.rfind(b"</") + 3))
+        self.assertGreaterEqual(len(payloads), 40)
+        with tempfile.TemporaryDirectory() as directory:
+            for index, payload in enumerate(payloads):
+                with self.subTest(case=index):
+                    path = Path(directory) / f"mutated-{index}.xml"
+                    output = Path(directory) / f"mutated-{index}.json"
+                    path.write_bytes(payload)
+                    completed = subprocess.run([sys.executable, "-m", "endeavor", "convert", "--results", str(path), "--definitions", str(DEFINITIONS), "--output", str(output)], cwd=ROOT, text=True, capture_output=True, check=False)
+                    self.assertEqual(completed.returncode, 3, completed.stderr)
+                    self.assertNotIn("Traceback", completed.stderr)
+                    self.assertFalse(output.exists())
 
     def test_usage_error_has_stable_exit_code(self) -> None:
         completed = subprocess.run([sys.executable, "-m", "endeavor", "convert"], cwd=ROOT, text=True, capture_output=True, check=False)

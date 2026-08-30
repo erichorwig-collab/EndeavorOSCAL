@@ -15,6 +15,7 @@ from lxml import etree as ET
 
 
 MAX_XML_BYTES = 5 * 1024 * 1024
+MAX_XML_ELEMENTS = 50_000
 OVAL_RESULTS_NS = "http://oval.mitre.org/XMLSchema/oval-results-5"
 OVAL_DEFINITIONS_NS = "http://oval.mitre.org/XMLSchema/oval-definitions-5"
 OVAL_COMMON_NS = "http://oval.mitre.org/XMLSchema/oval-common-5"
@@ -144,6 +145,8 @@ def _parse_root(path: Path, expected_namespace: str, expected_name: str) -> tupl
         root = ET.fromstring(data, parser=ET.XMLParser(resolve_entities=False, load_dtd=False, no_network=True, huge_tree=False, recover=False))
     except ET.XMLSyntaxError as exc:
         raise OvalInputError(f"malformed XML in {_safe_name(path)}: {exc}") from exc
+    if sum(1 for _ in root.iter()) > MAX_XML_ELEMENTS:
+        raise OvalInputError(f"input exceeds {MAX_XML_ELEMENTS} element limit: {_safe_name(path)}")
     if root.tag != _q(expected_namespace, expected_name):
         raise OvalInputError(f"unsupported root element in {_safe_name(path)}: {root.tag}")
     version = _declared_core_schema_version(root, path)
