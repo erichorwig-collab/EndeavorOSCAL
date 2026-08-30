@@ -6,6 +6,7 @@ from __future__ import annotations
 import hashlib
 import json
 from pathlib import Path
+import re
 import sys
 
 
@@ -13,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 REQUIRED_FILES = (
     "SECURITY.md",
     ".github/dependabot.yml",
+    ".github/workflows/scorecard.yml",
     "docs/alpha-acceptance-record-2026-08-30.md",
     "docs/compatibility-matrix.md",
     "docs/dependency-policy.md",
@@ -38,6 +40,17 @@ def main() -> int:
     dependabot_path = ROOT / ".github" / "dependabot.yml"
     if dependabot_path.is_file() and "package-ecosystem: github-actions" not in dependabot_path.read_text(encoding="utf-8"):
         missing.append("GitHub Actions dependency updates")
+    scorecard_path = ROOT / ".github" / "workflows" / "scorecard.yml"
+    if scorecard_path.is_file():
+        scorecard = scorecard_path.read_text(encoding="utf-8")
+        if "permissions: read-all" not in scorecard or "ossf/scorecard-action@" not in scorecard:
+            missing.append("least-privilege Scorecard workflow")
+    for relative in (".github/workflows/validate.yml", ".github/workflows/scorecard.yml"):
+        path = ROOT / relative
+        if path.is_file():
+            actions = re.findall(r"^\s*uses:\s+[^@\s]+@([^\s#]+)", path.read_text(encoding="utf-8"), flags=re.MULTILINE)
+            if not actions or any(not re.fullmatch(r"[0-9a-f]{40}", action) for action in actions):
+                missing.append(f"pinned GitHub Actions in {relative}")
     payload: dict[str, object] = {
         "format": "endeavor-governance-readiness",
         "version": "1.0.0",

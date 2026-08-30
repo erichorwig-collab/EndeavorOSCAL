@@ -708,6 +708,20 @@ class VerticalSliceTests(unittest.TestCase):
         self.assertEqual(payload["status"], "ready-for-governance-planning")
         self.assertIn("docs/alpha-acceptance-record-2026-08-30.md", payload["evidence"])
 
+    def test_alpha_workflow_can_retain_a_hashed_execution_manifest(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            record_path = Path(directory) / "alpha-workflow-record.json"
+            completed = subprocess.run([sys.executable, "scripts/validate-alpha-workflow.py", "--record", str(record_path)], cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(completed.returncode, 0, completed.stderr)
+            record = json.loads(record_path.read_text(encoding="utf-8"))
+            self.assertEqual(record["format"], "endeavor-alpha-workflow-validation")
+            self.assertEqual(record["version"], "1.1.0")
+            self.assertEqual(record["status"], "passed")
+            self.assertEqual(len(record["repository-commit"]), 40)
+            self.assertEqual(record["sources"]["definitions.xml"], hashlib.sha256(DEFINITIONS.read_bytes()).hexdigest())
+            self.assertEqual(set(record["artifacts"]), {"pass.json", "fail.json", "mapping-report.html"})
+            self.assertTrue(all(len(value) == 64 for value in record["artifacts"].values()))
+
     def test_unknown_extension_cannot_be_authorized_by_instance_schema_hint(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "unknown-extension.xml"

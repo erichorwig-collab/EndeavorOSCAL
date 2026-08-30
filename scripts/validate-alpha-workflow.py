@@ -6,6 +6,7 @@ from __future__ import annotations
 import json
 import hashlib
 import argparse
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -26,14 +27,35 @@ def run(*args: str) -> subprocess.CompletedProcess[str]:
     return completed
 
 
+def _sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _write_record(path: Path, record: dict[str, object]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    descriptor, temporary_name = tempfile.mkstemp(prefix=".endeavor-alpha-", suffix=".tmp", dir=path.parent)
+    temporary_path = Path(temporary_name)
+    try:
+        with os.fdopen(descriptor, "w", encoding="utf-8") as stream:
+            os.fchmod(stream.fileno(), 0o600)
+            stream.write(json.dumps(record, sort_keys=True) + "\n")
+        os.replace(temporary_path, path)
+    except Exception:
+        temporary_path.unlink(missing_ok=True)
+        raise
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--review-output", type=Path, help="new directory in which to retain the generated review artifacts")
+    parser.add_argument("--record", type=Path, help="new path in which to retain the validation manifest")
     args = parser.parse_args(argv)
     if args.review_output is not None and args.review_output.exists():
         parser.error("--review-output must not already exist")
     if args.review_output is not None:
         args.review_output.mkdir(parents=True)
+    if args.record is not None and args.record.exists():
+        parser.error("--record must not already exist")
     with tempfile.TemporaryDirectory(prefix="endeavor-alpha-workflow-") if args.review_output is None else _existing_directory(args.review_output) as directory:
         output = Path(directory)
         passed = output / "pass.json"
@@ -54,9 +76,24 @@ def main(argv: list[str] | None = None) -> int:
         assert findings["findings"][0]["target"]["state"] == "not-satisfied"
         assert delta["changed"] == [{"oval-definition-id": "oval:org.endeavor:def:1", "before": "true", "after": "false"}]
         assert "<main>" in html and 'scope="col"' in html and "example-v1.json" in html
-        record = {"format": "endeavor-alpha-workflow-validation", "version": "1.0.0", "status": "passed", "artifacts": {"pass.json": hashlib.sha256(passed.read_bytes()).hexdigest(), "fail.json": hashlib.sha256(failed.read_bytes()).hexdigest(), "mapping-report.html": hashlib.sha256(report.read_bytes()).hexdigest()}}
+        record: dict[str, object] = {
+            "format": "endeavor-alpha-workflow-validation",
+            "version": "1.1.0",
+            "status": "passed",
+            "repository-commit": run("git", "-c", f"safe.directory={ROOT}", "rev-parse", "HEAD").stdout.strip(),
+            "sources": {
+                "definitions.xml": _sha256(DEFINITIONS),
+                "example-v1.json": _sha256(MAPPING),
+                "assessment-results.schema.json": _sha256(SCHEMA),
+                "pass.xml": _sha256(RESULTS / "pass.xml"),
+                "fail.xml": _sha256(RESULTS / "fail.xml"),
+            },
+            "artifacts": {"pass.json": _sha256(passed), "fail.json": _sha256(failed), "mapping-report.html": _sha256(report)},
+        }
         if args.review_output is not None:
             record["review-output"] = args.review_output.name
+        if args.record is not None:
+            _write_record(args.record, record)
     print(json.dumps(record, sort_keys=True))
     return 0
 

@@ -12,11 +12,11 @@ jobs:
   validation:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.0.0
         with:
           python-version: "3.13"
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
         with:
           node-version: "22"
           cache: npm
@@ -29,6 +29,12 @@ jobs:
       - name: Verify committed SBOM
         run: python scripts/generate-sbom.py --check sbom.cdx.json
       - name: Exercise representative alpha workflow
-        run: python scripts/validate-alpha-workflow.py
+        run: python scripts/validate-alpha-workflow.py --record alpha-workflow-record.json
+      - name: Retain alpha workflow manifest
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: alpha-workflow-manifest
+          path: alpha-workflow-record.json
+          retention-days: 30
       - name: Validate governance-readiness evidence
         run: python scripts/validate-governance-readiness.py

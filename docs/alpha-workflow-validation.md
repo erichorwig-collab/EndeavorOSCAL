@@ -13,6 +13,8 @@ For a human review that retains the generated artifacts, follow the
 It converts a passing and failing OVAL run with the versioned mapping, validates
 both OSCAL outputs, inventories the explicit finding, reports the true-to-false
 delta, and renders the semantic HTML mapping report. CI runs the same script.
+CI retains a 30-day machine-readable manifest with the repository commit and
+SHA-256 hashes of its fixture inputs, schema, and generated artifacts.
 
 The release reviewer must also perform these human assertions once per alpha
 candidate:
