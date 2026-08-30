@@ -7,6 +7,9 @@ without scraping output or inferring control semantics. The automated path is:
 python3 scripts/validate-alpha-workflow.py
 ```
 
+For a human review that retains the generated artifacts, follow the
+[alpha tester packet](alpha-tester-packet.md).
+
 It converts a passing and failing OVAL run with the versioned mapping, validates
 both OSCAL outputs, inventories the explicit finding, reports the true-to-false
 delta, and renders the semantic HTML mapping report. CI runs the same script.

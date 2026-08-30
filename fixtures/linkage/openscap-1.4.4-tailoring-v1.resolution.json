@@ -9,7 +9,7 @@
       "component-id": "scap_org.open-scap_comp_--work--baseline.oval.xml",
       "component-ref-id": "scap_org.open-scap_cref_--work--baseline.oval.xml",
       "component-sha256": "a30b162471fda3813e16b695ccca13feb2d6de2c744223d37725501655f2c17c",
-      "conversion-limit": "embedded OVAL schema version is not in the pinned 5.11.3 support profile",
+      "conversion-limit": "embedded OVAL conversion requires a complete Results and Definitions pair in the supported parser profile",
       "conversion-supported": false,
       "data-stream-id": "scap_org.open-scap_datastream_from_xccdf_--work--openscap-1.4.4-baseline.xccdf.xml",
       "definition-count": 2,

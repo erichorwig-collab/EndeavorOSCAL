@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import json
 import hashlib
+import argparse
 from pathlib import Path
 import subprocess
 import sys
@@ -25,8 +26,15 @@ def run(*args: str) -> subprocess.CompletedProcess[str]:
     return completed
 
 
-def main() -> int:
-    with tempfile.TemporaryDirectory(prefix="endeavor-alpha-workflow-") as directory:
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--review-output", type=Path, help="new directory in which to retain the generated review artifacts")
+    args = parser.parse_args(argv)
+    if args.review_output is not None and args.review_output.exists():
+        parser.error("--review-output must not already exist")
+    if args.review_output is not None:
+        args.review_output.mkdir(parents=True)
+    with tempfile.TemporaryDirectory(prefix="endeavor-alpha-workflow-") if args.review_output is None else _existing_directory(args.review_output) as directory:
         output = Path(directory)
         passed = output / "pass.json"
         failed = output / "fail.json"
@@ -47,8 +55,21 @@ def main() -> int:
         assert delta["changed"] == [{"oval-definition-id": "oval:org.endeavor:def:1", "before": "true", "after": "false"}]
         assert "<main>" in html and 'scope="col"' in html and "example-v1.json" in html
         record = {"format": "endeavor-alpha-workflow-validation", "version": "1.0.0", "status": "passed", "artifacts": {"pass.json": hashlib.sha256(passed.read_bytes()).hexdigest(), "fail.json": hashlib.sha256(failed.read_bytes()).hexdigest(), "mapping-report.html": hashlib.sha256(report.read_bytes()).hexdigest()}}
+        if args.review_output is not None:
+            record["review-output"] = args.review_output.name
     print(json.dumps(record, sort_keys=True))
     return 0
+
+
+class _existing_directory:
+    def __init__(self, path: Path) -> None:
+        self.path = path
+
+    def __enter__(self) -> str:
+        return str(self.path)
+
+    def __exit__(self, *unused: object) -> None:
+        return None
 
 
 if __name__ == "__main__":

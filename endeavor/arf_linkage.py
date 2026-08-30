@@ -162,7 +162,7 @@ def resolve_linkage(path: Path, linkage: LinkageDocument) -> dict[str, object]:
         definition_ids = [item.get("id") for item in definitions.findall(f".//{_q('http://oval.mitre.org/XMLSchema/oval-definitions-5', 'definition')}")]
         if not result_ids or len(result_ids) != len(set(result_ids)) or len(definition_ids) != len(set(definition_ids)) or not set(result_ids).issubset(definition_ids):
             raise OvalInputError(f"linkage OVAL definitions do not cover report results: {path.name}")
-        resolved_oval.append({"report-id": report.get("id"), "report-sha256": link.report_sha256, "report-request-id": link.report_request_id, "data-stream-id": link.data_stream_id, "component-ref-id": link.component_ref_id, "component-id": link.component_id, "component-sha256": link.component_sha256, "definition-count": len(result_ids), "conversion-supported": False, "conversion-limit": "embedded OVAL schema version is not in the pinned 5.11.3 support profile"})
+        resolved_oval.append({"report-id": report.get("id"), "report-sha256": link.report_sha256, "report-request-id": link.report_request_id, "data-stream-id": link.data_stream_id, "component-ref-id": link.component_ref_id, "component-id": link.component_id, "component-sha256": link.component_sha256, "definition-count": len(result_ids), "conversion-supported": False, "conversion-limit": "embedded OVAL conversion requires a complete Results and Definitions pair in the supported parser profile"})
     for link in linkage.tailoring:
         report, result = _report(root, link, path)
         component = _component(root, link, path)

@@ -3,6 +3,7 @@
 | Artifact | Version | Source | SHA-256 |
 | --- | --- | --- | --- |
 | OVAL schema bundle | 5.11.3 | Fedora 43 `openscap-1:1.4.4-1.fc43`, extracted from `/usr/share/openscap/schemas/oval/5.11.3` | `8ed054b51c79fb4fb89792ce10ae75eff74e072c5fee0fd92cc528c068ebdf9c` |
+| OVAL schema bundle | 5.11 | OVALProject Language commit `7a3efac6429f9378fea3b3929cdf316ecf14d491`, `schemas/` | `12df70d237c7b530ac23b4dda1b42db1793d070676cd517492918d34796768b0` |
 | Shared schema bundle | Fedora 43 | Fedora 43 `openscap-1:1.4.4-1.fc43`, extracted from `/usr/share/openscap/schemas/common` | `38c49db22d4a3a6be19e2b9506874e8ba1d5c0b630a2f1b2d1951181d7415ada` |
 | OVAL schema archive | 5.12.2 | https://github.com/OVAL-Community/OVAL/releases/download/v5.12.2/schemas-5.12.2.zip | `bdfeae8dc14b322d712508d9b5005af9881f7e9390caddd131f4574c2105337e` |
 | OSCAL Assessment Results JSON Schema | 1.2.0 | https://github.com/usnistgov/OSCAL/releases/download/v1.2.0/oscal_assessment-results_schema.json | `a587b1580651f435a376d04dde78aaba6783c58ceb6f93f482d0b61d0c8afa59` |
@@ -22,6 +23,11 @@ for 52 OVAL XSDs and four shared XSDs, respectively. Static wrappers are
 generated from these locally vendored files by
 `scripts/generate-oval-schema-wrappers.py`; document schema hints remain
 ignored.
+
+The 5.11 profile uses the archived OVALProject Language schema source, which
+identifies OVAL 5.11.2 schema artifacts and retains the upstream license
+headers. Its local wrapper schemas are generated using the same script and
+resolver restrictions as 5.11.3.
 
 The OSCAL schema is retained as the exact released JSON Schema artifact. Python
 `jsonschema` cannot currently evaluate all of this schema under Python 3.14

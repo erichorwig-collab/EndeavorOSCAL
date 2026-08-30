@@ -17,6 +17,7 @@ from endeavor.evidence import normalize_arf, normalize_oval, normalize_xccdf
 from endeavor.xccdf import inspect_xccdf
 from endeavor.xccdf_mapping import parse_mapping as parse_xccdf_mapping
 from endeavor.xccdf_convert import assessment_results as xccdf_assessment_results, assessment_results_from_arf
+from endeavor.convert import assessment_results as oval_assessment_results
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -91,9 +92,34 @@ class VerticalSliceTests(unittest.TestCase):
             self.assertEqual(completed.returncode, 3)
             self.assertIn("not valid JSON", completed.stderr)
 
+    def test_embedded_openscap_oval_511_results_validate_with_pinned_schema(self) -> None:
+        root = ET.parse(str(ARF_TAILORING)).getroot()
+        result = root.find(".//{http://scap.nist.gov/schema/asset-reporting-format/1.1}report/{http://scap.nist.gov/schema/asset-reporting-format/1.1}content/{http://oval.mitre.org/XMLSchema/oval-results-5}oval_results")
+        self.assertIsNotNone(result)
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory) / "embedded-511-results.xml"
+            source.write_bytes(ET.tostring(result))
+            document = parse_results(source)
+        self.assertEqual(document.generator.schema_version, "5.11")
+        self.assertEqual({item.result for item in document.definitions}, {"not evaluated"})
+        self.assertIsNotNone(_schema("5.11", OVAL_RESULTS_NS))
+
+    def test_complete_oval_511_pair_converts_with_pinned_schema(self) -> None:
+        source_results = (ROOT / "fixtures" / "generated-sanitized" / "oval-results.xml").read_text(encoding="utf-8")
+        source_definitions = (ROOT / "fixtures" / "generated-sanitized" / "oval-definitions.xml").read_text(encoding="utf-8")
+        with tempfile.TemporaryDirectory() as directory:
+            results_path = Path(directory) / "results-511.xml"
+            definitions_path = Path(directory) / "definitions-511.xml"
+            results_path.write_text(source_results.replace(">5.11.3</oval:schema_version>", ">5.11</oval:schema_version>"), encoding="utf-8")
+            definitions_path.write_text(source_definitions.replace(">5.11.3</oval:schema_version>", ">5.11</oval:schema_version>"), encoding="utf-8")
+            results, definitions = parse_results(results_path), parse_definitions(definitions_path)
+        self.assertEqual(results.generator.schema_version, "5.11")
+        self.assertEqual(definitions.generator.schema_version, "5.11")
+        self.assertEqual(len(oval_assessment_results(results, definitions)["assessment-results"]["results"][0]["observations"]), 1)
+
     def test_compatibility_matrix_names_tested_profiles(self) -> None:
         matrix = COMPATIBILITY_MATRIX.read_text(encoding="utf-8")
-        for value in ("OVAL 5.11.3", "XCCDF 1.2.1", "ARF 1.1", "OpenSCAP 1.4.4", "fixtures/generated-sanitized/", "fixtures/xccdf-results/", "fixtures/arf/"):
+        for value in ("OVAL 5.11 and 5.11.3", "XCCDF 1.2.1", "ARF 1.1", "OpenSCAP 1.4.4", "fixtures/generated-sanitized/", "fixtures/xccdf-results/", "fixtures/arf/"):
             self.assertIn(value, matrix)
 
     def test_cross_format_normalizers_preserve_only_provenance(self) -> None:
@@ -647,7 +673,7 @@ class VerticalSliceTests(unittest.TestCase):
             path = Path(directory) / "old-version.xml"
             output = Path(directory) / "result.json"
             source = (RESULTS / "pass.xml").read_text(encoding="utf-8")
-            path.write_text(source.replace(">5.11.3</oval:schema_version>", ">5.11</oval:schema_version>"), encoding="utf-8")
+            path.write_text(source.replace(">5.11.3</oval:schema_version>", ">5.10</oval:schema_version>"), encoding="utf-8")
             completed = subprocess.run([sys.executable, "-m", "endeavor", "convert", "--results", str(path), "--definitions", str(DEFINITIONS), "--output", str(output)], cwd=ROOT, text=True, capture_output=True, check=False)
             self.assertEqual(completed.returncode, 3)
             self.assertIn("unsupported OVAL core schema version", completed.stderr)
