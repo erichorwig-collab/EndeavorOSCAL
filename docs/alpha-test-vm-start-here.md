@@ -7,31 +7,41 @@ authoritative project checkout.
 ## Reviewer workflow
 
 1. Use the noVNC sidebar on the left edge of the viewer and choose **Clipboard**.
-   Paste each complete command block below into that panel, then return focus to
-   the console. This avoids retyping commands in the guest.
+   Paste the following short commands **one at a time**. The console can drop
+   portions of long pasted commands, so do not paste multi-command lines.
 
-2. Mount the supplied review kit and run the bootstrap script:
+2. Create the mount point and mount the supplied review kit:
 
    ```sh
-   mkdir -p /shared && mount -t 9p -o trans=virtio,version=9p2000.L shared /shared && sh /shared/EndeavorOSCAL/scripts/prepare-alpha-review-vm.sh
+   mkdir -p /shared
    ```
 
-3. Run the same retained-evidence validation required by the
+   ```sh
+   mount -t 9p shared /shared
+   ```
+
+3. Run the host-supplied setup wrapper:
+
+   ```sh
+   sh /shared/s
+   ```
+
+4. Run the same retained-evidence validation required by the
    [alpha tester packet](alpha-tester-packet.md):
 
    ```sh
-   . /tmp/endeavor-venv/bin/activate && cd /tmp/endeavor-work && python3 scripts/validate-alpha-workflow.py --review-output /tmp/endeavor-alpha-review
+   sh /shared/v
    ```
 
-4. Export the retained report to the host-visible review share, then open
+5. Export the retained report to the host-visible review share, then open
    `mapping-report.html` from that exported directory in the host browser at
    normal zoom:
 
    ```sh
-   cp -a /tmp/endeavor-alpha-review /shared/
+   sh /shared/e
    ```
 
-5. Complete `docs/alpha-acceptance-template.md` after reviewing the retained
+6. Complete `docs/alpha-acceptance-template.md` after reviewing the retained
    evidence. Return the completed record to the project maintainer through the
    approved collaboration channel; do not place credentials or sensitive
    evidence in this VM.
