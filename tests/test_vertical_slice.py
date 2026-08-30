@@ -11,9 +11,9 @@ import unittest
 
 from lxml import etree as ET
 
-from endeavor.oval import MAX_XML_BYTES, MAX_XML_ELEMENTS, OVAL_RESULTS_NS, _schema
+from endeavor.oval import MAX_XML_BYTES, MAX_XML_ELEMENTS, OVAL_RESULTS_NS, _schema, parse_definitions, parse_results
 from endeavor.arf import inspect_arf
-from endeavor.evidence import normalize_arf, normalize_xccdf
+from endeavor.evidence import normalize_arf, normalize_oval, normalize_xccdf
 from endeavor.xccdf import inspect_xccdf
 
 
@@ -76,6 +76,14 @@ class VerticalSliceTests(unittest.TestCase):
         self.assertEqual({item["status"] for item in arf["assertions"] if item["kind"] == "oval-definition-result"}, {"true", "false", "not evaluated"})
         self.assertTrue(all("finding" not in item and "control-id" not in item for item in arf["assertions"]))
         self.assertTrue(all(item["evidence"] for item in arf["assertions"]))
+
+    def test_oval_evidence_normalizer_preserves_results_and_definition_sources(self) -> None:
+        results = parse_results(ROOT / "fixtures" / "generated-sanitized" / "oval-results.xml")
+        definitions = parse_definitions(ROOT / "fixtures" / "generated-sanitized" / "oval-definitions.xml")
+        evidence = normalize_oval(results, definitions)
+        self.assertEqual([item["kind"] for item in evidence["sources"]], ["oval-results", "oval-definitions"])
+        self.assertEqual(evidence["assertions"][0]["status"], "true")
+        self.assertEqual(len(evidence["assertions"][0]["evidence"]), 2)
 
     def test_inspect_evidence_matches_cross_format_goldens(self) -> None:
         for flag, fixture, golden in (("--xccdf", XCCDF_FIXTURE, EVIDENCE_GOLDEN / "xccdf.json"), ("--arf", ARF_FIXTURE, EVIDENCE_GOLDEN / "arf.json")):

@@ -1,6 +1,8 @@
 """Pure provenance-only normalizers for the v0.2 cross-format contract."""
 from __future__ import annotations
 
+from .oval import OvalDocument
+
 
 def _source(source: dict[str, str], kind: str, role: str) -> dict[str, str]:
     return {"id": f"sha256:{source['sha256']}", "kind": kind, "path": source["path"], "sha256": source["sha256"], "schema-version": source.get("xccdf-version", source.get("arf-version", "unknown")), "role": role}
@@ -15,6 +17,19 @@ def normalize_xccdf(inventory: dict[str, object]) -> dict[str, object]:
         for rule in result.get("rule-results", []):
             assertions.append({"id": f"{execution_id}#{rule['idref']}", "execution-id": execution_id, "kind": "xccdf-rule-result", "native-id": rule["idref"], "status": rule["result"], "details": {"time": rule.get("time"), "weight": rule.get("weight")}, "evidence": [source["id"]], "links": {"arf-report-id": None, "arf-collection-id": None, "definitions-component-id": None}})
     return {"format": "endeavor-evidence-contract", "version": "1.0.0", "sources": [source], "executions": executions, "assertions": assertions}
+
+
+def normalize_oval(results: OvalDocument, definitions: OvalDocument) -> dict[str, object]:
+    result_source = {"id": f"sha256:{results.sha256}", "kind": "oval-results", "path": results.path.name, "sha256": results.sha256, "schema-version": results.generator.schema_version, "role": "results"}
+    definition_source = {"id": f"sha256:{definitions.sha256}", "kind": "oval-definitions", "path": definitions.path.name, "sha256": definitions.sha256, "schema-version": definitions.generator.schema_version, "role": "definitions"}
+    execution_id = f"{result_source['id']}#oval-results"
+    definitions_by_id = {item.identifier: item for item in definitions.definitions}
+    assertions = []
+    for item in results.definitions:
+        metadata = definitions_by_id.get(item.identifier)
+        assertions.append({"id": f"{execution_id}#{item.identifier}", "execution-id": execution_id, "kind": "oval-definition-result", "native-id": item.identifier, "status": item.result, "details": {"class": metadata.definition_class if metadata else item.definition_class, "message": item.message}, "evidence": [result_source["id"], definition_source["id"]], "links": {"arf-report-id": None, "arf-collection-id": None, "definitions-component-id": None}})
+    execution = {"id": execution_id, "source-id": result_source["id"], "native-id": "oval-results", "format": "oval", "evaluator": {"generator": results.generator.__dict__}, "start-time": results.generator.timestamp, "end-time": None, "profile": None, "benchmark": None, "tailoring": None, "targets": {"names": [results.system_identity.primary_host_name] if results.system_identity else [], "addresses": [], "facts": [], "references": []}}
+    return {"format": "endeavor-evidence-contract", "version": "1.0.0", "sources": [result_source, definition_source], "executions": [execution], "assertions": assertions}
 
 
 def normalize_arf(manifest: dict[str, object]) -> dict[str, object]:
