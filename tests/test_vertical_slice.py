@@ -246,6 +246,31 @@ class VerticalSliceTests(unittest.TestCase):
             self.assertEqual(json.loads(completed.stderr)["error"]["code"], "input-invalid")
             self.assertNotIn(directory, completed.stderr)
 
+    def test_report_writes_accessible_html_without_host_paths(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "report.html"
+            completed = subprocess.run([sys.executable, "-m", "endeavor", "report", "--results", str(RESULTS / "fail.xml"), "--definitions", str(DEFINITIONS), "--mapping", str(MAPPING), "--output", str(output)], cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(completed.returncode, 0, completed.stderr)
+            html = output.read_text(encoding="utf-8")
+            self.assertIn('<main>', html)
+            self.assertIn('<h1>Endeavor mapping coverage report</h1>', html)
+            self.assertIn('<caption>Explicit OVAL-to-OSCAL targets</caption>', html)
+            self.assertIn('scope="col"', html)
+            self.assertIn("example-v1.json", html)
+            self.assertNotIn(str(ROOT), html)
+
+    def test_report_escapes_mapping_content(self) -> None:
+        mapping = {"format": "endeavor-oval-oscal-mapping", "version": "1.0.0", "oscal-version": "1.2.0", "mappings": [{"oval-definition-id": "<script>alert(1)</script>", "target": {"type": "statement-id", "target-id": "ac-2_smt.a"}, "outcomes": {"false": {"state": "not-satisfied", "reason": "fail"}}}]}
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "mapping.json"
+            output = Path(directory) / "report.html"
+            path.write_text(json.dumps(mapping), encoding="utf-8")
+            completed = subprocess.run([sys.executable, "-m", "endeavor", "report", "--results", str(RESULTS / "fail.xml"), "--definitions", str(DEFINITIONS), "--mapping", str(path), "--output", str(output)], cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(completed.returncode, 0, completed.stderr)
+            html = output.read_text(encoding="utf-8")
+            self.assertIn("&lt;script&gt;alert(1)&lt;/script&gt;", html)
+            self.assertNotIn("<script>alert(1)</script>", html)
+
     def test_invalid_mapping_is_rejected_without_path_disclosure(self) -> None:
         with tempfile.TemporaryDirectory(prefix="endeavor-private-map-") as directory:
             path = Path(directory) / "invalid-map.json"

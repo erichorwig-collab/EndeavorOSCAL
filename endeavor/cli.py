@@ -11,6 +11,7 @@ from .convert import assessment_results
 from .diff import assessment_results_diff
 from .mapping import mapping_report, parse_mapping
 from .oval import OvalInputError, parse_definitions, parse_results
+from .report import mapping_report_html
 
 
 class ExitCode:
@@ -35,7 +36,7 @@ class _ArgumentParser(argparse.ArgumentParser):
 def _parser() -> argparse.ArgumentParser:
     parser = _ArgumentParser(prog="endeavor", description="Convert OVAL evidence to OSCAL Assessment Results.")
     sub = parser.add_subparsers(dest="command", required=True, parser_class=_ArgumentParser)
-    for name in ("inspect", "convert", "mapping-report", "diff"):
+    for name in ("inspect", "convert", "mapping-report", "report", "diff"):
         command = sub.add_parser(name)
         command.add_argument("--format", choices=("text", "json"), default="text", help="format handled diagnostics as text or JSON")
         if name == "diff":
@@ -49,6 +50,9 @@ def _parser() -> argparse.ArgumentParser:
             command.add_argument("--mapping", type=Path, help="explicit versioned OVAL-to-OSCAL mapping")
         if name == "mapping-report":
             command.add_argument("--mapping", required=True, type=Path)
+        if name == "report":
+            command.add_argument("--mapping", required=True, type=Path)
+            command.add_argument("--output", required=True, type=Path)
     return parser
 
 
@@ -82,6 +86,19 @@ def main(argv: list[str] | None = None) -> int:
             print(json.dumps(payload, indent=2, sort_keys=True))
         elif args.command == "mapping-report":
             print(json.dumps(mapping_report(results, definitions, parse_mapping(args.mapping)), indent=2, sort_keys=True))
+        elif args.command == "report":
+            report = mapping_report(results, definitions, parse_mapping(args.mapping))
+            args.output.parent.mkdir(parents=True, exist_ok=True)
+            descriptor, temporary_name = tempfile.mkstemp(prefix=".endeavor-", suffix=".tmp", dir=args.output.parent)
+            temporary_path = Path(temporary_name)
+            try:
+                with os.fdopen(descriptor, "w", encoding="utf-8") as stream:
+                    os.fchmod(stream.fileno(), 0o600)
+                    stream.write(mapping_report_html(report))
+                os.replace(temporary_path, args.output)
+            except Exception:
+                temporary_path.unlink(missing_ok=True)
+                raise
         else:
             payload = assessment_results(results, definitions, parse_mapping(args.mapping) if args.mapping else None)
             args.output.parent.mkdir(parents=True, exist_ok=True)
