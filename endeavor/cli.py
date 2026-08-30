@@ -8,6 +8,7 @@ import sys
 import tempfile
 
 from .convert import assessment_results
+from .diff import assessment_results_diff
 from .mapping import mapping_report, parse_mapping
 from .oval import OvalInputError, parse_definitions, parse_results
 
@@ -34,11 +35,15 @@ class _ArgumentParser(argparse.ArgumentParser):
 def _parser() -> argparse.ArgumentParser:
     parser = _ArgumentParser(prog="endeavor", description="Convert OVAL evidence to OSCAL Assessment Results.")
     sub = parser.add_subparsers(dest="command", required=True, parser_class=_ArgumentParser)
-    for name in ("inspect", "convert", "mapping-report"):
+    for name in ("inspect", "convert", "mapping-report", "diff"):
         command = sub.add_parser(name)
+        command.add_argument("--format", choices=("text", "json"), default="text", help="format handled diagnostics as text or JSON")
+        if name == "diff":
+            command.add_argument("--before", required=True, type=Path)
+            command.add_argument("--after", required=True, type=Path)
+            continue
         command.add_argument("--results", required=True, type=Path)
         command.add_argument("--definitions", required=True, type=Path)
-        command.add_argument("--format", choices=("text", "json"), default="text", help="format handled diagnostics as text or JSON")
         if name == "convert":
             command.add_argument("--output", required=True, type=Path)
             command.add_argument("--mapping", type=Path, help="explicit versioned OVAL-to-OSCAL mapping")
@@ -67,6 +72,9 @@ def main(argv: list[str] | None = None) -> int:
     args: argparse.Namespace | None = None
     try:
         args = _parser().parse_args(argv)
+        if args.command == "diff":
+            print(json.dumps(assessment_results_diff(args.before, args.after), indent=2, sort_keys=True))
+            return ExitCode.SUCCESS
         results = parse_results(args.results)
         definitions = parse_definitions(args.definitions)
         if args.command == "inspect":

@@ -46,6 +46,10 @@ python3 -m endeavor convert \
   --results fixtures/oval-results/fail.xml \
   --definitions fixtures/oval-definitions/definitions.xml \
   --output /tmp/endeavor-assessment-results.json
+
+python3 -m endeavor diff \
+  --before fixtures/oscal-golden/pass.json \
+  --after fixtures/oscal-golden/fail.json
 ```
 
 Run the focused test suite with `python3 -m unittest discover -s tests -v`.

@@ -224,6 +224,28 @@ class VerticalSliceTests(unittest.TestCase):
             result = json.loads(output.read_text())["assessment-results"]["results"][0]
             self.assertNotIn("findings", result)
 
+    def test_diff_reports_deterministic_oval_status_change(self) -> None:
+        command = [sys.executable, "-m", "endeavor", "diff", "--before", str(GOLDEN / "pass.json"), "--after", str(GOLDEN / "fail.json")]
+        first = subprocess.run(command, cwd=ROOT, text=True, capture_output=True, check=False)
+        second = subprocess.run(command, cwd=ROOT, text=True, capture_output=True, check=False)
+        self.assertEqual(first.returncode, 0, first.stderr)
+        self.assertEqual(first.stdout, second.stdout)
+        report = json.loads(first.stdout)
+        self.assertEqual(report["summary"], {"added": 0, "removed": 0, "changed": 1, "unchanged": 0})
+        self.assertEqual(report["changed"], [{"oval-definition-id": "oval:org.endeavor:def:1", "before": "true", "after": "false"}])
+        self.assertEqual(report["before"]["path"], "pass.json")
+        self.assertEqual(report["after"]["path"], "fail.json")
+        self.assertNotIn(str(ROOT), first.stdout)
+
+    def test_diff_rejects_invalid_input_without_path_disclosure(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="endeavor-private-diff-") as directory:
+            invalid = Path(directory) / "invalid.json"
+            invalid.write_text("[]", encoding="utf-8")
+            completed = subprocess.run([sys.executable, "-m", "endeavor", "diff", "--format", "json", "--before", str(invalid), "--after", str(GOLDEN / "fail.json")], cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(completed.returncode, 3)
+            self.assertEqual(json.loads(completed.stderr)["error"]["code"], "input-invalid")
+            self.assertNotIn(directory, completed.stderr)
+
     def test_invalid_mapping_is_rejected_without_path_disclosure(self) -> None:
         with tempfile.TemporaryDirectory(prefix="endeavor-private-map-") as directory:
             path = Path(directory) / "invalid-map.json"
