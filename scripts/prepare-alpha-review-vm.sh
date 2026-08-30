@@ -1,0 +1,48 @@
+#!/bin/sh
+# Prepare the disposable Alpine Alpha-review guest. This script must run as root
+# inside the VM after its /shared 9p review-kit mount is available.
+set -eu
+
+source_dir=${1:-/shared/EndeavorOSCAL}
+work_dir=${ENDEAVOR_WORK_DIR:-/tmp/endeavor-work}
+venv_dir=${ENDEAVOR_VENV_DIR:-/tmp/endeavor-venv}
+
+if [ "$(id -u)" -ne 0 ]; then
+  echo "Run this script as the VM's local root user." >&2
+  exit 1
+fi
+
+if [ ! -f "$source_dir/requirements.txt" ] || [ ! -f "$source_dir/package.json" ]; then
+  echo "Alpha review kit not found at: $source_dir" >&2
+  exit 1
+fi
+
+if [ -e "$work_dir" ] || [ -e "$venv_dir" ]; then
+  echo "A previous workspace exists. Restart the disposable VM or set ENDEAVOR_WORK_DIR and ENDEAVOR_VENV_DIR." >&2
+  exit 1
+fi
+
+series=$(cut -d. -f1,2 /etc/alpine-release)
+cat >/etc/apk/repositories <<EOF
+https://dl-cdn.alpinelinux.org/alpine/v${series}/main
+https://dl-cdn.alpinelinux.org/alpine/v${series}/community
+EOF
+
+apk update
+apk add --no-cache python3 py3-pip py3-virtualenv nodejs npm git
+
+cp -a "$source_dir" "$work_dir"
+python3 -m venv "$venv_dir"
+"$venv_dir/bin/python" -m pip install --disable-pip-version-check -r "$work_dir/requirements.txt"
+(cd "$work_dir" && npm ci)
+
+cat <<EOF
+
+Alpha review workspace is ready.
+
+Copy and paste this next command into the VM:
+  . "$venv_dir/bin/activate" && cd "$work_dir" && python3 scripts/validate-alpha-workflow.py --review-output /tmp/endeavor-alpha-review
+
+After validation, copy the review output back to the host-visible share:
+  cp -a /tmp/endeavor-alpha-review /shared/
+EOF

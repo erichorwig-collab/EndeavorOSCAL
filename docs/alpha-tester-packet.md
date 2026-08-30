@@ -15,6 +15,13 @@ git rev-parse HEAD
 python3 scripts/validate-alpha-workflow.py --review-output /tmp/endeavor-alpha-review
 ```
 
+For the supplied disposable Alpha-review VM, first follow the
+[Alpha VM start guide](alpha-test-vm-start-here.md). Its bootstrap creates the
+same clean checkout, virtual environment, and Node dependencies under `/tmp`.
+Then run the same validation command shown above. Export the retained output to
+`/shared/endeavor-alpha-review` and open `mapping-report.html` from that
+host-visible directory in a normal browser.
+
 The last command prints the machine-readable validation record and retains:
 
 - `/tmp/endeavor-alpha-review/pass.json`
