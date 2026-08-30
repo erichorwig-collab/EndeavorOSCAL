@@ -39,7 +39,7 @@ fi
 set -- "$package_cache"/*.apk
 if [ -f "$1" ]; then
   echo "Installing pre-fetched Alpine packages from $package_cache"
-  apk add --no-network --no-cache "$@"
+  apk add --no-network --no-cache --force-non-repository "$@"
 else
   series=$(cut -d. -f1,2 /etc/alpine-release)
   cat >/etc/apk/repositories <<EOF
