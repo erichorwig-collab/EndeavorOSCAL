@@ -23,6 +23,16 @@ the source tests, SBOM comparison, and representative alpha workflow.
 | Human alpha acceptance | `docs/alpha-acceptance-record-2026-08-30.md` |
 | Tested support boundaries | `docs/compatibility-matrix.md` |
 
+## Standards-aligned baseline
+
+| Control | Status | Evidence / boundary |
+| --- | --- | --- |
+| Secure development process | Implemented baseline | NIST SSDF-aligned source validation, reproducible test/SBOM checks, and documented disclosure process; this is not an SSDF certification. |
+| Vulnerability disclosure | Implemented | `SECURITY.md` and GitHub private vulnerability reporting; no public vulnerability details. |
+| Dependency update visibility | Implemented advisory | `.github/dependabot.yml` opens reviewable update pull requests for Actions, npm, and pip; it does not auto-merge. |
+| Software inventory | Implemented | Deterministic CycloneDX 1.5 `sbom.cdx.json`, checked in CI. |
+| Release provenance | Deferred | Signing and SLSA provenance await a release-artifact and publication policy. |
+
 ## Explicitly deferred from this gate
 
 - ARF archive/container ingestion remains rejected until formats and resource

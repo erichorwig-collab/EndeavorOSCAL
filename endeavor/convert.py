@@ -109,7 +109,21 @@ def assessment_results(results: OvalDocument, definitions: OvalDocument, mapping
                 ],
                 "target": {"type": entry.target.type, "target-id": entry.target.identifier, "status": outcome},
             })
-    result = {"uuid": _uuid(run_id, "result"), "title": "OVAL evaluation evidence", "description": "Evidence converted from OVAL Results without inferring control findings.", "start": timestamp, "end": timestamp, "reviewed-controls": {"control-selections": [{"include-all": {}}]}, "observations": observations}
+    result = {
+        "uuid": _uuid(run_id, "result"),
+        "title": "OVAL evaluation evidence",
+        "description": "Evidence converted from OVAL Results without inferring control findings.",
+        "start": timestamp,
+        "end": timestamp,
+        "props": [
+            {"name": "oval-generator-product-name", "ns": NAMESPACE, "value": results.generator.product_name},
+            {"name": "oval-generator-product-version", "ns": NAMESPACE, "value": results.generator.product_version},
+            {"name": "oval-schema-version", "ns": NAMESPACE, "value": results.generator.schema_version},
+            {"name": "oval-generator-timestamp", "ns": NAMESPACE, "value": results.generator.timestamp},
+        ],
+        "reviewed-controls": {"control-selections": [{"include-all": {}}]},
+        "observations": observations,
+    }
     if findings:
         result["findings"] = findings
     return {

@@ -363,6 +363,13 @@ class VerticalSliceTests(unittest.TestCase):
                     self.assertIn({"name": "target-host-name", "ns": "https://endeavor.dev/ns/oval", "value": "fixture"}, observation["props"])
                     self.assertEqual(observation["methods"], ["TEST"])
                     self.assertEqual(observation["types"], ["discovery"])
+                    result = document["assessment-results"]["results"][0]
+                    self.assertEqual(result["props"], [
+                        {"name": "oval-generator-product-name", "ns": "https://endeavor.dev/ns/oval", "value": "Endeavor synthetic evaluator"},
+                        {"name": "oval-generator-product-version", "ns": "https://endeavor.dev/ns/oval", "value": "0.1.0"},
+                        {"name": "oval-schema-version", "ns": "https://endeavor.dev/ns/oval", "value": "5.11.3"},
+                        {"name": "oval-generator-timestamp", "ns": "https://endeavor.dev/ns/oval", "value": "2026-08-29T00:00:00Z"},
+                    ])
                     self.assertEqual(output.read_bytes(), (GOLDEN / name.replace(".xml", ".json")).read_bytes())
 
     def test_doctype_is_rejected_without_output(self) -> None:

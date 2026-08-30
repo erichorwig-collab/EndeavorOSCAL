@@ -125,6 +125,28 @@
             "uuid": "c1463b3e-663a-5b53-ba79-57e4176a8b1c"
           }
         ],
+        "props": [
+          {
+            "name": "oval-generator-product-name",
+            "ns": "https://endeavor.dev/ns/oval",
+            "value": "Endeavor synthetic evaluator"
+          },
+          {
+            "name": "oval-generator-product-version",
+            "ns": "https://endeavor.dev/ns/oval",
+            "value": "0.1.0"
+          },
+          {
+            "name": "oval-schema-version",
+            "ns": "https://endeavor.dev/ns/oval",
+            "value": "5.11.3"
+          },
+          {
+            "name": "oval-generator-timestamp",
+            "ns": "https://endeavor.dev/ns/oval",
+            "value": "2026-08-29T00:00:00Z"
+          }
+        ],
         "reviewed-controls": {
           "control-selections": [
             {

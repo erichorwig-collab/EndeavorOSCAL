@@ -11,6 +11,8 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 REQUIRED_FILES = (
+    "SECURITY.md",
+    ".github/dependabot.yml",
     "docs/alpha-acceptance-record-2026-08-30.md",
     "docs/compatibility-matrix.md",
     "docs/dependency-policy.md",
@@ -18,17 +20,24 @@ REQUIRED_FILES = (
     "docs/quality-and-accessibility.md",
     "sbom.cdx.json",
 )
+ACCEPTANCE_RECORD = "docs/alpha-acceptance-record-2026-08-30.md"
 ACCEPTANCE_MARKER = "> Status: **accepted** by the named reviewer below."
 CONCLUSION_MARKER = "- [x] Accepted for the alpha gate."
 
 
 def main() -> int:
     missing = [relative for relative in REQUIRED_FILES if not (ROOT / relative).is_file()]
-    record_path = ROOT / REQUIRED_FILES[0]
+    record_path = ROOT / ACCEPTANCE_RECORD
     if record_path.is_file():
         record = record_path.read_text(encoding="utf-8")
         if ACCEPTANCE_MARKER not in record or CONCLUSION_MARKER not in record:
             missing.append("accepted alpha conclusion")
+    security_path = ROOT / "SECURITY.md"
+    if security_path.is_file() and "Report a vulnerability" not in security_path.read_text(encoding="utf-8"):
+        missing.append("private vulnerability-reporting instructions")
+    dependabot_path = ROOT / ".github" / "dependabot.yml"
+    if dependabot_path.is_file() and "package-ecosystem: github-actions" not in dependabot_path.read_text(encoding="utf-8"):
+        missing.append("GitHub Actions dependency updates")
     payload: dict[str, object] = {
         "format": "endeavor-governance-readiness",
         "version": "1.0.0",
