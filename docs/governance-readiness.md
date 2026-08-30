@@ -50,3 +50,6 @@ the source tests, SBOM comparison, and representative alpha workflow.
 
 See [the quality strategy](quality-and-accessibility.md) and
 [dependency policy](dependency-policy.md) for those release controls.
+Use [the release-candidate checklist](release-candidate-checklist.md) to turn
+this readiness evidence into a reviewed candidate without implicitly approving
+the deferred publication decisions.

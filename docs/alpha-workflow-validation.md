@@ -17,7 +17,8 @@ CI retains a 30-day machine-readable manifest with the repository commit and
 SHA-256 hashes of its fixture inputs, schema, and generated artifacts.
 
 The release reviewer must also perform these human assertions once per alpha
-candidate:
+candidate. If a later candidate changes adapter behavior, generated output, or
+the review workflow, repeat the review against that exact commit:
 
 1. Open the generated report at normal browser zoom and verify the mapped,
    unmapped, and stale sections are understandable without raw XML.
