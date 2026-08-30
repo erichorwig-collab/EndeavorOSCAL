@@ -16,6 +16,7 @@ from endeavor.arf import inspect_arf
 from endeavor.evidence import normalize_arf, normalize_oval, normalize_xccdf
 from endeavor.xccdf import inspect_xccdf
 from endeavor.xccdf_mapping import parse_mapping as parse_xccdf_mapping
+from endeavor.xccdf_convert import assessment_results as xccdf_assessment_results
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -97,6 +98,13 @@ class VerticalSliceTests(unittest.TestCase):
         report = json.loads(completed.stdout)
         self.assertEqual(report["summary"], {"evaluated": 2, "mapped": 1, "unmapped": 1, "stale-mappings": 0})
         self.assertEqual(report["unmapped"][0]["result"], "pass")
+
+    def test_xccdf_conversion_creates_only_explicit_findings(self) -> None:
+        document = xccdf_assessment_results(inspect_xccdf(XCCDF_FIXTURE), parse_xccdf_mapping(ROOT / "fixtures" / "mappings" / "xccdf-example-v1.json"))
+        result = document["assessment-results"]["results"][0]
+        self.assertEqual(len(result["observations"]), 2)
+        self.assertEqual(len(result["findings"]), 1)
+        self.assertEqual(result["findings"][0]["target"]["status"], {"state": "not-satisfied", "reason": "fail"})
 
     def test_inspect_evidence_matches_cross_format_goldens(self) -> None:
         for flag, fixture, golden in (("--xccdf", XCCDF_FIXTURE, EVIDENCE_GOLDEN / "xccdf.json"), ("--arf", ARF_FIXTURE, EVIDENCE_GOLDEN / "arf.json")):
