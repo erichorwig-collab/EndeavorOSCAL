@@ -35,7 +35,7 @@ the source tests, SBOM comparison, and representative alpha workflow.
 | Independent vulnerability inventory | Implemented advisory | `.github/workflows/osv-scanner.yml` runs weekly/manual OSV scans and uploads SARIF without making database drift a merge gate. |
 | Supply-chain posture visibility | Implemented advisory | `.github/workflows/scorecard.yml` runs the official OpenSSF Scorecard workflow weekly and on `main`, retains SARIF for five days, and uploads it to code scanning. CI actions are pinned to full commit SHAs. No score threshold is a merge or release gate. |
 | Software inventory | Implemented | Deterministic CycloneDX 1.5 `sbom.cdx.json`, checked in CI. |
-| Release provenance | Deferred | Signing and SLSA provenance await a release-artifact and publication policy. |
+| Release provenance | Implemented baseline | The tag-only workflow produces a Git source archive, SBOM, manifest, and checksums, then creates GitHub artifact attestations. Tag protection and independent verification remain candidate gates. |
 
 ## Explicitly deferred from this gate
 
@@ -45,10 +45,19 @@ the source tests, SBOM comparison, and representative alpha workflow.
   decisions.
 - Cross-format conversion remains limited to the documented, explicitly mapped
   sources; it must not infer findings or controls.
-- Vulnerability scanning remains advisory until a scanner and exception process
-  are selected.
-- Release signing, reproducible builds, license review, changelog, and
-  accessible release notes remain public-release controls.
+- License review, changelog, and accessible release notes remain
+  public-release controls.
+
+## Release evidence baseline
+
+Only a `v*` tag can invoke the publication workflow. It re-runs the validation
+suite against the frozen commit, builds the source archive twice with Git,
+requires byte equality, then publishes the source archive, SBOM, manifest, and
+SHA-256 checksums through GitHub Releases. GitHub artifact attestations provide
+keyless OIDC/Sigstore provenance for those release assets. A release is not
+authorized merely because this workflow exists: the candidate checklist still
+requires tag protection, a human acceptance record for the exact candidate
+commit, and independent checksum/attestation verification.
 
 See [the quality strategy](quality-and-accessibility.md) and
 [dependency policy](dependency-policy.md) for those release controls.

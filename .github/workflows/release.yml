@@ -1,0 +1,51 @@
+name: Publish attested release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+      attestations: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.0.0
+        with:
+          python-version: "3.13"
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
+        with:
+          node-version: "22"
+          cache: npm
+      - name: Install validators
+        run: |
+          python -m pip install --disable-pip-version-check -r requirements.txt
+          npm ci
+      - name: Validate frozen release source
+        run: |
+          python -m unittest discover -s tests -v
+          python scripts/generate-sbom.py --check sbom.cdx.json
+          python scripts/validate-alpha-workflow.py --record alpha-workflow-record.json
+          python scripts/validate-governance-readiness.py
+      - name: Build reproducible source artifacts
+        run: python scripts/build-release-source.py --version "${GITHUB_REF_NAME#v}" --ref "$GITHUB_SHA" --output-dir release
+      - name: Attest published artifacts
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
+        with:
+          subject-path: |
+            release/*.tar.gz
+            release/SHA256SUMS
+            release/sbom.cdx.json
+            release/release-manifest.json
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" release/* --title "EndeavorOSCAL $GITHUB_REF_NAME" --generate-notes

@@ -9,7 +9,6 @@ from pathlib import Path
 import re
 import subprocess
 import sys
-import sys
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -19,6 +18,7 @@ REQUIRED_FILES = (
     ".github/workflows/scorecard.yml",
     ".github/workflows/dependency-review.yml",
     ".github/workflows/osv-scanner.yml",
+    ".github/workflows/release.yml",
     "docs/alpha-acceptance-record-2026-08-30.md",
     "docs/compatibility-matrix.md",
     "docs/dependency-policy.md",
@@ -54,7 +54,7 @@ def main() -> int:
     exception_check = subprocess.run([sys.executable, str(ROOT / "scripts" / "validate-vulnerability-exceptions.py")], cwd=ROOT, text=True, capture_output=True, check=False)
     if exception_check.returncode:
         missing.append("valid, unexpired vulnerability exception record")
-    for relative in (".github/workflows/validate.yml", ".github/workflows/scorecard.yml", ".github/workflows/dependency-review.yml", ".github/workflows/osv-scanner.yml"):
+    for relative in (".github/workflows/validate.yml", ".github/workflows/scorecard.yml", ".github/workflows/dependency-review.yml", ".github/workflows/osv-scanner.yml", ".github/workflows/release.yml"):
         path = ROOT / relative
         if path.is_file():
             actions = re.findall(r"^\s*uses:\s+[^@\s]+@([^\s#]+)", path.read_text(encoding="utf-8"), flags=re.MULTILINE)
@@ -73,8 +73,9 @@ def main() -> int:
             "ARF archive/container ingestion",
             "tailoring-decision interpretation",
             "source-to-OSCAL scope expansion",
-            "trusted vulnerability scanner and exception process",
-            "production release controls",
+            "release-tag protection",
+            "independent release-artifact verification",
+            "license review and accessible release notes",
         ],
     }
     if missing:

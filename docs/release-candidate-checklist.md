@@ -32,13 +32,18 @@
 
 ## Publication controls requiring an explicit decision
 
-- [ ] Choose the release artifact(s) and publication destination.
-- [ ] Choose the signing identity, key custody/recovery approach, and tag
-  protection policy.
-- [ ] Select a trusted vulnerability scanner and exception authority.
-- [ ] Define reproducible-build inputs and an independent verification method.
-- [ ] Enable SLSA provenance only after the artifact and publication decisions
-  above are recorded.
+- [x] Publish the source archive, CycloneDX SBOM, manifest, and SHA-256
+  checksums through GitHub Releases. Package registries are deferred.
+- [x] Use GitHub artifact attestations (keyless GitHub OIDC/Sigstore) for the
+  published source artifacts; a long-lived maintainer signing key is deferred.
+- [x] Use Dependency Review as the PR gate and the weekly OSV scan as advisory
+  evidence. Vulnerability exceptions are exact, approved, and expiring records.
+- [x] Build the source bundle twice from the exact Git commit in pinned CI and
+  require byte equality before publishing. Retain the manifest and checksums.
+- [ ] Protect the release-tag namespace before creating the first candidate tag.
+- [ ] Independently verify the downloaded source bundle SHA-256 and GitHub
+  attestation with `gh attestation verify <artifact> --repo
+  erichorwig-collab/EndeavorOSCAL`.
 
 ## Approval record
 

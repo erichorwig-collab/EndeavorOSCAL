@@ -44,6 +44,17 @@ XSD_NS = "{http://www.w3.org/2001/XMLSchema}"
 
 
 class VerticalSliceTests(unittest.TestCase):
+    def test_release_source_bundle_is_deterministic_and_hash_manifested(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "release"
+            completed = subprocess.run([sys.executable, "scripts/build-release-source.py", "--version", "0.1.0-alpha.1", "--ref", "HEAD", "--output-dir", str(output)], cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(completed.returncode, 0, completed.stderr)
+            manifest = json.loads((output / "release-manifest.json").read_text(encoding="utf-8"))
+            archive = output / "EndeavorOSCAL-0.1.0-alpha.1-source.tar.gz"
+            commit = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True, capture_output=True, check=True).stdout.strip()
+            self.assertEqual(manifest["source-commit"], commit)
+            self.assertEqual(manifest["artifacts"][archive.name]["sha256"], hashlib.sha256(archive.read_bytes()).hexdigest())
+            self.assertIn(f"{hashlib.sha256(archive.read_bytes()).hexdigest()}  {archive.name}", (output / "SHA256SUMS").read_text(encoding="utf-8"))
     def test_pinned_xccdf_tailoring_inputs_validate_and_hash(self) -> None:
         schema = ET.XMLSchema(ET.parse(str(XCCDF_SCHEMA)))
         self.assertTrue(schema.validate(ET.parse(str(XCCDF_BASELINE))), schema.error_log)
