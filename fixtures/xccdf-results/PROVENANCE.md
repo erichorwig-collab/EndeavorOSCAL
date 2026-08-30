@@ -13,6 +13,12 @@ It is retained unchanged so the exact upstream source remains auditable.
 | SHA-256 | `38e72324eefab5554d711afb0eec6bd9c502066d6bdebc09be73f3ebcf1ef4c2` |
 | Transformations | None; upstream synthetic test fixture, reviewed for absence of real target data. |
 
+The expected normalized inventory is
+`openscap-1.4.4-results-xccdf12.inventory.json` (SHA-256
+`df216499edea9e23122c38073867d26c48e5fb8bc6df7836d182e266efaed50b`).
+The test suite regenerates and compares it byte-for-byte; any fixture or
+normalization change must update this provenance record in the same commit.
+
 The fixture establishes schema and inventory behavior only. It does not prove
 support for arbitrary XCCDF content, ARF collections, tailoring, or a real
 OpenSCAP evaluator run.

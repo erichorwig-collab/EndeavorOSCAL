@@ -1,0 +1,34 @@
+{
+  "benchmark": {
+    "id": "xccdf_moc.elpmaxe.www_benchmark_test",
+    "version": "1.0"
+  },
+  "format": "endeavor-xccdf-inventory",
+  "source": {
+    "path": "openscap-1.4.4-results-xccdf12.xml",
+    "sha256": "38e72324eefab5554d711afb0eec6bd9c502066d6bdebc09be73f3ebcf1ef4c2",
+    "xccdf-version": "1.2.1"
+  },
+  "test-results": [
+    {
+      "end-time": "2012-12-10T13:47:29",
+      "id": "xccdf_org.open-scap_testresult_default-profile",
+      "profile": null,
+      "rule-results": [
+        {
+          "idref": "xccdf_moc.elpmaxe.www_rule_1",
+          "result": "fail"
+        },
+        {
+          "idref": "xccdf_moc.elpmaxe.www_rule_2",
+          "result": "pass"
+        }
+      ],
+      "start-time": "2012-12-10T13:47:29",
+      "targets": [
+        "Test Target"
+      ]
+    }
+  ],
+  "version": "1.0.0"
+}

@@ -21,6 +21,7 @@ MAPPING = ROOT / "fixtures" / "mappings" / "example-v1.json"
 SCHEMA_ROOT = ROOT / "endeavor" / "schemas" / "oval" / "5.11.3"
 XCCDF_SCHEMA = ROOT / "endeavor" / "schemas" / "xccdf" / "1.2" / "xccdf_1.2.xsd"
 XCCDF_FIXTURE = ROOT / "fixtures" / "xccdf-results" / "openscap-1.4.4-results-xccdf12.xml"
+XCCDF_GOLDEN = ROOT / "fixtures" / "xccdf-results" / "openscap-1.4.4-results-xccdf12.inventory.json"
 XSD_NS = "{http://www.w3.org/2001/XMLSchema}"
 
 
@@ -39,6 +40,7 @@ class VerticalSliceTests(unittest.TestCase):
         self.assertEqual(payload["source"]["path"], XCCDF_FIXTURE.name)
         self.assertEqual(payload["benchmark"]["id"], "xccdf_moc.elpmaxe.www_benchmark_test")
         self.assertEqual([(item["idref"], item["result"]) for item in payload["test-results"][0]["rule-results"]], [("xccdf_moc.elpmaxe.www_rule_1", "fail"), ("xccdf_moc.elpmaxe.www_rule_2", "pass")])
+        self.assertEqual(completed.stdout.encode(), XCCDF_GOLDEN.read_bytes())
 
     def test_inspect_xccdf_rejects_doctype(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
