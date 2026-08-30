@@ -6,6 +6,7 @@ set -eu
 source_dir=${1:-/shared/EndeavorOSCAL}
 work_dir=${ENDEAVOR_WORK_DIR:-/tmp/endeavor-work}
 venv_dir=${ENDEAVOR_VENV_DIR:-/tmp/endeavor-venv}
+package_cache=${ENDEAVOR_APK_CACHE:-/shared/apk-cache-v3.24}
 
 if [ "$(id -u)" -ne 0 ]; then
   echo "Run this script as the VM's local root user." >&2
@@ -22,14 +23,19 @@ if [ -e "$work_dir" ] || [ -e "$venv_dir" ]; then
   exit 1
 fi
 
-series=$(cut -d. -f1,2 /etc/alpine-release)
-cat >/etc/apk/repositories <<EOF
+set -- "$package_cache"/*.apk
+if [ -f "$1" ]; then
+  echo "Installing pre-fetched Alpine packages from $package_cache"
+  apk add --no-network --no-cache "$@"
+else
+  series=$(cut -d. -f1,2 /etc/alpine-release)
+  cat >/etc/apk/repositories <<EOF
 https://dl-cdn.alpinelinux.org/alpine/v${series}/main
 https://dl-cdn.alpinelinux.org/alpine/v${series}/community
 EOF
-
-apk update
-apk add --no-cache python3 py3-pip py3-virtualenv nodejs npm git
+  apk update
+  apk add --no-cache python3 py3-pip py3-virtualenv nodejs npm git
+fi
 
 cp -a "$source_dir" "$work_dir"
 python3 -m venv "$venv_dir"
