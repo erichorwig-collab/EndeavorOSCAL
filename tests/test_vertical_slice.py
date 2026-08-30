@@ -52,6 +52,11 @@ class VerticalSliceTests(unittest.TestCase):
         self.assertEqual(tailoring[0]["payload"]["profile-ids"], ["xccdf_com.example.www_profile_customized"])
         self.assertEqual(tailoring[0]["payload"]["version"], "1")
         self.assertNotIn("fec021b96364", ARF_TAILORING.read_text(encoding="utf-8"))
+        self.assertEqual(hashlib.sha256(ARF_TAILORING.read_bytes()).hexdigest(), "05d00bf7cc83d32dc04ebe0bdb9b9404780878b6992dc2e2d5d57d6f2c865543")
+
+    def test_tailoring_arf_generator_has_valid_shell_syntax(self) -> None:
+        completed = subprocess.run(["bash", "-n", "scripts/generate-openscap-tailoring-arf.sh"], cwd=ROOT, text=True, capture_output=True, check=False)
+        self.assertEqual(completed.returncode, 0, completed.stderr)
 
     def test_compatibility_matrix_names_tested_profiles(self) -> None:
         matrix = COMPATIBILITY_MATRIX.read_text(encoding="utf-8")
