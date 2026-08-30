@@ -1,6 +1,7 @@
 {
   "benchmark": {
     "id": "xccdf_moc.elpmaxe.www_benchmark_test",
+    "resolved": "1",
     "version": "1.0"
   },
   "format": "endeavor-xccdf-inventory",
@@ -11,22 +12,47 @@
   },
   "test-results": [
     {
+      "benchmark": {
+        "href": null,
+        "id": "xccdf_moc.elpmaxe.www_benchmark_test"
+      },
       "end-time": "2012-12-10T13:47:29",
       "id": "xccdf_org.open-scap_testresult_default-profile",
+      "identity": null,
+      "organizations": [],
+      "platforms": [],
       "profile": null,
       "rule-results": [
         {
           "idref": "xccdf_moc.elpmaxe.www_rule_1",
-          "result": "fail"
+          "result": "fail",
+          "time": "2012-12-10T13:47:29",
+          "weight": "1.000000"
         },
         {
           "idref": "xccdf_moc.elpmaxe.www_rule_2",
-          "result": "pass"
+          "result": "pass",
+          "time": "2012-12-10T13:47:29",
+          "weight": "1.000000"
+        }
+      ],
+      "scores": [
+        {
+          "maximum": "100.000000",
+          "system": "urn:xccdf:scoring:default",
+          "value": "0.000000"
         }
       ],
       "start-time": "2012-12-10T13:47:29",
+      "tailoring": null,
+      "target-addresses": [],
+      "target-facts": [],
       "targets": [
         "Test Target"
+      ],
+      "test-system": null,
+      "title": [
+        "OSCAP Scan Result"
       ]
     }
   ],

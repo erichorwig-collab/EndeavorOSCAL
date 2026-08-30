@@ -15,10 +15,20 @@ It is retained unchanged so the exact upstream source remains auditable.
 
 The expected normalized inventory is
 `openscap-1.4.4-results-xccdf12.inventory.json` (SHA-256
-`df216499edea9e23122c38073867d26c48e5fb8bc6df7836d182e266efaed50b`).
+`d1032f22100fb83c63432f8649351d25fe3722a099718690ac1f86006d15961a`).
 The test suite regenerates and compares it byte-for-byte; any fixture or
 normalization change must update this provenance record in the same commit.
 
 The fixture establishes schema and inventory behavior only. It does not prove
 support for arbitrary XCCDF content, ARF collections, tailoring, or a real
 OpenSCAP evaluator run.
+
+`provenance-companion-xccdf12.xml` is a separate, schema-valid sanitized
+companion derived from the shape of the pinned fixture. It is **not** an
+upstream assessment artifact and contains only reserved documentation target
+values. It exercises preservation of evaluator, selected profile, tailoring
+reference, execution identity, target facts, per-rule time/weight, and score.
+Its addition does not change the recorded representative alpha workflow input.
+
+The companion's SHA-256 is
+`b3dea671d99b77ec56902242908edc122b11a473520f797274c6a52fba714ff7`.

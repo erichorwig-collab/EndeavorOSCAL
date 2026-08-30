@@ -22,6 +22,7 @@ SCHEMA_ROOT = ROOT / "endeavor" / "schemas" / "oval" / "5.11.3"
 XCCDF_SCHEMA = ROOT / "endeavor" / "schemas" / "xccdf" / "1.2" / "xccdf_1.2.xsd"
 XCCDF_FIXTURE = ROOT / "fixtures" / "xccdf-results" / "openscap-1.4.4-results-xccdf12.xml"
 XCCDF_GOLDEN = ROOT / "fixtures" / "xccdf-results" / "openscap-1.4.4-results-xccdf12.inventory.json"
+XCCDF_PROVENANCE_FIXTURE = ROOT / "fixtures" / "xccdf-results" / "provenance-companion-xccdf12.xml"
 XSD_NS = "{http://www.w3.org/2001/XMLSchema}"
 
 
@@ -41,6 +42,17 @@ class VerticalSliceTests(unittest.TestCase):
         self.assertEqual(payload["benchmark"]["id"], "xccdf_moc.elpmaxe.www_benchmark_test")
         self.assertEqual([(item["idref"], item["result"]) for item in payload["test-results"][0]["rule-results"]], [("xccdf_moc.elpmaxe.www_rule_1", "fail"), ("xccdf_moc.elpmaxe.www_rule_2", "pass")])
         self.assertEqual(completed.stdout.encode(), XCCDF_GOLDEN.read_bytes())
+
+    def test_inspect_xccdf_preserves_execution_provenance_companion(self) -> None:
+        completed = subprocess.run([sys.executable, "-m", "endeavor", "inspect-xccdf", "--results", str(XCCDF_PROVENANCE_FIXTURE)], cwd=ROOT, text=True, capture_output=True, check=False)
+        self.assertEqual(completed.returncode, 0, completed.stderr)
+        result = json.loads(completed.stdout)["test-results"][0]
+        self.assertEqual(result["profile"], "xccdf_moc.elpmaxe.www_profile_companion")
+        self.assertEqual(result["test-system"], "cpe:/a:open-scap:oscap:1.4.4")
+        self.assertEqual(result["tailoring"]["href"], "https://example.invalid/tailoring.xml")
+        self.assertEqual(result["identity"], {"authenticated": "true", "name": "scanner-user", "privileged": "false"})
+        self.assertEqual(result["target-facts"], [{"name": "urn:xccdf:fact:asset:identifier", "value": "sanitized-asset"}])
+        self.assertEqual(result["rule-results"][0]["time"], "2026-08-30T12:00:30Z")
 
     def test_inspect_xccdf_rejects_doctype(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
