@@ -110,7 +110,219 @@
         "namespace": "http://checklists.nist.gov/xccdf/1.2",
         "sha256": "f53856a770dcfa7eaa29ab0d2e1c10ec2ed345c9bef9b3da3471a19ead277d83"
       },
-      "id": "xccdf1"
+      "id": "xccdf1",
+      "xccdf-result": {
+        "benchmark": {
+          "component-id": "scap_org.open-scap_comp_ssg-fedora-xccdf-1.2.xml",
+          "href": "/usr/share/xml/scap/ssg/fedora/ssg-fedora-ds.xml",
+          "id": "xccdf_org.ssgproject.content_benchmark_FEDORA"
+        },
+        "end-time": "2014-10-17T09:07:55",
+        "id": "xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common",
+        "profile": "xccdf_org.ssgproject.content_profile_common",
+        "rule-results": [
+          {
+            "idref": "xccdf_org.ssgproject.content_rule_disable_prelink",
+            "result": "fail",
+            "severity": "low",
+            "time": "2014-10-17T09:07:43",
+            "weight": "1.000000"
+          },
+          {
+            "idref": "xccdf_org.ssgproject.content_rule_ensure_gpgcheck_globally_activated",
+            "result": "pass",
+            "severity": "high",
+            "time": "2014-10-17T09:07:43",
+            "weight": "1.000000"
+          },
+          {
+            "idref": "xccdf_org.ssgproject.content_rule_ensure_gpgcheck_never_disabled",
+            "result": "pass",
+            "severity": "high",
+            "time": "2014-10-17T09:07:43",
+            "weight": "1.000000"
+          },
+          {
+            "idref": "xccdf_org.ssgproject.content_rule_file_permissions_library_dirs",
+            "result": "fail",
+            "severity": "medium",
+            "time": "2014-10-17T09:07:51",
+            "weight": "1.000000"
+          },
+          {
+            "idref": "xccdf_org.ssgproject.content_rule_file_ownership_library_dirs",
+            "result": "pass",
+            "severity": "medium",
+            "time": "2014-10-17T09:07:53",
+            "weight": "1.000000"
+          },
+          {
+            "idref": "xccdf_org.ssgproject.content_rule_file_permissions_binary_dirs",
+            "result": "pass",
+            "severity": "medium",
+            "time": "2014-10-17T09:07:55",
+            "weight": "1.000000"
+          },
+          {
+            "idref": "xccdf_org.ssgproject.content_rule_file_ownership_binary_dirs",
+            "result": "pass",
+            "severity": "medium",
+            "time": "2014-10-17T09:07:55",
+            "weight": "1.000000"
+          },
+          {
+            "idref": "xccdf_org.ssgproject.content_rule_no_direct_root_logins",
+            "result": "notchecked",
+            "severity": "medium",
+            "time": "2014-10-17T09:07:55",
+            "weight": "1.000000"
+          },
+          {
+            "idref": "xccdf_org.ssgproject.content_rule_securetty_root_login_console_only",
+            "result": "fail",
+            "severity": "medium",
+            "time": "2014-10-17T09:07:55",
+            "weight": "1.000000"
+          },
+          {
+            "idref": "xccdf_org.ssgproject.content_rule_restrict_serial_port_logins",
+            "result": "pass",
+            "severity": "low",
+            "time": "2014-10-17T09:07:55",
+            "weight": "1.000000"
+          },
+          {
+            "idref": "xccdf_org.ssgproject.content_rule_no_root_webbrowsing",
+            "result": "notselected",
+            "severity": "low",
+            "time": "2014-10-17T09:07:55",
+            "weight": "1.000000"
+          },
+          {
+            "idref": "xccdf_org.ssgproject.content_rule_no_shelllogin_for_systemaccounts",
+            "result": "notselected",
+            "severity": "medium",
+            "time": "2014-10-17T09:07:55",
+            "weight": "1.000000"
+          },
+          {
+            "idref": "xccdf_org.ssgproject.content_rule_no_uidzero_except_root",
+            "result": "pass",
+            "severity": "medium",
+            "time": "2014-10-17T09:07:55",
+            "weight": "1.000000"
+          },
+          {
+            "idref": "xccdf_org.ssgproject.content_rule_root_path_default",
+            "result": "notselected",
+            "severity": "low",
+            "time": "2014-10-17T09:07:55",
+            "weight": "1.000000"
+          },
+          {
+            "idref": "xccdf_org.ssgproject.content_rule_no_empty_passwords",
+            "result": "fail",
+            "severity": "high",
+            "time": "2014-10-17T09:07:55",
+            "weight": "1.000000"
+          },
+          {
+            "idref": "xccdf_org.ssgproject.content_rule_no_hashes_outside_shadow",
+            "result": "pass",
+            "severity": "medium",
+            "time": "2014-10-17T09:07:55",
+            "weight": "1.000000"
+          },
+          {
+            "idref": "xccdf_org.ssgproject.content_rule_gid_passwd_group_same",
+            "result": "notselected",
+            "severity": "low",
+            "time": "2014-10-17T09:07:55",
+            "weight": "1.000000"
+          },
+          {
+            "idref": "xccdf_org.ssgproject.content_rule_no_netrc_files",
+            "result": "pass",
+            "severity": "medium",
+            "time": "2014-10-17T09:07:55",
+            "weight": "1.000000"
+          },
+          {
+            "idref": "xccdf_org.ssgproject.content_rule_accounts_password_minlen_login_defs",
+            "result": "fail",
+            "severity": "medium",
+            "time": "2014-10-17T09:07:55",
+            "weight": "1.000000"
+          },
+          {
+            "idref": "xccdf_org.ssgproject.content_rule_accounts_minimum_age_login_defs",
+            "result": "fail",
+            "severity": "medium",
+            "time": "2014-10-17T09:07:55",
+            "weight": "1.000000"
+          },
+          {
+            "idref": "xccdf_org.ssgproject.content_rule_accounts_maximum_age_login_defs",
+            "result": "fail",
+            "severity": "medium",
+            "time": "2014-10-17T09:07:55",
+            "weight": "1.000000"
+          },
+          {
+            "idref": "xccdf_org.ssgproject.content_rule_accounts_password_warn_age_login_defs",
+            "result": "pass",
+            "severity": "low",
+            "time": "2014-10-17T09:07:55",
+            "weight": "1.000000"
+          },
+          {
+            "idref": "xccdf_org.ssgproject.content_rule_service_ntpd_enabled",
+            "result": "fail",
+            "severity": "medium",
+            "time": "2014-10-17T09:07:55",
+            "weight": "1.000000"
+          },
+          {
+            "idref": "xccdf_org.ssgproject.content_rule_ntpd_specify_remote_server",
+            "result": "fail",
+            "severity": "medium",
+            "time": "2014-10-17T09:07:55",
+            "weight": "1.000000"
+          },
+          {
+            "idref": "xccdf_org.ssgproject.content_rule_sshd_disable_root_login",
+            "result": "fail",
+            "severity": "medium",
+            "time": "2014-10-17T09:07:55",
+            "weight": "1.000000"
+          },
+          {
+            "idref": "xccdf_org.ssgproject.content_rule_sshd_disable_empty_passwords",
+            "result": "pass",
+            "severity": "high",
+            "time": "2014-10-17T09:07:55",
+            "weight": "1.000000"
+          },
+          {
+            "idref": "xccdf_org.ssgproject.content_rule_sshd_set_idle_timeout",
+            "result": "fail",
+            "severity": "low",
+            "time": "2014-10-17T09:07:55",
+            "weight": "1.000000"
+          },
+          {
+            "idref": "xccdf_org.ssgproject.content_rule_sshd_set_keepalive",
+            "result": "fail",
+            "severity": "low",
+            "time": "2014-10-17T09:07:55",
+            "weight": "1.000000"
+          }
+        ],
+        "start-time": "2014-10-17T09:07:43",
+        "targets": [
+          "localhost.localdomain"
+        ]
+      }
     },
     {
       "content": {

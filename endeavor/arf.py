@@ -107,6 +107,31 @@ def _section_items(root: ET._Element, section: str, item: str) -> list[ET._Eleme
     return container.findall(_q(ARF_NS, item)) if container is not None else []
 
 
+def _linked_xccdf_result(report: ET._Element, collection: dict[str, object], path: Path) -> dict[str, object]:
+    content = report.find(_q(ARF_NS, "content"))
+    result = content[0] if content is not None and len(content) == 1 else None
+    if result is None or result.tag != _q(XCCDF_NS, "TestResult"):
+        raise OvalInputError(f"ARF XCCDF report content is invalid: {_safe(path)}")
+    benchmark = result.find(_q(XCCDF_NS, "benchmark"))
+    profile = result.find(_q(XCCDF_NS, "profile"))
+    benchmark_id = benchmark.get("id") if benchmark is not None else None
+    streams = collection["data-streams"]
+    matches = [component for stream in streams for component in stream["components"] if component["payload"]["namespace"] == XCCDF_NS and component["payload"]["name"] == "Benchmark" and component["payload"]["id"] == benchmark_id]
+    if len(matches) != 1:
+        raise OvalInputError(f"ARF XCCDF benchmark linkage is ambiguous or missing: {_safe(path)}")
+    rules = []
+    for rule in result.findall(_q(XCCDF_NS, "rule-result")):
+        outcome = rule.find(_q(XCCDF_NS, "result"))
+        rules.append({"idref": rule.get("idref"), "result": (outcome.text or "").strip() if outcome is not None else None, "time": rule.get("time"), "severity": rule.get("severity"), "weight": rule.get("weight")})
+    return {
+        "id": result.get("id"), "benchmark": {"id": benchmark_id, "href": benchmark.get("href") if benchmark is not None else None, "component-id": matches[0]["component-id"]},
+        "profile": profile.get("idref") if profile is not None else None,
+        "start-time": result.get("start-time"), "end-time": result.get("end-time"),
+        "targets": [(item.text or "").strip() for item in result.findall(_q(XCCDF_NS, "target")) if (item.text or "").strip()],
+        "rule-results": rules,
+    }
+
+
 def inspect_arf(path: Path) -> dict[str, object]:
     data = _read(path)
     try:
@@ -128,7 +153,7 @@ def inspect_arf(path: Path) -> dict[str, object]:
         if not identifier or identifier in identifiers:
             raise OvalInputError(f"ARF report identifiers must be unique: {_safe(path)}")
         identifiers.add(identifier)
-        reports.append({"id": identifier, "content": _content_record(item, path)})
+        reports.append({"id": identifier, "content": _content_record(item, path), "_element": item})
     requests = []
     for item in _section_items(root, "report-requests", "report-request"):
         identifier = item.get("id")
@@ -142,6 +167,7 @@ def inspect_arf(path: Path) -> dict[str, object]:
         references = [(entry.text or "").strip() for entry in item.findall(_q(CORE_NS, "ref")) if (entry.text or "").strip()]
         relationships.append({"type": item.get("type"), "subject": item.get("subject"), "references": references})
     request_ids = {item["id"] for item in requests}
+    collections = {item["id"]: item["collection"] for item in requests}
     for report in reports:
         content = report["content"]
         if content["namespace"] == XCCDF_NS and content["name"] == "TestResult":
@@ -151,6 +177,8 @@ def inspect_arf(path: Path) -> dict[str, object]:
                 raise OvalInputError(f"ARF report linkage does not resolve locally: {_safe(path)}")
             report["collection-id"] = collection_id
             report["asset-id"] = asset_id
+            report["xccdf-result"] = _linked_xccdf_result(report["_element"], collections[collection_id], path)
+        del report["_element"]
     return {
         "format": "endeavor-arf-manifest", "version": "1.0.0",
         "source": {"path": path.name, "sha256": hashlib.sha256(data).hexdigest(), "arf-version": "1.1"},

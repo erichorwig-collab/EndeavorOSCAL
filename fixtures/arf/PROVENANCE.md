@@ -22,6 +22,6 @@ It does not alter the representative alpha workflow inputs.
 
 The expected collection manifest is
 `openscap-1.4.4-xccdf-overrides.manifest.json` (SHA-256
-`c2835b72bb7e5547206e0fd4d590a528185e58e49f7867ee8e386cb43a0f03c1`).
+`4fdf0ca6a49cd708e81d995c39e23176983a0a01a989b7a98584ac69554204bd`).
 Embedded content hashes use XML C14N without comments, making them stable for
 the exact parsed component rather than a filesystem path or fetched resource.

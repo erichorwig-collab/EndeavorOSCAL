@@ -39,6 +39,10 @@ class VerticalSliceTests(unittest.TestCase):
         self.assertEqual(payload["reports"][0]["collection-id"], "collection1")
         self.assertEqual(payload["reports"][0]["asset-id"], "asset0")
         self.assertEqual(len(payload["report-requests"][0]["collection"]["data-streams"][0]["components"]), 5)
+        linked = payload["reports"][0]["xccdf-result"]
+        self.assertEqual(linked["profile"], "xccdf_org.ssgproject.content_profile_common")
+        self.assertEqual(linked["benchmark"]["component-id"], "scap_org.open-scap_comp_ssg-fedora-xccdf-1.2.xml")
+        self.assertEqual({item["result"] for item in linked["rule-results"]}, {"pass", "fail", "notchecked", "notselected"})
         self.assertEqual(completed.stdout.encode(), ARF_GOLDEN.read_bytes())
 
     def test_inspect_arf_rejects_doctype_and_multiple_content(self) -> None:
@@ -68,6 +72,15 @@ class VerticalSliceTests(unittest.TestCase):
             completed = subprocess.run([sys.executable, "-m", "endeavor", "inspect-arf", "--results", str(ambiguous)], cwd=ROOT, text=True, capture_output=True, check=False)
             self.assertEqual(completed.returncode, 3)
             self.assertIn("linkage is ambiguous", completed.stderr)
+
+    def test_inspect_arf_rejects_missing_linked_xccdf_benchmark(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "missing-benchmark.arf.xml"
+            source = ARF_FIXTURE.read_text(encoding="utf-8").replace('href="/usr/share/xml/scap/ssg/fedora/ssg-fedora-ds.xml" id="xccdf_org.ssgproject.content_benchmark_FEDORA"', 'href="https://invalid.example/benchmark.xml" id="xccdf_missing_benchmark"', 1)
+            path.write_text(source, encoding="utf-8")
+            completed = subprocess.run([sys.executable, "-m", "endeavor", "inspect-arf", "--results", str(path)], cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(completed.returncode, 3)
+            self.assertIn("benchmark linkage is ambiguous or missing", completed.stderr)
 
     def test_vendored_xccdf_schema_bundle_compiles(self) -> None:
         self.assertIsNotNone(ET.XMLSchema(ET.parse(str(XCCDF_SCHEMA))))
