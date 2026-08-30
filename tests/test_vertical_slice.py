@@ -28,6 +28,7 @@ XCCDF_TAILORING = ROOT / "fixtures" / "xccdf-tailoring" / "openscap-1.4.4-baseli
 XCCDF_BASELINE = ROOT / "fixtures" / "xccdf-tailoring" / "openscap-1.4.4-baseline.xccdf.xml"
 ARF_FIXTURE = ROOT / "fixtures" / "arf" / "openscap-1.4.4-xccdf-overrides.arf.xml"
 ARF_GOLDEN = ROOT / "fixtures" / "arf" / "openscap-1.4.4-xccdf-overrides.manifest.json"
+ARF_TAILORING = ROOT / "fixtures" / "arf" / "openscap-1.4.4-tailoring-sanitized.arf.xml"
 COMPATIBILITY_MATRIX = ROOT / "docs" / "compatibility-matrix.md"
 XSD_NS = "{http://www.w3.org/2001/XMLSchema}"
 
@@ -39,6 +40,16 @@ class VerticalSliceTests(unittest.TestCase):
         self.assertTrue(schema.validate(ET.parse(str(XCCDF_TAILORING))), schema.error_log)
         self.assertEqual(hashlib.sha256(XCCDF_BASELINE.read_bytes()).hexdigest(), "401a2403a88a12922d833d95bc4e0b69b71da5757bf8e8269df9c95e0520c4e0")
         self.assertEqual(hashlib.sha256(XCCDF_TAILORING.read_bytes()).hexdigest(), "74f23255019049cad1e87bad47a367d418bf484febdf11489ee3e91421fb7a2a")
+
+    def test_sanitized_arf_tailoring_fixture_preserves_embedded_tailoring(self) -> None:
+        completed = subprocess.run([sys.executable, "-m", "endeavor", "inspect-arf", "--results", str(ARF_TAILORING)], cwd=ROOT, text=True, capture_output=True, check=False)
+        self.assertEqual(completed.returncode, 0, completed.stderr)
+        payload = json.loads(completed.stdout)
+        components = [component for stream in payload["report-requests"][0]["collection"]["data-streams"] for component in stream["components"]]
+        tailoring = [component for component in components if component["payload"]["name"] == "Tailoring"]
+        self.assertEqual(len(tailoring), 1)
+        self.assertEqual(tailoring[0]["payload"]["id"], "xccdf_scap-workbench_tailoring_default")
+        self.assertNotIn("fec021b96364", ARF_TAILORING.read_text(encoding="utf-8"))
 
     def test_compatibility_matrix_names_tested_profiles(self) -> None:
         matrix = COMPATIBILITY_MATRIX.read_text(encoding="utf-8")
