@@ -17,6 +17,7 @@ Endeavor converts OpenSCAP assessment evidence into valid, provenance-preserving
 - [v0.1 OVAL Results to OSCAL mapping contract](docs/v0.1-oval-results-mapping.md)
 - [v0.1 fixture corpus contract](fixtures/README.md)
 - [v0.1 implementation architecture](docs/v0.1-implementation-architecture.md)
+- [v0.1 upstream fixture research and intake requirements](docs/v0.1-upstream-fixture-research.md)
 
 ## Status
 

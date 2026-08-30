@@ -49,6 +49,13 @@ The official OpenSCAP repository is LGPL-2.1, but its inspected
 `tests/API/OVAL/results-good.xml` fixture declares OVAL 5.5, outside this
 v0.1 compatibility boundary, so it was not copied into this repository.
 
+Upstream fixture research is recorded in
+`docs/v0.1-upstream-fixture-research.md`. No public OVAL 5.12/5.12.2 matching
+Results-plus-Definitions pair was found. The local host has no `oscap`, and
+the available Docker daemon is not accessible to this session. The configured
+Arch repositories contain no `openscap` package; await a user-authorized
+evaluator environment or an authorized sanitized pair.
+
 ## Resume procedure
 
 1. Read this file and `git status --short`.
