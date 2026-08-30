@@ -26,6 +26,11 @@ def _timestamp(value: str) -> str:
 
 
 def assessment_results(results: OvalDocument, definitions: OvalDocument, mapping: MappingDocument | None = None) -> dict:
+    if results.generator.schema_version != definitions.generator.schema_version:
+        raise OvalInputError(
+            "OVAL Results and Definitions schema versions must match "
+            f"({results.generator.schema_version} != {definitions.generator.schema_version})"
+        )
     definitions_by_id = {item.identifier: item for item in definitions.definitions}
     missing = [item.identifier for item in results.definitions if item.identifier not in definitions_by_id]
     if missing:

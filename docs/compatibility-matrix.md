@@ -18,8 +18,10 @@ replacement, remediation, or automatic OSCAL control mapping.
 `tests/test_vertical_slice.py` compares committed OVAL, XCCDF, and ARF golden
 outputs and exercises hostile-input rejections. `.github/workflows/validate.yml`
 runs that suite, validates the SBOM, and executes the representative alpha
-workflow. Fixture source provenance and input hashes are recorded beside each
-fixture in `fixtures/*/PROVENANCE.md`.
+workflow and the governance-readiness evidence checker. The accepted human
+review record is `docs/alpha-acceptance-record-2026-08-30.md`. Fixture source
+provenance and input hashes are recorded beside each fixture in
+`fixtures/*/PROVENANCE.md`.
 
 ## Deferred before Governance
 
@@ -29,5 +31,6 @@ fixture in `fixtures/*/PROVENANCE.md`.
    of tailoring decisions.
 3. Extending the shared source-to-OSCAL evidence contract beyond the linked
    XCCDF report, with no inferred controls or findings.
-4. A human reviewer acceptance record for
-   the alpha workflow.
+
+The alpha human-review gate is complete; its accepted record is retained in
+`docs/alpha-acceptance-record-2026-08-30.md`.

@@ -679,6 +679,28 @@ class VerticalSliceTests(unittest.TestCase):
             self.assertIn("unsupported OVAL core schema version", completed.stderr)
             self.assertFalse(output.exists())
 
+    def test_mismatched_results_and_definitions_schema_versions_are_rejected_without_output(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            definitions = Path(directory) / "definitions-511.xml"
+            output = Path(directory) / "result.json"
+            source = DEFINITIONS.read_text(encoding="utf-8")
+            definitions.write_text(source.replace(">5.11.3</oval:schema_version>", ">5.11</oval:schema_version>"), encoding="utf-8")
+            completed = subprocess.run([sys.executable, "-m", "endeavor", "convert", "--results", str(RESULTS / "pass.xml"), "--definitions", str(definitions), "--output", str(output)], cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(completed.returncode, 3)
+            self.assertIn("OVAL Results and Definitions schema versions must match (5.11.3 != 5.11)", completed.stderr)
+            self.assertFalse(output.exists())
+
+    def test_governance_readiness_evidence_is_complete_and_deterministic(self) -> None:
+        command = [sys.executable, "scripts/validate-governance-readiness.py"]
+        first = subprocess.run(command, cwd=ROOT, text=True, capture_output=True, check=False)
+        second = subprocess.run(command, cwd=ROOT, text=True, capture_output=True, check=False)
+        self.assertEqual(first.returncode, 0, first.stderr)
+        self.assertEqual(first.stdout, second.stdout)
+        payload = json.loads(first.stdout)
+        self.assertEqual(payload["format"], "endeavor-governance-readiness")
+        self.assertEqual(payload["status"], "ready-for-governance-planning")
+        self.assertIn("docs/alpha-acceptance-record-2026-08-30.md", payload["evidence"])
+
     def test_unknown_extension_cannot_be_authorized_by_instance_schema_hint(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "unknown-extension.xml"
