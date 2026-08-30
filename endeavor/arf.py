@@ -4,7 +4,9 @@ from __future__ import annotations
 import hashlib
 import re
 import stat
+from functools import lru_cache
 from pathlib import Path
+from urllib.parse import unquote, urlparse
 
 from lxml import etree as ET
 
@@ -19,6 +21,8 @@ XLINK_HREF = "{http://www.w3.org/1999/xlink}href"
 XCCDF_NS = "http://checklists.nist.gov/xccdf/1.2"
 OVAL_RESULTS_NS = "http://oval.mitre.org/XMLSchema/oval-results-5"
 VALID_OVAL_RESULTS = frozenset({"true", "false", "unknown", "error", "not evaluated", "not applicable"})
+SCHEMA_ROOT = Path(__file__).parent / "schemas"
+ARF_SCHEMA_ROOTS = (SCHEMA_ROOT / "arf" / "1.1", SCHEMA_ROOT / "common", SCHEMA_ROOT / "cpe" / "2.3")
 FORBIDDEN_XML = re.compile(br"<!DOCTYPE|<!ENTITY", re.I)
 
 
@@ -28,6 +32,27 @@ def _q(namespace: str, name: str) -> str:
 
 def _safe(path: Path) -> str:
     return path.name or "arf"
+
+
+class _ArfSchemaResolver(ET.Resolver):
+    def resolve(self, url: str, public_id: str | None, context: object) -> object:
+        parsed = urlparse(url)
+        if parsed.scheme not in ("", "file") or parsed.query or parsed.fragment:
+            raise OSError("untrusted ARF schema import")
+        candidate = Path(unquote(parsed.path) if parsed.scheme == "file" else url)
+        if not candidate.is_absolute():
+            candidate = SCHEMA_ROOT / "arf" / "1.1" / candidate
+        candidate = candidate.resolve()
+        if candidate.suffix != ".xsd" or not candidate.is_file() or not any(root == candidate or root in candidate.parents for root in ARF_SCHEMA_ROOTS):
+            raise OSError("untrusted ARF schema import")
+        return self.resolve_filename(str(candidate), context)
+
+
+@lru_cache(maxsize=1)
+def _schema() -> ET.XMLSchema:
+    parser = ET.XMLParser(no_network=True, resolve_entities=False, load_dtd=False, huge_tree=False)
+    parser.resolvers.add(_ArfSchemaResolver())
+    return ET.XMLSchema(ET.parse(str(SCHEMA_ROOT / "arf" / "1.1" / "asset-reporting-format_1.1.0.xsd"), parser))
 
 
 def _read(path: Path) -> bytes:
@@ -189,6 +214,8 @@ def inspect_arf(path: Path) -> dict[str, object]:
         raise OvalInputError(f"ARF input exceeds {MAX_ARF_ELEMENTS} element limit: {_safe(path)}")
     if root.tag != _q(ARF_NS, "asset-report-collection"):
         raise OvalInputError(f"unsupported ARF root element: {_safe(path)}")
+    if not _schema().validate(ET.ElementTree(root)):
+        raise OvalInputError(f"ARF 1.1 validation failed: {_safe(path)}")
     assets = [{"id": item.get("id")} for item in _section_items(root, "assets", "asset")]
     if len({item["id"] for item in assets if item["id"]}) != len(assets) or any(not item["id"] for item in assets):
         raise OvalInputError(f"ARF asset identifiers must be unique: {_safe(path)}")
