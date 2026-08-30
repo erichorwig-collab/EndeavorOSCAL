@@ -13,6 +13,7 @@ from .findings import findings_report
 from .xccdf import inspect_xccdf
 from .arf import inspect_arf
 from .evidence import normalize_arf, normalize_xccdf
+from .xccdf_mapping import mapping_report as xccdf_mapping_report, parse_mapping as parse_xccdf_mapping
 from .mapping import mapping_report, parse_mapping
 from .oval import OvalInputError, parse_definitions, parse_results
 from .report import mapping_report_html
@@ -40,7 +41,7 @@ class _ArgumentParser(argparse.ArgumentParser):
 def _parser() -> argparse.ArgumentParser:
     parser = _ArgumentParser(prog="endeavor", description="Convert OVAL evidence to OSCAL Assessment Results.")
     sub = parser.add_subparsers(dest="command", required=True, parser_class=_ArgumentParser)
-    for name in ("inspect", "convert", "mapping-report", "report", "diff", "findings", "inspect-xccdf", "inspect-arf", "inspect-evidence"):
+    for name in ("inspect", "convert", "mapping-report", "report", "diff", "findings", "inspect-xccdf", "inspect-arf", "inspect-evidence", "mapping-report-xccdf"):
         command = sub.add_parser(name)
         command.add_argument("--format", choices=("text", "json"), default="text", help="format handled diagnostics as text or JSON")
         if name == "diff":
@@ -57,6 +58,10 @@ def _parser() -> argparse.ArgumentParser:
             source = command.add_mutually_exclusive_group(required=True)
             source.add_argument("--xccdf", type=Path)
             source.add_argument("--arf", type=Path)
+            continue
+        if name == "mapping-report-xccdf":
+            command.add_argument("--results", required=True, type=Path)
+            command.add_argument("--mapping", required=True, type=Path)
             continue
         command.add_argument("--results", required=True, type=Path)
         command.add_argument("--definitions", required=True, type=Path)
@@ -106,6 +111,9 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "inspect-evidence":
             payload = normalize_xccdf(inspect_xccdf(args.xccdf)) if args.xccdf else normalize_arf(inspect_arf(args.arf))
             print(json.dumps(payload, indent=2, sort_keys=True))
+            return ExitCode.SUCCESS
+        if args.command == "mapping-report-xccdf":
+            print(json.dumps(xccdf_mapping_report(inspect_xccdf(args.results), parse_xccdf_mapping(args.mapping)), indent=2, sort_keys=True))
             return ExitCode.SUCCESS
         results = parse_results(args.results)
         definitions = parse_definitions(args.definitions)

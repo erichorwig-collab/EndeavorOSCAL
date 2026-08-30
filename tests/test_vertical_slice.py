@@ -91,6 +91,13 @@ class VerticalSliceTests(unittest.TestCase):
         self.assertEqual(mapping.mappings[0].rule_id, "xccdf_moc.elpmaxe.www_rule_1")
         self.assertNotIn("pass", mapping.mappings[0].outcomes)
 
+    def test_xccdf_mapping_report_leaves_unmapped_status_as_evidence(self) -> None:
+        completed = subprocess.run([sys.executable, "-m", "endeavor", "mapping-report-xccdf", "--results", str(XCCDF_FIXTURE), "--mapping", str(ROOT / "fixtures" / "mappings" / "xccdf-example-v1.json")], cwd=ROOT, text=True, capture_output=True, check=False)
+        self.assertEqual(completed.returncode, 0, completed.stderr)
+        report = json.loads(completed.stdout)
+        self.assertEqual(report["summary"], {"evaluated": 2, "mapped": 1, "unmapped": 1, "stale-mappings": 0})
+        self.assertEqual(report["unmapped"][0]["result"], "pass")
+
     def test_inspect_evidence_matches_cross_format_goldens(self) -> None:
         for flag, fixture, golden in (("--xccdf", XCCDF_FIXTURE, EVIDENCE_GOLDEN / "xccdf.json"), ("--arf", ARF_FIXTURE, EVIDENCE_GOLDEN / "arf.json")):
             with self.subTest(flag=flag):

@@ -59,3 +59,21 @@ def parse_mapping(path: Path) -> MappingDocument:
         seen.add(key)
         mappings.append(Mapping(benchmark_id, rule_id, target, outcomes))
     return MappingDocument(path, hashlib.sha256(raw).hexdigest(), tuple(mappings))
+
+
+def mapping_report(inventory: dict[str, object], mapping: MappingDocument) -> dict[str, object]:
+    mapped, unmapped, known = [], [], set()
+    for result in inventory["test-results"]:
+        benchmark_id = result["benchmark"]["id"]
+        for rule in result["rule-results"]:
+            key = (benchmark_id, rule["idref"])
+            entries = [item for item in mapping.mappings if (item.benchmark_id, item.rule_id) == key]
+            known.add(key)
+            record = {"benchmark-id": benchmark_id, "rule-id": rule["idref"], "result": rule["result"]}
+            applicable = [item for item in entries if rule["result"] in item.outcomes]
+            if applicable:
+                mapped.append({**record, "targets": [{"type": item.target.type, "target-id": item.target.identifier, "outcome": item.outcomes[rule["result"]]} for item in applicable]})
+            else:
+                unmapped.append(record)
+    stale = sorted({(item.benchmark_id, item.rule_id) for item in mapping.mappings} - known)
+    return {"format": "endeavor-xccdf-mapping-report", "version": "1.0.0", "mapping": {"path": mapping.path.name, "sha256": mapping.sha256}, "source": inventory["source"], "summary": {"evaluated": len(mapped) + len(unmapped), "mapped": len(mapped), "unmapped": len(unmapped), "stale-mappings": len(stale)}, "mapped": mapped, "unmapped": unmapped, "stale-mappings": [{"benchmark-id": benchmark, "rule-id": rule} for benchmark, rule in stale]}
