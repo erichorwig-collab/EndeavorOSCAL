@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 from pathlib import Path
 import random
 import subprocess
@@ -23,6 +24,8 @@ XCCDF_SCHEMA = ROOT / "endeavor" / "schemas" / "xccdf" / "1.2" / "xccdf_1.2.xsd"
 XCCDF_FIXTURE = ROOT / "fixtures" / "xccdf-results" / "openscap-1.4.4-results-xccdf12.xml"
 XCCDF_GOLDEN = ROOT / "fixtures" / "xccdf-results" / "openscap-1.4.4-results-xccdf12.inventory.json"
 XCCDF_PROVENANCE_FIXTURE = ROOT / "fixtures" / "xccdf-results" / "provenance-companion-xccdf12.xml"
+XCCDF_TAILORING = ROOT / "fixtures" / "xccdf-tailoring" / "openscap-1.4.4-baseline.tailoring.xml"
+XCCDF_BASELINE = ROOT / "fixtures" / "xccdf-tailoring" / "openscap-1.4.4-baseline.xccdf.xml"
 ARF_FIXTURE = ROOT / "fixtures" / "arf" / "openscap-1.4.4-xccdf-overrides.arf.xml"
 ARF_GOLDEN = ROOT / "fixtures" / "arf" / "openscap-1.4.4-xccdf-overrides.manifest.json"
 COMPATIBILITY_MATRIX = ROOT / "docs" / "compatibility-matrix.md"
@@ -30,6 +33,13 @@ XSD_NS = "{http://www.w3.org/2001/XMLSchema}"
 
 
 class VerticalSliceTests(unittest.TestCase):
+    def test_pinned_xccdf_tailoring_inputs_validate_and_hash(self) -> None:
+        schema = ET.XMLSchema(ET.parse(str(XCCDF_SCHEMA)))
+        self.assertTrue(schema.validate(ET.parse(str(XCCDF_BASELINE))), schema.error_log)
+        self.assertTrue(schema.validate(ET.parse(str(XCCDF_TAILORING))), schema.error_log)
+        self.assertEqual(hashlib.sha256(XCCDF_BASELINE.read_bytes()).hexdigest(), "401a2403a88a12922d833d95bc4e0b69b71da5757bf8e8269df9c95e0520c4e0")
+        self.assertEqual(hashlib.sha256(XCCDF_TAILORING.read_bytes()).hexdigest(), "74f23255019049cad1e87bad47a367d418bf484febdf11489ee3e91421fb7a2a")
+
     def test_compatibility_matrix_names_tested_profiles(self) -> None:
         matrix = COMPATIBILITY_MATRIX.read_text(encoding="utf-8")
         for value in ("OVAL 5.11.3", "XCCDF 1.2.1", "ARF 1.1", "OpenSCAP 1.4.4", "fixtures/generated-sanitized/", "fixtures/xccdf-results/", "fixtures/arf/"):
