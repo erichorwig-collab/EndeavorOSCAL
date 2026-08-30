@@ -216,6 +216,20 @@ class VerticalSliceTests(unittest.TestCase):
             validate = subprocess.run(["npm", "run", "validate:oscal", "--", "endeavor/schemas/oscal-1.2.0/assessment-results.schema.json", str(output)], cwd=ROOT, text=True, capture_output=True, check=False)
             self.assertEqual(validate.returncode, 0, validate.stderr)
 
+    def test_findings_lists_explicit_mapped_findings(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "result.json"
+            convert = subprocess.run([sys.executable, "-m", "endeavor", "convert", "--results", str(RESULTS / "fail.xml"), "--definitions", str(DEFINITIONS), "--mapping", str(MAPPING), "--output", str(output)], cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(convert.returncode, 0, convert.stderr)
+            completed = subprocess.run([sys.executable, "-m", "endeavor", "findings", "--results", str(output)], cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(completed.returncode, 0, completed.stderr)
+            report = json.loads(completed.stdout)
+            self.assertEqual(report["summary"], {"findings": 1})
+            self.assertEqual(report["assessment-results"]["path"], "result.json")
+            self.assertEqual(report["findings"][0]["oval-definition-id"], "oval:org.endeavor:def:1")
+            self.assertEqual(report["findings"][0]["target"], {"type": "objective-id", "target-id": "ac-2.1_obj.1", "state": "not-satisfied", "reason": "fail"})
+            self.assertNotIn(directory, completed.stdout)
+
     def test_mapping_does_not_infer_finding_for_unknown_oval_result(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             output = Path(directory) / "result.json"
