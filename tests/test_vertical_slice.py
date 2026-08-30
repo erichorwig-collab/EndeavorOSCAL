@@ -722,6 +722,18 @@ class VerticalSliceTests(unittest.TestCase):
             self.assertEqual(set(record["artifacts"]), {"pass.json", "fail.json", "mapping-report.html"})
             self.assertTrue(all(len(value) == 64 for value in record["artifacts"].values()))
 
+    def test_vulnerability_exceptions_require_a_nonexpired_exact_disposition(self) -> None:
+        command = [sys.executable, "scripts/validate-vulnerability-exceptions.py"]
+        accepted = subprocess.run(command, cwd=ROOT, text=True, capture_output=True, check=False)
+        self.assertEqual(accepted.returncode, 0, accepted.stderr)
+        self.assertEqual(json.loads(accepted.stdout)["status"], "passed")
+        with tempfile.TemporaryDirectory() as directory:
+            record = Path(directory) / "expired.json"
+            record.write_text(json.dumps({"format": "endeavor-vulnerability-exceptions", "version": "1.0.0", "exceptions": [{"id": "EXC-0001", "package": "example", "ecosystem": "npm", "advisory": "GHSA-aaaa-bbbb-cccc", "affected-range": "< 1.0.0", "reason": "fixture", "compensating-control": "fixture", "approved-by": "maintainer", "approved-at": "2025-01-01T00:00:00Z", "expires-at": "2025-01-02T00:00:00Z"}]}), encoding="utf-8")
+            rejected = subprocess.run(command + ["--record", str(record)], cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(rejected.returncode, 1)
+            self.assertIn("expired", rejected.stderr)
+
     def test_unknown_extension_cannot_be_authorized_by_instance_schema_hint(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "unknown-extension.xml"

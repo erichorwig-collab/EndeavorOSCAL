@@ -21,8 +21,17 @@ validation dependency closure used by the current OVAL vertical slice.
   license, supported Python/Node versions, and relevant security advisories.
 - Regenerate the SBOM, run the focused test suite, and retain the CI result in
   the change record before merging.
-- Vulnerability scanning is advisory until a trusted scanner and an exception
-  process are selected. It is not represented as a passing security gate yet.
+- GitHub Dependency Review is the pull-request gate for newly introduced high
+  or critical vulnerabilities in runtime and development dependencies.
+  Dependabot supplies update pull requests. Weekly OSV-Scanner inventory is an
+  independent advisory signal; its changing advisory data does not by itself
+  block a release.
+- A vulnerability exception must be an exact, approved, version-controlled
+  record in `security/vulnerability-exceptions.json`. It needs the advisory,
+  package, affected range, rationale, compensating control, approver, and a
+  future expiry. Run `python3 scripts/validate-vulnerability-exceptions.py`.
+  An exception never silently disables a scanner or creates an open-ended
+  waiver.
 
 Vendored OSCAL and OVAL schemas are separately tracked with source and tree
 hashes in `endeavor/schemas/MANIFEST.md`; they are not package-manager

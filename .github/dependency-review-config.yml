@@ -1,0 +1,8 @@
+fail_on_severity: high
+fail_on_scopes:
+  - runtime
+  - development
+license_check: false
+vulnerability_check: true
+allow_ghsas: []
+comment_summary_in_pr: on-failure

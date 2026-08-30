@@ -31,6 +31,8 @@ the source tests, SBOM comparison, and representative alpha workflow.
 | Secure development process | Implemented baseline | NIST SSDF-aligned source validation, reproducible test/SBOM checks, and documented disclosure process; this is not an SSDF certification. |
 | Vulnerability disclosure | Implemented | `SECURITY.md` and GitHub private vulnerability reporting; no public vulnerability details. |
 | Dependency update visibility | Implemented advisory | `.github/dependabot.yml` opens reviewable update pull requests for Actions, npm, and pip; it does not auto-merge. |
+| Dependency vulnerability gate | Implemented | `.github/workflows/dependency-review.yml` rejects newly introduced high/critical vulnerabilities; exceptions are exact, approved, expiring records. |
+| Independent vulnerability inventory | Implemented advisory | `.github/workflows/osv-scanner.yml` runs weekly/manual OSV scans and uploads SARIF without making database drift a merge gate. |
 | Supply-chain posture visibility | Implemented advisory | `.github/workflows/scorecard.yml` runs the official OpenSSF Scorecard workflow weekly and on `main`, retains SARIF for five days, and uploads it to code scanning. CI actions are pinned to full commit SHAs. No score threshold is a merge or release gate. |
 | Software inventory | Implemented | Deterministic CycloneDX 1.5 `sbom.cdx.json`, checked in CI. |
 | Release provenance | Deferred | Signing and SLSA provenance await a release-artifact and publication policy. |

@@ -7,6 +7,8 @@ import hashlib
 import json
 from pathlib import Path
 import re
+import subprocess
+import sys
 import sys
 
 
@@ -15,11 +17,15 @@ REQUIRED_FILES = (
     "SECURITY.md",
     ".github/dependabot.yml",
     ".github/workflows/scorecard.yml",
+    ".github/workflows/dependency-review.yml",
+    ".github/workflows/osv-scanner.yml",
     "docs/alpha-acceptance-record-2026-08-30.md",
     "docs/compatibility-matrix.md",
     "docs/dependency-policy.md",
     "docs/governance-readiness.md",
     "docs/quality-and-accessibility.md",
+    "security/vulnerability-exceptions.json",
+    "security/vulnerability-exceptions.schema.json",
     "sbom.cdx.json",
 )
 ACCEPTANCE_RECORD = "docs/alpha-acceptance-record-2026-08-30.md"
@@ -45,7 +51,10 @@ def main() -> int:
         scorecard = scorecard_path.read_text(encoding="utf-8")
         if "permissions: read-all" not in scorecard or "ossf/scorecard-action@" not in scorecard:
             missing.append("least-privilege Scorecard workflow")
-    for relative in (".github/workflows/validate.yml", ".github/workflows/scorecard.yml"):
+    exception_check = subprocess.run([sys.executable, str(ROOT / "scripts" / "validate-vulnerability-exceptions.py")], cwd=ROOT, text=True, capture_output=True, check=False)
+    if exception_check.returncode:
+        missing.append("valid, unexpired vulnerability exception record")
+    for relative in (".github/workflows/validate.yml", ".github/workflows/scorecard.yml", ".github/workflows/dependency-review.yml", ".github/workflows/osv-scanner.yml"):
         path = ROOT / relative
         if path.is_file():
             actions = re.findall(r"^\s*uses:\s+[^@\s]+@([^\s#]+)", path.read_text(encoding="utf-8"), flags=re.MULTILINE)
