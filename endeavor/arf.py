@@ -17,6 +17,8 @@ CORE_NS = "http://scap.nist.gov/schema/reporting-core/1.1"
 DS_NS = "http://scap.nist.gov/schema/scap/source/1.2"
 XLINK_HREF = "{http://www.w3.org/1999/xlink}href"
 XCCDF_NS = "http://checklists.nist.gov/xccdf/1.2"
+OVAL_RESULTS_NS = "http://oval.mitre.org/XMLSchema/oval-results-5"
+VALID_OVAL_RESULTS = frozenset({"true", "false", "unknown", "error", "not evaluated", "not applicable"})
 FORBIDDEN_XML = re.compile(br"<!DOCTYPE|<!ENTITY", re.I)
 
 
@@ -150,6 +152,24 @@ def _linked_xccdf_result(report: ET._Element, collection: dict[str, object], pat
     }
 
 
+def _oval_result(report: ET._Element, path: Path) -> dict[str, object]:
+    content = report.find(_q(ARF_NS, "content"))
+    result = content[0] if content is not None and len(content) == 1 else None
+    if result is None or result.tag != _q(OVAL_RESULTS_NS, "oval_results"):
+        raise OvalInputError(f"ARF OVAL report content is invalid: {_safe(path)}")
+    definitions = []
+    identifiers: set[str] = set()
+    for item in result.findall(f".//{_q(OVAL_RESULTS_NS, 'definition')}"):
+        identifier, outcome = item.get("definition_id"), item.get("result")
+        if not identifier or identifier in identifiers or outcome not in VALID_OVAL_RESULTS:
+            raise OvalInputError(f"ARF OVAL definition results are invalid: {_safe(path)}")
+        identifiers.add(identifier)
+        definitions.append({"id": identifier, "result": outcome})
+    if not definitions:
+        raise OvalInputError(f"ARF OVAL report has no definition results: {_safe(path)}")
+    return {"definition-results": definitions}
+
+
 def inspect_arf(path: Path) -> dict[str, object]:
     data = _read(path)
     try:
@@ -196,6 +216,8 @@ def inspect_arf(path: Path) -> dict[str, object]:
             report["collection-id"] = collection_id
             report["asset-id"] = asset_id
             report["xccdf-result"] = _linked_xccdf_result(report["_element"], collections[collection_id], path)
+        elif content["namespace"] == OVAL_RESULTS_NS and content["name"] == "oval_results":
+            report["oval-result"] = _oval_result(report["_element"], path)
         del report["_element"]
     return {
         "format": "endeavor-arf-manifest", "version": "1.0.0",

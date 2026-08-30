@@ -376,7 +376,123 @@
         "namespace": "http://oval.mitre.org/XMLSchema/oval-results-5",
         "sha256": "0fdca7429369156a2a84f7400aaef8401ffc5882fc95c2a161d7a779e4d48239"
       },
-      "id": "oval2"
+      "id": "oval2",
+      "oval-result": {
+        "definition-results": [
+          {
+            "id": "oval:ssg:def:163",
+            "result": "true"
+          },
+          {
+            "id": "oval:ssg:def:161",
+            "result": "true"
+          },
+          {
+            "id": "oval:ssg:def:159",
+            "result": "false"
+          },
+          {
+            "id": "oval:ssg:def:157",
+            "result": "true"
+          },
+          {
+            "id": "oval:ssg:def:154",
+            "result": "true"
+          },
+          {
+            "id": "oval:ssg:def:151",
+            "result": "false"
+          },
+          {
+            "id": "oval:ssg:def:149",
+            "result": "true"
+          },
+          {
+            "id": "oval:ssg:def:146",
+            "result": "true"
+          },
+          {
+            "id": "oval:ssg:def:144",
+            "result": "true"
+          },
+          {
+            "id": "oval:ssg:def:142",
+            "result": "false"
+          },
+          {
+            "id": "oval:ssg:def:140",
+            "result": "true"
+          },
+          {
+            "id": "oval:ssg:def:137",
+            "result": "false"
+          },
+          {
+            "id": "oval:ssg:def:135",
+            "result": "false"
+          },
+          {
+            "id": "oval:ssg:def:133",
+            "result": "false"
+          },
+          {
+            "id": "oval:ssg:def:130",
+            "result": "false"
+          },
+          {
+            "id": "oval:ssg:def:129",
+            "result": "false"
+          },
+          {
+            "id": "oval:ssg:def:127",
+            "result": "false"
+          },
+          {
+            "id": "oval:ssg:def:124",
+            "result": "true"
+          },
+          {
+            "id": "oval:ssg:def:122",
+            "result": "not evaluated"
+          },
+          {
+            "id": "oval:ssg:def:120",
+            "result": "false"
+          },
+          {
+            "id": "oval:ssg:def:118",
+            "result": "true"
+          },
+          {
+            "id": "oval:ssg:def:116",
+            "result": "false"
+          },
+          {
+            "id": "oval:ssg:def:115",
+            "result": "false"
+          },
+          {
+            "id": "oval:ssg:def:113",
+            "result": "false"
+          },
+          {
+            "id": "oval:ssg:def:111",
+            "result": "false"
+          },
+          {
+            "id": "oval:ssg:def:109",
+            "result": "false"
+          },
+          {
+            "id": "oval:ssg:def:107",
+            "result": "true"
+          },
+          {
+            "id": "oval:ssg:def:100",
+            "result": "not evaluated"
+          }
+        ]
+      }
     },
     {
       "content": {
@@ -385,7 +501,51 @@
         "namespace": "http://oval.mitre.org/XMLSchema/oval-results-5",
         "sha256": "a7287652556e6fcb23ab9e7f10022b4d41e54ef6171a9798f0e36c2a8f4dfd8d"
       },
-      "id": "oval3"
+      "id": "oval3",
+      "oval-result": {
+        "definition-results": [
+          {
+            "id": "oval:org.open-scap.cpe.rhel:def:7",
+            "result": "not evaluated"
+          },
+          {
+            "id": "oval:org.open-scap.cpe.rhel:def:6",
+            "result": "not evaluated"
+          },
+          {
+            "id": "oval:org.open-scap.cpe.rhel:def:5",
+            "result": "not evaluated"
+          },
+          {
+            "id": "oval:org.open-scap.cpe.rhel:def:1",
+            "result": "not evaluated"
+          },
+          {
+            "id": "oval:org.open-scap.cpe.fedora:def:21",
+            "result": "false"
+          },
+          {
+            "id": "oval:org.open-scap.cpe.fedora:def:20",
+            "result": "true"
+          },
+          {
+            "id": "oval:org.open-scap.cpe.fedora:def:19",
+            "result": "false"
+          },
+          {
+            "id": "oval:org.open-scap.cpe.fedora:def:18",
+            "result": "not evaluated"
+          },
+          {
+            "id": "oval:org.open-scap.cpe.fedora:def:17",
+            "result": "not evaluated"
+          },
+          {
+            "id": "oval:org.open-scap.cpe.fedora:def:16",
+            "result": "not evaluated"
+          }
+        ]
+      }
     },
     {
       "content": {
@@ -394,7 +554,15 @@
         "namespace": "http://oval.mitre.org/XMLSchema/oval-results-5",
         "sha256": "b8db0bccc28c9114339320a8ec131e3737caf5f35fa0edac1b7dede4b112e863"
       },
-      "id": "oval4"
+      "id": "oval4",
+      "oval-result": {
+        "definition-results": [
+          {
+            "id": "oval:ssg:def:100",
+            "result": "false"
+          }
+        ]
+      }
     }
   ],
   "source": {

@@ -50,6 +50,9 @@ class VerticalSliceTests(unittest.TestCase):
         self.assertEqual(linked["target-addresses"], ["127.0.0.1", "0:0:0:0:0:0:0:1"])
         self.assertEqual(linked["target-references"], [{"href": "", "name": "asset0", "system": "http://scap.nist.gov/schema/asset-identification/1.1"}])
         self.assertEqual({item["result"] for item in linked["rule-results"]}, {"pass", "fail", "notchecked", "notselected"})
+        oval_reports = {item["id"]: item["oval-result"]["definition-results"] for item in payload["reports"] if "oval-result" in item}
+        self.assertEqual({name: len(results) for name, results in oval_reports.items()}, {"oval2": 28, "oval3": 10, "oval4": 1})
+        self.assertEqual(oval_reports["oval3"][0]["result"], "not evaluated")
         self.assertEqual(completed.stdout.encode(), ARF_GOLDEN.read_bytes())
 
     def test_inspect_arf_rejects_doctype_and_multiple_content(self) -> None:
