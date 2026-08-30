@@ -103,12 +103,12 @@
         "pkg:npm/require-from-string@2.0.2",
         "pkg:pypi/lxml@6.1.2"
       ],
-      "ref": "pkg:generic/endeavor-oscal@0.1.0a0"
+      "ref": "pkg:generic/endeavor-oscal@0.1.0a1"
     }
   ],
   "metadata": {
     "component": {
-      "bom-ref": "pkg:generic/endeavor-oscal@0.1.0a0",
+      "bom-ref": "pkg:generic/endeavor-oscal@0.1.0a1",
       "licenses": [
         {
           "license": {
@@ -117,12 +117,12 @@
         }
       ],
       "name": "endeavor-oscal",
-      "purl": "pkg:generic/endeavor-oscal@0.1.0a0",
+      "purl": "pkg:generic/endeavor-oscal@0.1.0a1",
       "type": "application",
-      "version": "0.1.0a0"
+      "version": "0.1.0a1"
     }
   },
-  "serialNumber": "urn:uuid:e407f0e0-65dc-5e29-a5a6-f05c468a582c",
+  "serialNumber": "urn:uuid:228a700f-34f6-5836-832d-c718adffdd1e",
   "specVersion": "1.5",
   "version": 1
 }
