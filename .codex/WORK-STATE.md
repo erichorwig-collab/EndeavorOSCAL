@@ -56,6 +56,11 @@ the available Docker daemon is not accessible to this session. The configured
 Arch repositories contain no `openscap` package; await a user-authorized
 evaluator environment or an authorized sanitized pair.
 
+OpenSCAP 1.4.3 supports OVAL only through 5.11.3, so even an authorized
+OpenSCAP/Docker environment cannot generate a genuine 5.12/5.12.2 pair. Do not
+expand Endeavor's compatibility contract to 5.11.3 without an explicit product
+decision and corresponding regression coverage.
+
 ## Resume procedure
 
 1. Read this file and `git status --short`.
