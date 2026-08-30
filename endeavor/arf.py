@@ -14,6 +14,9 @@ MAX_ARF_BYTES = 5 * 1024 * 1024
 MAX_ARF_ELEMENTS = 50_000
 ARF_NS = "http://scap.nist.gov/schema/asset-reporting-format/1.1"
 CORE_NS = "http://scap.nist.gov/schema/reporting-core/1.1"
+DS_NS = "http://scap.nist.gov/schema/scap/source/1.2"
+XLINK_HREF = "{http://www.w3.org/1999/xlink}href"
+XCCDF_NS = "http://checklists.nist.gov/xccdf/1.2"
 FORBIDDEN_XML = re.compile(br"<!DOCTYPE|<!ENTITY", re.I)
 
 
@@ -53,6 +56,57 @@ def _content_record(parent: ET._Element, path: Path) -> dict[str, str | None]:
     }
 
 
+def _unique_by_id(items: list[ET._Element], label: str, path: Path) -> dict[str, ET._Element]:
+    records: dict[str, ET._Element] = {}
+    for item in items:
+        identifier = item.get("id")
+        if not identifier or identifier in records:
+            raise OvalInputError(f"ARF {label} identifiers must be unique: {_safe(path)}")
+        records[identifier] = item
+    return records
+
+
+def _collection_manifest(request: ET._Element, path: Path) -> dict[str, object]:
+    content = request.find(_q(ARF_NS, "content"))
+    if content is None or len(content) != 1 or content[0].tag != _q(DS_NS, "data-stream-collection"):
+        raise OvalInputError(f"ARF report request must contain one data-stream collection: {_safe(path)}")
+    collection = content[0]
+    components = _unique_by_id(collection.findall(_q(DS_NS, "component")), "component", path)
+    streams = []
+    for stream in collection.findall(_q(DS_NS, "data-stream")):
+        component_refs = []
+        for reference in stream.findall(f".//{_q(DS_NS, 'component-ref')}"):
+            href = reference.get(XLINK_HREF, "")
+            if not href.startswith("#") or href[1:] not in components:
+                raise OvalInputError(f"ARF component references must be local and resolvable: {_safe(path)}")
+            component = components[href[1:]]
+            payload = component[0] if len(component) == 1 else None
+            if payload is None:
+                raise OvalInputError(f"ARF components must contain exactly one payload: {_safe(path)}")
+            component_refs.append({
+                "id": reference.get("id"), "component-id": href[1:],
+                "section": ET.QName(reference.getparent()).localname,
+                "payload": {"namespace": ET.QName(payload).namespace, "name": ET.QName(payload).localname, "id": payload.get("id")},
+                "sha256": hashlib.sha256(ET.tostring(component, method="c14n", with_comments=False)).hexdigest(),
+            })
+        streams.append({"id": stream.get("id"), "scap-version": stream.get("scap-version"), "use-case": stream.get("use-case"), "components": component_refs})
+    if not streams:
+        raise OvalInputError(f"ARF collection must contain a data stream: {_safe(path)}")
+    return {"id": collection.get("id"), "schematron-version": collection.get("schematron-version"), "data-streams": streams}
+
+
+def _single_relationship(relationships: list[dict[str, object]], relationship_type: str, subject: str, path: Path) -> str:
+    matches = [item["references"] for item in relationships if item["type"] == relationship_type and item["subject"] == subject]
+    if len(matches) != 1 or len(matches[0]) != 1:
+        raise OvalInputError(f"ARF report linkage is ambiguous or missing: {_safe(path)}")
+    return matches[0][0]
+
+
+def _section_items(root: ET._Element, section: str, item: str) -> list[ET._Element]:
+    container = root.find(_q(ARF_NS, section))
+    return container.findall(_q(ARF_NS, item)) if container is not None else []
+
+
 def inspect_arf(path: Path) -> dict[str, object]:
     data = _read(path)
     try:
@@ -63,26 +117,40 @@ def inspect_arf(path: Path) -> dict[str, object]:
         raise OvalInputError(f"ARF input exceeds {MAX_ARF_ELEMENTS} element limit: {_safe(path)}")
     if root.tag != _q(ARF_NS, "asset-report-collection"):
         raise OvalInputError(f"unsupported ARF root element: {_safe(path)}")
-    assets = [{"id": item.get("id")} for item in root.findall(f".//{_q(ARF_NS, 'asset')}")]
+    assets = [{"id": item.get("id")} for item in _section_items(root, "assets", "asset")]
+    if len({item["id"] for item in assets if item["id"]}) != len(assets) or any(not item["id"] for item in assets):
+        raise OvalInputError(f"ARF asset identifiers must be unique: {_safe(path)}")
+    asset_ids = {item["id"] for item in assets if item["id"]}
     reports = []
     identifiers: set[str] = set()
-    for item in root.findall(f".//{_q(ARF_NS, 'report')}"):
+    for item in _section_items(root, "reports", "report"):
         identifier = item.get("id")
         if not identifier or identifier in identifiers:
             raise OvalInputError(f"ARF report identifiers must be unique: {_safe(path)}")
         identifiers.add(identifier)
         reports.append({"id": identifier, "content": _content_record(item, path)})
     requests = []
-    for item in root.findall(f".//{_q(ARF_NS, 'report-request')}"):
+    for item in _section_items(root, "report-requests", "report-request"):
         identifier = item.get("id")
         if not identifier or identifier in identifiers:
             raise OvalInputError(f"ARF report identifiers must be unique: {_safe(path)}")
         identifiers.add(identifier)
-        requests.append({"id": identifier, "content": _content_record(item, path)})
+        requests.append({"id": identifier, "content": _content_record(item, path), "collection": _collection_manifest(item, path)})
     relationships = []
-    for item in root.findall(f".//{_q(CORE_NS, 'relationship')}"):
+    relationship_container = root.find(_q(CORE_NS, "relationships"))
+    for item in relationship_container.findall(_q(CORE_NS, "relationship")) if relationship_container is not None else []:
         references = [(entry.text or "").strip() for entry in item.findall(_q(CORE_NS, "ref")) if (entry.text or "").strip()]
         relationships.append({"type": item.get("type"), "subject": item.get("subject"), "references": references})
+    request_ids = {item["id"] for item in requests}
+    for report in reports:
+        content = report["content"]
+        if content["namespace"] == XCCDF_NS and content["name"] == "TestResult":
+            collection_id = _single_relationship(relationships, "arfvocab:createdFor", report["id"], path)
+            asset_id = _single_relationship(relationships, "arfrel:isAbout", report["id"], path)
+            if collection_id not in request_ids or asset_id not in asset_ids:
+                raise OvalInputError(f"ARF report linkage does not resolve locally: {_safe(path)}")
+            report["collection-id"] = collection_id
+            report["asset-id"] = asset_id
     return {
         "format": "endeavor-arf-manifest", "version": "1.0.0",
         "source": {"path": path.name, "sha256": hashlib.sha256(data).hexdigest(), "arf-version": "1.1"},

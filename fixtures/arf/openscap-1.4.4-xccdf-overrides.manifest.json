@@ -23,6 +23,74 @@
   ],
   "report-requests": [
     {
+      "collection": {
+        "data-streams": [
+          {
+            "components": [
+              {
+                "component-id": "scap_org.open-scap_comp_output--ssg-fedora-cpe-dictionary.xml",
+                "id": "scap_org.open-scap_cref_output--ssg-fedora-cpe-dictionary.xml",
+                "payload": {
+                  "id": null,
+                  "name": "cpe-list",
+                  "namespace": "http://cpe.mitre.org/dictionary/2.0"
+                },
+                "section": "dictionaries",
+                "sha256": "451ffb4cf9fd0cf3bff8072cd1c09d16f404d6f04043b995ffc46986e36d4af1"
+              },
+              {
+                "component-id": "scap_org.open-scap_comp_ssg-fedora-xccdf-1.2.xml",
+                "id": "scap_org.open-scap_cref_ssg-fedora-xccdf-1.2.xml",
+                "payload": {
+                  "id": "xccdf_org.ssgproject.content_benchmark_FEDORA",
+                  "name": "Benchmark",
+                  "namespace": "http://checklists.nist.gov/xccdf/1.2"
+                },
+                "section": "checklists",
+                "sha256": "a8d9e493aec9349a336426b16b534cfe290670a7c789150c4ebdbbf03c17ed42"
+              },
+              {
+                "component-id": "scap_org.open-scap_comp_ssg-fedora-oval.xml",
+                "id": "scap_org.open-scap_cref_ssg-fedora-oval.xml",
+                "payload": {
+                  "id": null,
+                  "name": "oval_definitions",
+                  "namespace": "http://oval.mitre.org/XMLSchema/oval-definitions-5"
+                },
+                "section": "checks",
+                "sha256": "91e66a5d699b0314351fcc4dbaab115461cc0894d36334c22d03a76daf6d2383"
+              },
+              {
+                "component-id": "scap_org.open-scap_comp_output--ssg-fedora-cpe-oval.xml",
+                "id": "scap_org.open-scap_cref_output--ssg-fedora-cpe-oval.xml",
+                "payload": {
+                  "id": null,
+                  "name": "oval_definitions",
+                  "namespace": "http://oval.mitre.org/XMLSchema/oval-definitions-5"
+                },
+                "section": "checks",
+                "sha256": "aca9672698e7f4159b62a059f3b7d7faec3bc1bf301540c0c0d881851ab942da"
+              },
+              {
+                "component-id": "scap_org.open-scap_comp_output--ssg-fedora-oval.xml",
+                "id": "scap_org.open-scap_cref_output--ssg-fedora-oval.xml",
+                "payload": {
+                  "id": null,
+                  "name": "oval_definitions",
+                  "namespace": "http://oval.mitre.org/XMLSchema/oval-definitions-5"
+                },
+                "section": "checks",
+                "sha256": "9de1cff44e173ed754e80a1278f6ef9bf91712a917e76e92329a344f24275230"
+              }
+            ],
+            "id": "scap_org.open-scap_datastream_from_xccdf_ssg-fedora-xccdf-1.2.xml",
+            "scap-version": "1.2",
+            "use-case": "OTHER"
+          }
+        ],
+        "id": "scap_org.open-scap_collection_from_xccdf_ssg-fedora-xccdf-1.2.xml",
+        "schematron-version": "1.2"
+      },
       "content": {
         "id": "scap_org.open-scap_collection_from_xccdf_ssg-fedora-xccdf-1.2.xml",
         "name": "data-stream-collection",
@@ -34,6 +102,8 @@
   ],
   "reports": [
     {
+      "asset-id": "asset0",
+      "collection-id": "collection1",
       "content": {
         "id": "xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common",
         "name": "TestResult",

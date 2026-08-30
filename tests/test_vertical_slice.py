@@ -36,6 +36,9 @@ class VerticalSliceTests(unittest.TestCase):
         self.assertEqual(payload["source"]["sha256"], "7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab")
         self.assertEqual([item["id"] for item in payload["reports"]], ["xccdf1", "oval2", "oval3", "oval4"])
         self.assertEqual(payload["reports"][0]["content"]["name"], "TestResult")
+        self.assertEqual(payload["reports"][0]["collection-id"], "collection1")
+        self.assertEqual(payload["reports"][0]["asset-id"], "asset0")
+        self.assertEqual(len(payload["report-requests"][0]["collection"]["data-streams"][0]["components"]), 5)
         self.assertEqual(completed.stdout.encode(), ARF_GOLDEN.read_bytes())
 
     def test_inspect_arf_rejects_doctype_and_multiple_content(self) -> None:
@@ -50,6 +53,21 @@ class VerticalSliceTests(unittest.TestCase):
             completed = subprocess.run([sys.executable, "-m", "endeavor", "inspect-arf", "--results", str(ambiguous)], cwd=ROOT, text=True, capture_output=True, check=False)
             self.assertEqual(completed.returncode, 3)
             self.assertIn("exactly one component", completed.stderr)
+
+    def test_inspect_arf_rejects_remote_component_and_ambiguous_xccdf_linkage(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            remote = Path(directory) / "remote.arf.xml"
+            source = ARF_FIXTURE.read_text(encoding="utf-8").replace('#scap_org.open-scap_comp_ssg-fedora-xccdf-1.2.xml', 'https://invalid.example/component.xml', 1)
+            remote.write_text(source, encoding="utf-8")
+            completed = subprocess.run([sys.executable, "-m", "endeavor", "inspect-arf", "--results", str(remote)], cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(completed.returncode, 3)
+            self.assertIn("local and resolvable", completed.stderr)
+            ambiguous = Path(directory) / "ambiguous-link.arf.xml"
+            source = ARF_FIXTURE.read_text(encoding="utf-8").replace('</core:relationships>', '<core:relationship type="arfvocab:createdFor" subject="xccdf1"><core:ref>collection1</core:ref></core:relationship></core:relationships>', 1)
+            ambiguous.write_text(source, encoding="utf-8")
+            completed = subprocess.run([sys.executable, "-m", "endeavor", "inspect-arf", "--results", str(ambiguous)], cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(completed.returncode, 3)
+            self.assertIn("linkage is ambiguous", completed.stderr)
 
     def test_vendored_xccdf_schema_bundle_compiles(self) -> None:
         self.assertIsNotNone(ET.XMLSchema(ET.parse(str(XCCDF_SCHEMA))))
