@@ -34,3 +34,7 @@ third-party scan results without an explicit redistribution review.
 The fixture source and licensing policy follows the
 [OVAL FAQ](https://ovalproject.github.io/getting-started/faqs/) and the
 [OVAL Community repository](https://github.com/OVAL-Community/OVAL).
+
+`xccdf-results/` is the Phase 4 XCCDF intake corpus. Its upstream provenance,
+hash, and synthetic-data review are recorded beside the fixture. It is schema
+validated but is not yet accepted by a public Endeavor XCCDF command.

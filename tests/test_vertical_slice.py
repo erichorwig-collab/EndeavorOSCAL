@@ -20,12 +20,17 @@ GOLDEN = ROOT / "fixtures" / "oscal-golden"
 MAPPING = ROOT / "fixtures" / "mappings" / "example-v1.json"
 SCHEMA_ROOT = ROOT / "endeavor" / "schemas" / "oval" / "5.11.3"
 XCCDF_SCHEMA = ROOT / "endeavor" / "schemas" / "xccdf" / "1.2" / "xccdf_1.2.xsd"
+XCCDF_FIXTURE = ROOT / "fixtures" / "xccdf-results" / "openscap-1.4.4-results-xccdf12.xml"
 XSD_NS = "{http://www.w3.org/2001/XMLSchema}"
 
 
 class VerticalSliceTests(unittest.TestCase):
     def test_vendored_xccdf_schema_bundle_compiles(self) -> None:
         self.assertIsNotNone(ET.XMLSchema(ET.parse(str(XCCDF_SCHEMA))))
+
+    def test_upstream_xccdf_results_fixture_validates_with_pinned_schema(self) -> None:
+        schema = ET.XMLSchema(ET.parse(str(XCCDF_SCHEMA)))
+        self.assertTrue(schema.validate(ET.parse(str(XCCDF_FIXTURE))), schema.error_log)
 
     def test_results_wrapper_has_exact_pinned_import_graph(self) -> None:
         wrapper = SCHEMA_ROOT / "endeavor-results-wrapper.xsd"
