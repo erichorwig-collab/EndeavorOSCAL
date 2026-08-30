@@ -7,6 +7,8 @@ source_dir=${1:-/shared/EndeavorOSCAL}
 work_dir=${ENDEAVOR_WORK_DIR:-/tmp/endeavor-work}
 venv_dir=${ENDEAVOR_VENV_DIR:-/tmp/endeavor-venv}
 package_cache=${ENDEAVOR_APK_CACHE:-/shared/apk-cache-v3.24}
+wheelhouse=${ENDEAVOR_WHEELHOUSE:-/shared/python-wheelhouse}
+node_modules_cache=${ENDEAVOR_NODE_MODULES_CACHE:-/shared/node_modules}
 
 if [ "$(id -u)" -ne 0 ]; then
   echo "Run this script as the VM's local root user." >&2
@@ -39,8 +41,18 @@ fi
 
 cp -a "$source_dir" "$work_dir"
 python3 -m venv "$venv_dir"
-"$venv_dir/bin/python" -m pip install --disable-pip-version-check -r "$work_dir/requirements.txt"
-(cd "$work_dir" && npm ci)
+
+if [ -d "$wheelhouse" ] && [ -f "$wheelhouse/lxml-6.1.2-cp314-cp314-musllinux_1_2_x86_64.whl" ]; then
+  "$venv_dir/bin/python" -m pip install --disable-pip-version-check --no-index --find-links "$wheelhouse" -r "$work_dir/requirements.txt"
+else
+  "$venv_dir/bin/python" -m pip install --disable-pip-version-check -r "$work_dir/requirements.txt"
+fi
+
+if [ -d "$node_modules_cache" ]; then
+  cp -a "$node_modules_cache" "$work_dir/node_modules"
+else
+  (cd "$work_dir" && npm ci)
+fi
 
 cat <<EOF
 
