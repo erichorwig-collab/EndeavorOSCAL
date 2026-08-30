@@ -1,5 +1,5 @@
 schema: endeavor-fixtures/v1
-oval_schema: "5.12.2"
+oval_schema: "5.11.3"
 license_basis: "Synthetic fixtures authored by Endeavor; OVAL Terms of Use for any vendored definitions"
 conversion_contract: "../docs/v0.1-oval-results-mapping.md"
 fixtures:
@@ -54,3 +54,12 @@ fixtures:
 definitions:
   file: oval-definitions/definitions.xml
   license_basis: "Synthetic fixture authored by Endeavor"
+generated_sanitized:
+  id: openscap-family-5113
+  results: generated-sanitized/oval-results.xml
+  definitions: generated-sanitized/oval-definitions.xml
+  definition_result: "true"
+  evaluator: "OpenSCAP 1.4.2 on Fedora 41 container"
+  declared_oval_core_version: "5.11.3"
+  provenance: generated-sanitized/PROVENANCE.md
+  license_basis: "Project-authored definition and generated-sanitized evaluator output"

@@ -4,7 +4,7 @@
   <generator>
     <oval:product_name>Endeavor synthetic fixtures</oval:product_name>
     <oval:product_version>0.1.0</oval:product_version>
-    <oval:schema_version>5.12</oval:schema_version>
+    <oval:schema_version>5.11.3</oval:schema_version>
     <oval:timestamp>2026-08-29T00:00:00Z</oval:timestamp>
   </generator>
   <definitions>

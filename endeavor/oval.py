@@ -20,7 +20,7 @@ OVAL_DEFINITIONS_NS = "http://oval.mitre.org/XMLSchema/oval-definitions-5"
 OVAL_COMMON_NS = "http://oval.mitre.org/XMLSchema/oval-common-5"
 OVAL_SYSTEM_CHARACTERISTICS_NS = "http://oval.mitre.org/XMLSchema/oval-system-characteristics-5"
 VALID_RESULTS = frozenset({"true", "false", "unknown", "error", "not evaluated", "not applicable"})
-SUPPORTED_CORE_SCHEMA_VERSIONS = frozenset({"5.12", "5.12.2"})
+SUPPORTED_CORE_SCHEMA_VERSIONS = frozenset({"5.11.3"})
 FORBIDDEN_XML = re.compile(br"<!DOCTYPE|<!ENTITY", re.IGNORECASE)
 SCHEMA_ROOT = (Path(__file__).parent / "schemas" / "oval-5.12.2").resolve()
 

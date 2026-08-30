@@ -136,7 +136,7 @@ class VerticalSliceTests(unittest.TestCase):
             path = Path(directory) / "old-version.xml"
             output = Path(directory) / "result.json"
             source = (RESULTS / "pass.xml").read_text(encoding="utf-8")
-            path.write_text(source.replace(">5.12</oval:schema_version>", ">5.11</oval:schema_version>"), encoding="utf-8")
+            path.write_text(source.replace(">5.11.3</oval:schema_version>", ">5.11</oval:schema_version>"), encoding="utf-8")
             completed = subprocess.run([sys.executable, "-m", "endeavor", "convert", "--results", str(path), "--definitions", str(DEFINITIONS), "--output", str(output)], cwd=ROOT, text=True, capture_output=True, check=False)
             self.assertEqual(completed.returncode, 2)
             self.assertIn("unsupported OVAL core schema version", completed.stderr)
@@ -160,5 +160,16 @@ class VerticalSliceTests(unittest.TestCase):
             output = Path(directory) / "result.json"
             convert = subprocess.run([sys.executable, "-m", "endeavor", "convert", "--results", str(RESULTS / "pass.xml"), "--definitions", str(DEFINITIONS), "--output", str(output)], cwd=ROOT, text=True, capture_output=True, check=False)
             self.assertEqual(convert.returncode, 0, convert.stderr)
+            validate = subprocess.run(["npm", "run", "validate:oscal", "--", "endeavor/schemas/oscal-1.2.0/assessment-results.schema.json", str(output)], cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(validate.returncode, 0, validate.stderr)
+
+    def test_timezone_less_openscap_timestamp_is_normalized_for_oscal(self) -> None:
+        generated = ROOT / "fixtures" / "generated-sanitized"
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "result.json"
+            convert = subprocess.run([sys.executable, "-m", "endeavor", "convert", "--results", str(generated / "oval-results.xml"), "--definitions", str(generated / "oval-definitions.xml"), "--output", str(output)], cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(convert.returncode, 0, convert.stderr)
+            document = json.loads(output.read_text())
+            self.assertEqual(document["assessment-results"]["metadata"]["last-modified"], "2026-08-30T03:16:23Z")
             validate = subprocess.run(["npm", "run", "validate:oscal", "--", "endeavor/schemas/oscal-1.2.0/assessment-results.schema.json", str(output)], cwd=ROOT, text=True, capture_output=True, check=False)
             self.assertEqual(validate.returncode, 0, validate.stderr)

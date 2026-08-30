@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 import uuid
 
@@ -18,7 +18,10 @@ def _uuid(*parts: str) -> str:
 
 
 def _timestamp(value: str) -> str:
-    return datetime.fromisoformat(value.replace("Z", "+00:00")).isoformat().replace("+00:00", "Z")
+    parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=timezone.utc)
+    return parsed.isoformat().replace("+00:00", "Z")
 
 
 def assessment_results(results: OvalDocument, definitions: OvalDocument) -> dict:
