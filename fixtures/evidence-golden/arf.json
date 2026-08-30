@@ -1,0 +1,1406 @@
+{
+  "assertions": [
+    {
+      "details": {
+        "severity": "low",
+        "time": "2014-10-17T09:07:43",
+        "weight": "1.000000"
+      },
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common#xccdf_org.ssgproject.content_rule_disable_prelink",
+      "kind": "xccdf-rule-result",
+      "links": {
+        "arf-collection-id": "collection1",
+        "arf-report-id": "xccdf1",
+        "definitions-component-id": null
+      },
+      "native-id": "xccdf_org.ssgproject.content_rule_disable_prelink",
+      "status": "fail"
+    },
+    {
+      "details": {
+        "severity": "high",
+        "time": "2014-10-17T09:07:43",
+        "weight": "1.000000"
+      },
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common#xccdf_org.ssgproject.content_rule_ensure_gpgcheck_globally_activated",
+      "kind": "xccdf-rule-result",
+      "links": {
+        "arf-collection-id": "collection1",
+        "arf-report-id": "xccdf1",
+        "definitions-component-id": null
+      },
+      "native-id": "xccdf_org.ssgproject.content_rule_ensure_gpgcheck_globally_activated",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "severity": "high",
+        "time": "2014-10-17T09:07:43",
+        "weight": "1.000000"
+      },
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common#xccdf_org.ssgproject.content_rule_ensure_gpgcheck_never_disabled",
+      "kind": "xccdf-rule-result",
+      "links": {
+        "arf-collection-id": "collection1",
+        "arf-report-id": "xccdf1",
+        "definitions-component-id": null
+      },
+      "native-id": "xccdf_org.ssgproject.content_rule_ensure_gpgcheck_never_disabled",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "severity": "medium",
+        "time": "2014-10-17T09:07:51",
+        "weight": "1.000000"
+      },
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common#xccdf_org.ssgproject.content_rule_file_permissions_library_dirs",
+      "kind": "xccdf-rule-result",
+      "links": {
+        "arf-collection-id": "collection1",
+        "arf-report-id": "xccdf1",
+        "definitions-component-id": null
+      },
+      "native-id": "xccdf_org.ssgproject.content_rule_file_permissions_library_dirs",
+      "status": "fail"
+    },
+    {
+      "details": {
+        "severity": "medium",
+        "time": "2014-10-17T09:07:53",
+        "weight": "1.000000"
+      },
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common#xccdf_org.ssgproject.content_rule_file_ownership_library_dirs",
+      "kind": "xccdf-rule-result",
+      "links": {
+        "arf-collection-id": "collection1",
+        "arf-report-id": "xccdf1",
+        "definitions-component-id": null
+      },
+      "native-id": "xccdf_org.ssgproject.content_rule_file_ownership_library_dirs",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "severity": "medium",
+        "time": "2014-10-17T09:07:55",
+        "weight": "1.000000"
+      },
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common#xccdf_org.ssgproject.content_rule_file_permissions_binary_dirs",
+      "kind": "xccdf-rule-result",
+      "links": {
+        "arf-collection-id": "collection1",
+        "arf-report-id": "xccdf1",
+        "definitions-component-id": null
+      },
+      "native-id": "xccdf_org.ssgproject.content_rule_file_permissions_binary_dirs",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "severity": "medium",
+        "time": "2014-10-17T09:07:55",
+        "weight": "1.000000"
+      },
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common#xccdf_org.ssgproject.content_rule_file_ownership_binary_dirs",
+      "kind": "xccdf-rule-result",
+      "links": {
+        "arf-collection-id": "collection1",
+        "arf-report-id": "xccdf1",
+        "definitions-component-id": null
+      },
+      "native-id": "xccdf_org.ssgproject.content_rule_file_ownership_binary_dirs",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "severity": "medium",
+        "time": "2014-10-17T09:07:55",
+        "weight": "1.000000"
+      },
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common#xccdf_org.ssgproject.content_rule_no_direct_root_logins",
+      "kind": "xccdf-rule-result",
+      "links": {
+        "arf-collection-id": "collection1",
+        "arf-report-id": "xccdf1",
+        "definitions-component-id": null
+      },
+      "native-id": "xccdf_org.ssgproject.content_rule_no_direct_root_logins",
+      "status": "notchecked"
+    },
+    {
+      "details": {
+        "severity": "medium",
+        "time": "2014-10-17T09:07:55",
+        "weight": "1.000000"
+      },
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common#xccdf_org.ssgproject.content_rule_securetty_root_login_console_only",
+      "kind": "xccdf-rule-result",
+      "links": {
+        "arf-collection-id": "collection1",
+        "arf-report-id": "xccdf1",
+        "definitions-component-id": null
+      },
+      "native-id": "xccdf_org.ssgproject.content_rule_securetty_root_login_console_only",
+      "status": "fail"
+    },
+    {
+      "details": {
+        "severity": "low",
+        "time": "2014-10-17T09:07:55",
+        "weight": "1.000000"
+      },
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common#xccdf_org.ssgproject.content_rule_restrict_serial_port_logins",
+      "kind": "xccdf-rule-result",
+      "links": {
+        "arf-collection-id": "collection1",
+        "arf-report-id": "xccdf1",
+        "definitions-component-id": null
+      },
+      "native-id": "xccdf_org.ssgproject.content_rule_restrict_serial_port_logins",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "severity": "low",
+        "time": "2014-10-17T09:07:55",
+        "weight": "1.000000"
+      },
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common#xccdf_org.ssgproject.content_rule_no_root_webbrowsing",
+      "kind": "xccdf-rule-result",
+      "links": {
+        "arf-collection-id": "collection1",
+        "arf-report-id": "xccdf1",
+        "definitions-component-id": null
+      },
+      "native-id": "xccdf_org.ssgproject.content_rule_no_root_webbrowsing",
+      "status": "notselected"
+    },
+    {
+      "details": {
+        "severity": "medium",
+        "time": "2014-10-17T09:07:55",
+        "weight": "1.000000"
+      },
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common#xccdf_org.ssgproject.content_rule_no_shelllogin_for_systemaccounts",
+      "kind": "xccdf-rule-result",
+      "links": {
+        "arf-collection-id": "collection1",
+        "arf-report-id": "xccdf1",
+        "definitions-component-id": null
+      },
+      "native-id": "xccdf_org.ssgproject.content_rule_no_shelllogin_for_systemaccounts",
+      "status": "notselected"
+    },
+    {
+      "details": {
+        "severity": "medium",
+        "time": "2014-10-17T09:07:55",
+        "weight": "1.000000"
+      },
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common#xccdf_org.ssgproject.content_rule_no_uidzero_except_root",
+      "kind": "xccdf-rule-result",
+      "links": {
+        "arf-collection-id": "collection1",
+        "arf-report-id": "xccdf1",
+        "definitions-component-id": null
+      },
+      "native-id": "xccdf_org.ssgproject.content_rule_no_uidzero_except_root",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "severity": "low",
+        "time": "2014-10-17T09:07:55",
+        "weight": "1.000000"
+      },
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common#xccdf_org.ssgproject.content_rule_root_path_default",
+      "kind": "xccdf-rule-result",
+      "links": {
+        "arf-collection-id": "collection1",
+        "arf-report-id": "xccdf1",
+        "definitions-component-id": null
+      },
+      "native-id": "xccdf_org.ssgproject.content_rule_root_path_default",
+      "status": "notselected"
+    },
+    {
+      "details": {
+        "severity": "high",
+        "time": "2014-10-17T09:07:55",
+        "weight": "1.000000"
+      },
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common#xccdf_org.ssgproject.content_rule_no_empty_passwords",
+      "kind": "xccdf-rule-result",
+      "links": {
+        "arf-collection-id": "collection1",
+        "arf-report-id": "xccdf1",
+        "definitions-component-id": null
+      },
+      "native-id": "xccdf_org.ssgproject.content_rule_no_empty_passwords",
+      "status": "fail"
+    },
+    {
+      "details": {
+        "severity": "medium",
+        "time": "2014-10-17T09:07:55",
+        "weight": "1.000000"
+      },
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common#xccdf_org.ssgproject.content_rule_no_hashes_outside_shadow",
+      "kind": "xccdf-rule-result",
+      "links": {
+        "arf-collection-id": "collection1",
+        "arf-report-id": "xccdf1",
+        "definitions-component-id": null
+      },
+      "native-id": "xccdf_org.ssgproject.content_rule_no_hashes_outside_shadow",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "severity": "low",
+        "time": "2014-10-17T09:07:55",
+        "weight": "1.000000"
+      },
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common#xccdf_org.ssgproject.content_rule_gid_passwd_group_same",
+      "kind": "xccdf-rule-result",
+      "links": {
+        "arf-collection-id": "collection1",
+        "arf-report-id": "xccdf1",
+        "definitions-component-id": null
+      },
+      "native-id": "xccdf_org.ssgproject.content_rule_gid_passwd_group_same",
+      "status": "notselected"
+    },
+    {
+      "details": {
+        "severity": "medium",
+        "time": "2014-10-17T09:07:55",
+        "weight": "1.000000"
+      },
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common#xccdf_org.ssgproject.content_rule_no_netrc_files",
+      "kind": "xccdf-rule-result",
+      "links": {
+        "arf-collection-id": "collection1",
+        "arf-report-id": "xccdf1",
+        "definitions-component-id": null
+      },
+      "native-id": "xccdf_org.ssgproject.content_rule_no_netrc_files",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "severity": "medium",
+        "time": "2014-10-17T09:07:55",
+        "weight": "1.000000"
+      },
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common#xccdf_org.ssgproject.content_rule_accounts_password_minlen_login_defs",
+      "kind": "xccdf-rule-result",
+      "links": {
+        "arf-collection-id": "collection1",
+        "arf-report-id": "xccdf1",
+        "definitions-component-id": null
+      },
+      "native-id": "xccdf_org.ssgproject.content_rule_accounts_password_minlen_login_defs",
+      "status": "fail"
+    },
+    {
+      "details": {
+        "severity": "medium",
+        "time": "2014-10-17T09:07:55",
+        "weight": "1.000000"
+      },
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common#xccdf_org.ssgproject.content_rule_accounts_minimum_age_login_defs",
+      "kind": "xccdf-rule-result",
+      "links": {
+        "arf-collection-id": "collection1",
+        "arf-report-id": "xccdf1",
+        "definitions-component-id": null
+      },
+      "native-id": "xccdf_org.ssgproject.content_rule_accounts_minimum_age_login_defs",
+      "status": "fail"
+    },
+    {
+      "details": {
+        "severity": "medium",
+        "time": "2014-10-17T09:07:55",
+        "weight": "1.000000"
+      },
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common#xccdf_org.ssgproject.content_rule_accounts_maximum_age_login_defs",
+      "kind": "xccdf-rule-result",
+      "links": {
+        "arf-collection-id": "collection1",
+        "arf-report-id": "xccdf1",
+        "definitions-component-id": null
+      },
+      "native-id": "xccdf_org.ssgproject.content_rule_accounts_maximum_age_login_defs",
+      "status": "fail"
+    },
+    {
+      "details": {
+        "severity": "low",
+        "time": "2014-10-17T09:07:55",
+        "weight": "1.000000"
+      },
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common#xccdf_org.ssgproject.content_rule_accounts_password_warn_age_login_defs",
+      "kind": "xccdf-rule-result",
+      "links": {
+        "arf-collection-id": "collection1",
+        "arf-report-id": "xccdf1",
+        "definitions-component-id": null
+      },
+      "native-id": "xccdf_org.ssgproject.content_rule_accounts_password_warn_age_login_defs",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "severity": "medium",
+        "time": "2014-10-17T09:07:55",
+        "weight": "1.000000"
+      },
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common#xccdf_org.ssgproject.content_rule_service_ntpd_enabled",
+      "kind": "xccdf-rule-result",
+      "links": {
+        "arf-collection-id": "collection1",
+        "arf-report-id": "xccdf1",
+        "definitions-component-id": null
+      },
+      "native-id": "xccdf_org.ssgproject.content_rule_service_ntpd_enabled",
+      "status": "fail"
+    },
+    {
+      "details": {
+        "severity": "medium",
+        "time": "2014-10-17T09:07:55",
+        "weight": "1.000000"
+      },
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common#xccdf_org.ssgproject.content_rule_ntpd_specify_remote_server",
+      "kind": "xccdf-rule-result",
+      "links": {
+        "arf-collection-id": "collection1",
+        "arf-report-id": "xccdf1",
+        "definitions-component-id": null
+      },
+      "native-id": "xccdf_org.ssgproject.content_rule_ntpd_specify_remote_server",
+      "status": "fail"
+    },
+    {
+      "details": {
+        "severity": "medium",
+        "time": "2014-10-17T09:07:55",
+        "weight": "1.000000"
+      },
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common#xccdf_org.ssgproject.content_rule_sshd_disable_root_login",
+      "kind": "xccdf-rule-result",
+      "links": {
+        "arf-collection-id": "collection1",
+        "arf-report-id": "xccdf1",
+        "definitions-component-id": null
+      },
+      "native-id": "xccdf_org.ssgproject.content_rule_sshd_disable_root_login",
+      "status": "fail"
+    },
+    {
+      "details": {
+        "severity": "high",
+        "time": "2014-10-17T09:07:55",
+        "weight": "1.000000"
+      },
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common#xccdf_org.ssgproject.content_rule_sshd_disable_empty_passwords",
+      "kind": "xccdf-rule-result",
+      "links": {
+        "arf-collection-id": "collection1",
+        "arf-report-id": "xccdf1",
+        "definitions-component-id": null
+      },
+      "native-id": "xccdf_org.ssgproject.content_rule_sshd_disable_empty_passwords",
+      "status": "pass"
+    },
+    {
+      "details": {
+        "severity": "low",
+        "time": "2014-10-17T09:07:55",
+        "weight": "1.000000"
+      },
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common#xccdf_org.ssgproject.content_rule_sshd_set_idle_timeout",
+      "kind": "xccdf-rule-result",
+      "links": {
+        "arf-collection-id": "collection1",
+        "arf-report-id": "xccdf1",
+        "definitions-component-id": null
+      },
+      "native-id": "xccdf_org.ssgproject.content_rule_sshd_set_idle_timeout",
+      "status": "fail"
+    },
+    {
+      "details": {
+        "severity": "low",
+        "time": "2014-10-17T09:07:55",
+        "weight": "1.000000"
+      },
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common#xccdf_org.ssgproject.content_rule_sshd_set_keepalive",
+      "kind": "xccdf-rule-result",
+      "links": {
+        "arf-collection-id": "collection1",
+        "arf-report-id": "xccdf1",
+        "definitions-component-id": null
+      },
+      "native-id": "xccdf_org.ssgproject.content_rule_sshd_set_keepalive",
+      "status": "fail"
+    },
+    {
+      "details": {},
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results#oval:ssg:def:163",
+      "kind": "oval-definition-result",
+      "links": {
+        "arf-collection-id": null,
+        "arf-report-id": "oval2",
+        "definitions-component-id": null
+      },
+      "native-id": "oval:ssg:def:163",
+      "status": "true"
+    },
+    {
+      "details": {},
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results#oval:ssg:def:161",
+      "kind": "oval-definition-result",
+      "links": {
+        "arf-collection-id": null,
+        "arf-report-id": "oval2",
+        "definitions-component-id": null
+      },
+      "native-id": "oval:ssg:def:161",
+      "status": "true"
+    },
+    {
+      "details": {},
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results#oval:ssg:def:159",
+      "kind": "oval-definition-result",
+      "links": {
+        "arf-collection-id": null,
+        "arf-report-id": "oval2",
+        "definitions-component-id": null
+      },
+      "native-id": "oval:ssg:def:159",
+      "status": "false"
+    },
+    {
+      "details": {},
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results#oval:ssg:def:157",
+      "kind": "oval-definition-result",
+      "links": {
+        "arf-collection-id": null,
+        "arf-report-id": "oval2",
+        "definitions-component-id": null
+      },
+      "native-id": "oval:ssg:def:157",
+      "status": "true"
+    },
+    {
+      "details": {},
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results#oval:ssg:def:154",
+      "kind": "oval-definition-result",
+      "links": {
+        "arf-collection-id": null,
+        "arf-report-id": "oval2",
+        "definitions-component-id": null
+      },
+      "native-id": "oval:ssg:def:154",
+      "status": "true"
+    },
+    {
+      "details": {},
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results#oval:ssg:def:151",
+      "kind": "oval-definition-result",
+      "links": {
+        "arf-collection-id": null,
+        "arf-report-id": "oval2",
+        "definitions-component-id": null
+      },
+      "native-id": "oval:ssg:def:151",
+      "status": "false"
+    },
+    {
+      "details": {},
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results#oval:ssg:def:149",
+      "kind": "oval-definition-result",
+      "links": {
+        "arf-collection-id": null,
+        "arf-report-id": "oval2",
+        "definitions-component-id": null
+      },
+      "native-id": "oval:ssg:def:149",
+      "status": "true"
+    },
+    {
+      "details": {},
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results#oval:ssg:def:146",
+      "kind": "oval-definition-result",
+      "links": {
+        "arf-collection-id": null,
+        "arf-report-id": "oval2",
+        "definitions-component-id": null
+      },
+      "native-id": "oval:ssg:def:146",
+      "status": "true"
+    },
+    {
+      "details": {},
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results#oval:ssg:def:144",
+      "kind": "oval-definition-result",
+      "links": {
+        "arf-collection-id": null,
+        "arf-report-id": "oval2",
+        "definitions-component-id": null
+      },
+      "native-id": "oval:ssg:def:144",
+      "status": "true"
+    },
+    {
+      "details": {},
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results#oval:ssg:def:142",
+      "kind": "oval-definition-result",
+      "links": {
+        "arf-collection-id": null,
+        "arf-report-id": "oval2",
+        "definitions-component-id": null
+      },
+      "native-id": "oval:ssg:def:142",
+      "status": "false"
+    },
+    {
+      "details": {},
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results#oval:ssg:def:140",
+      "kind": "oval-definition-result",
+      "links": {
+        "arf-collection-id": null,
+        "arf-report-id": "oval2",
+        "definitions-component-id": null
+      },
+      "native-id": "oval:ssg:def:140",
+      "status": "true"
+    },
+    {
+      "details": {},
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results#oval:ssg:def:137",
+      "kind": "oval-definition-result",
+      "links": {
+        "arf-collection-id": null,
+        "arf-report-id": "oval2",
+        "definitions-component-id": null
+      },
+      "native-id": "oval:ssg:def:137",
+      "status": "false"
+    },
+    {
+      "details": {},
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results#oval:ssg:def:135",
+      "kind": "oval-definition-result",
+      "links": {
+        "arf-collection-id": null,
+        "arf-report-id": "oval2",
+        "definitions-component-id": null
+      },
+      "native-id": "oval:ssg:def:135",
+      "status": "false"
+    },
+    {
+      "details": {},
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results#oval:ssg:def:133",
+      "kind": "oval-definition-result",
+      "links": {
+        "arf-collection-id": null,
+        "arf-report-id": "oval2",
+        "definitions-component-id": null
+      },
+      "native-id": "oval:ssg:def:133",
+      "status": "false"
+    },
+    {
+      "details": {},
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results#oval:ssg:def:130",
+      "kind": "oval-definition-result",
+      "links": {
+        "arf-collection-id": null,
+        "arf-report-id": "oval2",
+        "definitions-component-id": null
+      },
+      "native-id": "oval:ssg:def:130",
+      "status": "false"
+    },
+    {
+      "details": {},
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results#oval:ssg:def:129",
+      "kind": "oval-definition-result",
+      "links": {
+        "arf-collection-id": null,
+        "arf-report-id": "oval2",
+        "definitions-component-id": null
+      },
+      "native-id": "oval:ssg:def:129",
+      "status": "false"
+    },
+    {
+      "details": {},
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results#oval:ssg:def:127",
+      "kind": "oval-definition-result",
+      "links": {
+        "arf-collection-id": null,
+        "arf-report-id": "oval2",
+        "definitions-component-id": null
+      },
+      "native-id": "oval:ssg:def:127",
+      "status": "false"
+    },
+    {
+      "details": {},
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results#oval:ssg:def:124",
+      "kind": "oval-definition-result",
+      "links": {
+        "arf-collection-id": null,
+        "arf-report-id": "oval2",
+        "definitions-component-id": null
+      },
+      "native-id": "oval:ssg:def:124",
+      "status": "true"
+    },
+    {
+      "details": {},
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results#oval:ssg:def:122",
+      "kind": "oval-definition-result",
+      "links": {
+        "arf-collection-id": null,
+        "arf-report-id": "oval2",
+        "definitions-component-id": null
+      },
+      "native-id": "oval:ssg:def:122",
+      "status": "not evaluated"
+    },
+    {
+      "details": {},
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results#oval:ssg:def:120",
+      "kind": "oval-definition-result",
+      "links": {
+        "arf-collection-id": null,
+        "arf-report-id": "oval2",
+        "definitions-component-id": null
+      },
+      "native-id": "oval:ssg:def:120",
+      "status": "false"
+    },
+    {
+      "details": {},
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results#oval:ssg:def:118",
+      "kind": "oval-definition-result",
+      "links": {
+        "arf-collection-id": null,
+        "arf-report-id": "oval2",
+        "definitions-component-id": null
+      },
+      "native-id": "oval:ssg:def:118",
+      "status": "true"
+    },
+    {
+      "details": {},
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results#oval:ssg:def:116",
+      "kind": "oval-definition-result",
+      "links": {
+        "arf-collection-id": null,
+        "arf-report-id": "oval2",
+        "definitions-component-id": null
+      },
+      "native-id": "oval:ssg:def:116",
+      "status": "false"
+    },
+    {
+      "details": {},
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results#oval:ssg:def:115",
+      "kind": "oval-definition-result",
+      "links": {
+        "arf-collection-id": null,
+        "arf-report-id": "oval2",
+        "definitions-component-id": null
+      },
+      "native-id": "oval:ssg:def:115",
+      "status": "false"
+    },
+    {
+      "details": {},
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results#oval:ssg:def:113",
+      "kind": "oval-definition-result",
+      "links": {
+        "arf-collection-id": null,
+        "arf-report-id": "oval2",
+        "definitions-component-id": null
+      },
+      "native-id": "oval:ssg:def:113",
+      "status": "false"
+    },
+    {
+      "details": {},
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results#oval:ssg:def:111",
+      "kind": "oval-definition-result",
+      "links": {
+        "arf-collection-id": null,
+        "arf-report-id": "oval2",
+        "definitions-component-id": null
+      },
+      "native-id": "oval:ssg:def:111",
+      "status": "false"
+    },
+    {
+      "details": {},
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results#oval:ssg:def:109",
+      "kind": "oval-definition-result",
+      "links": {
+        "arf-collection-id": null,
+        "arf-report-id": "oval2",
+        "definitions-component-id": null
+      },
+      "native-id": "oval:ssg:def:109",
+      "status": "false"
+    },
+    {
+      "details": {},
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results#oval:ssg:def:107",
+      "kind": "oval-definition-result",
+      "links": {
+        "arf-collection-id": null,
+        "arf-report-id": "oval2",
+        "definitions-component-id": null
+      },
+      "native-id": "oval:ssg:def:107",
+      "status": "true"
+    },
+    {
+      "details": {},
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results#oval:ssg:def:100",
+      "kind": "oval-definition-result",
+      "links": {
+        "arf-collection-id": null,
+        "arf-report-id": "oval2",
+        "definitions-component-id": null
+      },
+      "native-id": "oval:ssg:def:100",
+      "status": "not evaluated"
+    },
+    {
+      "details": {},
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval3"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval3#oval-results",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval3#oval-results#oval:org.open-scap.cpe.rhel:def:7",
+      "kind": "oval-definition-result",
+      "links": {
+        "arf-collection-id": null,
+        "arf-report-id": "oval3",
+        "definitions-component-id": null
+      },
+      "native-id": "oval:org.open-scap.cpe.rhel:def:7",
+      "status": "not evaluated"
+    },
+    {
+      "details": {},
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval3"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval3#oval-results",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval3#oval-results#oval:org.open-scap.cpe.rhel:def:6",
+      "kind": "oval-definition-result",
+      "links": {
+        "arf-collection-id": null,
+        "arf-report-id": "oval3",
+        "definitions-component-id": null
+      },
+      "native-id": "oval:org.open-scap.cpe.rhel:def:6",
+      "status": "not evaluated"
+    },
+    {
+      "details": {},
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval3"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval3#oval-results",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval3#oval-results#oval:org.open-scap.cpe.rhel:def:5",
+      "kind": "oval-definition-result",
+      "links": {
+        "arf-collection-id": null,
+        "arf-report-id": "oval3",
+        "definitions-component-id": null
+      },
+      "native-id": "oval:org.open-scap.cpe.rhel:def:5",
+      "status": "not evaluated"
+    },
+    {
+      "details": {},
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval3"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval3#oval-results",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval3#oval-results#oval:org.open-scap.cpe.rhel:def:1",
+      "kind": "oval-definition-result",
+      "links": {
+        "arf-collection-id": null,
+        "arf-report-id": "oval3",
+        "definitions-component-id": null
+      },
+      "native-id": "oval:org.open-scap.cpe.rhel:def:1",
+      "status": "not evaluated"
+    },
+    {
+      "details": {},
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval3"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval3#oval-results",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval3#oval-results#oval:org.open-scap.cpe.fedora:def:21",
+      "kind": "oval-definition-result",
+      "links": {
+        "arf-collection-id": null,
+        "arf-report-id": "oval3",
+        "definitions-component-id": null
+      },
+      "native-id": "oval:org.open-scap.cpe.fedora:def:21",
+      "status": "false"
+    },
+    {
+      "details": {},
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval3"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval3#oval-results",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval3#oval-results#oval:org.open-scap.cpe.fedora:def:20",
+      "kind": "oval-definition-result",
+      "links": {
+        "arf-collection-id": null,
+        "arf-report-id": "oval3",
+        "definitions-component-id": null
+      },
+      "native-id": "oval:org.open-scap.cpe.fedora:def:20",
+      "status": "true"
+    },
+    {
+      "details": {},
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval3"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval3#oval-results",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval3#oval-results#oval:org.open-scap.cpe.fedora:def:19",
+      "kind": "oval-definition-result",
+      "links": {
+        "arf-collection-id": null,
+        "arf-report-id": "oval3",
+        "definitions-component-id": null
+      },
+      "native-id": "oval:org.open-scap.cpe.fedora:def:19",
+      "status": "false"
+    },
+    {
+      "details": {},
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval3"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval3#oval-results",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval3#oval-results#oval:org.open-scap.cpe.fedora:def:18",
+      "kind": "oval-definition-result",
+      "links": {
+        "arf-collection-id": null,
+        "arf-report-id": "oval3",
+        "definitions-component-id": null
+      },
+      "native-id": "oval:org.open-scap.cpe.fedora:def:18",
+      "status": "not evaluated"
+    },
+    {
+      "details": {},
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval3"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval3#oval-results",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval3#oval-results#oval:org.open-scap.cpe.fedora:def:17",
+      "kind": "oval-definition-result",
+      "links": {
+        "arf-collection-id": null,
+        "arf-report-id": "oval3",
+        "definitions-component-id": null
+      },
+      "native-id": "oval:org.open-scap.cpe.fedora:def:17",
+      "status": "not evaluated"
+    },
+    {
+      "details": {},
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval3"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval3#oval-results",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval3#oval-results#oval:org.open-scap.cpe.fedora:def:16",
+      "kind": "oval-definition-result",
+      "links": {
+        "arf-collection-id": null,
+        "arf-report-id": "oval3",
+        "definitions-component-id": null
+      },
+      "native-id": "oval:org.open-scap.cpe.fedora:def:16",
+      "status": "not evaluated"
+    },
+    {
+      "details": {},
+      "evidence": [
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+        "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval4"
+      ],
+      "execution-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval4#oval-results",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval4#oval-results#oval:ssg:def:100",
+      "kind": "oval-definition-result",
+      "links": {
+        "arf-collection-id": null,
+        "arf-report-id": "oval4",
+        "definitions-component-id": null
+      },
+      "native-id": "oval:ssg:def:100",
+      "status": "false"
+    }
+  ],
+  "executions": [
+    {
+      "asset": {
+        "arf-asset-id": "asset0"
+      },
+      "benchmark": {
+        "component-id": "scap_org.open-scap_comp_ssg-fedora-xccdf-1.2.xml",
+        "href": "/usr/share/xml/scap/ssg/fedora/ssg-fedora-ds.xml",
+        "id": "xccdf_org.ssgproject.content_benchmark_FEDORA"
+      },
+      "end-time": "2014-10-17T09:07:55",
+      "evaluator": {
+        "test-system": null
+      },
+      "format": "xccdf",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1#xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common",
+      "native-id": "xccdf_org.open-scap_testresult_xccdf_org.ssgproject.content_profile_common",
+      "profile": "xccdf_org.ssgproject.content_profile_common",
+      "source-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1",
+      "start-time": "2014-10-17T09:07:43",
+      "tailoring": null,
+      "targets": {
+        "addresses": [
+          "127.0.0.1",
+          "0:0:0:0:0:0:0:1"
+        ],
+        "facts": [
+          {
+            "name": "urn:xccdf:fact:scanner:name",
+            "value": "OpenSCAP"
+          },
+          {
+            "name": "urn:xccdf:fact:scanner:version",
+            "value": "1.0.9"
+          },
+          {
+            "name": "urn:xccdf:fact:ethernet:MAC",
+            "value": "00:00:00:00:00:00"
+          }
+        ],
+        "names": [
+          "localhost.localdomain"
+        ],
+        "references": [
+          {
+            "href": "",
+            "name": "asset0",
+            "system": "http://scap.nist.gov/schema/asset-identification/1.1"
+          }
+        ]
+      }
+    },
+    {
+      "benchmark": null,
+      "end-time": null,
+      "evaluator": {},
+      "format": "oval",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2#oval-results",
+      "native-id": "oval-results",
+      "profile": null,
+      "source-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2",
+      "start-time": null,
+      "tailoring": null,
+      "targets": {
+        "addresses": [],
+        "facts": [],
+        "names": [],
+        "references": []
+      }
+    },
+    {
+      "benchmark": null,
+      "end-time": null,
+      "evaluator": {},
+      "format": "oval",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval3#oval-results",
+      "native-id": "oval-results",
+      "profile": null,
+      "source-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval3",
+      "start-time": null,
+      "tailoring": null,
+      "targets": {
+        "addresses": [],
+        "facts": [],
+        "names": [],
+        "references": []
+      }
+    },
+    {
+      "benchmark": null,
+      "end-time": null,
+      "evaluator": {},
+      "format": "oval",
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval4#oval-results",
+      "native-id": "oval-results",
+      "profile": null,
+      "source-id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval4",
+      "start-time": null,
+      "tailoring": null,
+      "targets": {
+        "addresses": [],
+        "facts": [],
+        "names": [],
+        "references": []
+      }
+    }
+  ],
+  "format": "endeavor-evidence-contract",
+  "sources": [
+    {
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab",
+      "kind": "arf",
+      "path": "openscap-1.4.4-xccdf-overrides.arf.xml",
+      "role": "collection",
+      "schema-version": "1.1",
+      "sha256": "7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab"
+    },
+    {
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#xccdf1",
+      "kind": "arf-report",
+      "path": "openscap-1.4.4-xccdf-overrides.arf.xml",
+      "role": "report",
+      "schema-version": "http://checklists.nist.gov/xccdf/1.2",
+      "sha256": "f53856a770dcfa7eaa29ab0d2e1c10ec2ed345c9bef9b3da3471a19ead277d83"
+    },
+    {
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval2",
+      "kind": "arf-report",
+      "path": "openscap-1.4.4-xccdf-overrides.arf.xml",
+      "role": "report",
+      "schema-version": "http://oval.mitre.org/XMLSchema/oval-results-5",
+      "sha256": "0fdca7429369156a2a84f7400aaef8401ffc5882fc95c2a161d7a779e4d48239"
+    },
+    {
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval3",
+      "kind": "arf-report",
+      "path": "openscap-1.4.4-xccdf-overrides.arf.xml",
+      "role": "report",
+      "schema-version": "http://oval.mitre.org/XMLSchema/oval-results-5",
+      "sha256": "a7287652556e6fcb23ab9e7f10022b4d41e54ef6171a9798f0e36c2a8f4dfd8d"
+    },
+    {
+      "id": "sha256:7d2845fdec85ff2b03564ea1212bec2c5f78f2f5eb6af91c9650f2ca14a7edab#oval4",
+      "kind": "arf-report",
+      "path": "openscap-1.4.4-xccdf-overrides.arf.xml",
+      "role": "report",
+      "schema-version": "http://oval.mitre.org/XMLSchema/oval-results-5",
+      "sha256": "b8db0bccc28c9114339320a8ec131e3737caf5f35fa0edac1b7dede4b112e863"
+    }
+  ],
+  "version": "1.0.0"
+}

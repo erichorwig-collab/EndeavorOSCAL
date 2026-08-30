@@ -33,6 +33,7 @@ ARF_FIXTURE = ROOT / "fixtures" / "arf" / "openscap-1.4.4-xccdf-overrides.arf.xm
 ARF_GOLDEN = ROOT / "fixtures" / "arf" / "openscap-1.4.4-xccdf-overrides.manifest.json"
 ARF_TAILORING = ROOT / "fixtures" / "arf" / "openscap-1.4.4-tailoring-sanitized.arf.xml"
 COMPATIBILITY_MATRIX = ROOT / "docs" / "compatibility-matrix.md"
+EVIDENCE_GOLDEN = ROOT / "fixtures" / "evidence-golden"
 XSD_NS = "{http://www.w3.org/2001/XMLSchema}"
 
 
@@ -75,6 +76,13 @@ class VerticalSliceTests(unittest.TestCase):
         self.assertEqual({item["status"] for item in arf["assertions"] if item["kind"] == "oval-definition-result"}, {"true", "false", "not evaluated"})
         self.assertTrue(all("finding" not in item and "control-id" not in item for item in arf["assertions"]))
         self.assertTrue(all(item["evidence"] for item in arf["assertions"]))
+
+    def test_inspect_evidence_matches_cross_format_goldens(self) -> None:
+        for flag, fixture, golden in (("--xccdf", XCCDF_FIXTURE, EVIDENCE_GOLDEN / "xccdf.json"), ("--arf", ARF_FIXTURE, EVIDENCE_GOLDEN / "arf.json")):
+            with self.subTest(flag=flag):
+                completed = subprocess.run([sys.executable, "-m", "endeavor", "inspect-evidence", flag, str(fixture)], cwd=ROOT, text=True, capture_output=True, check=False)
+                self.assertEqual(completed.returncode, 0, completed.stderr)
+                self.assertEqual(completed.stdout.encode(), golden.read_bytes())
 
     def test_inspect_arf_reports_pinned_collection_manifest(self) -> None:
         completed = subprocess.run([sys.executable, "-m", "endeavor", "inspect-arf", "--results", str(ARF_FIXTURE)], cwd=ROOT, text=True, capture_output=True, check=False)

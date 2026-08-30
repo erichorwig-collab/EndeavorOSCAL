@@ -12,6 +12,7 @@ from .diff import assessment_results_diff
 from .findings import findings_report
 from .xccdf import inspect_xccdf
 from .arf import inspect_arf
+from .evidence import normalize_arf, normalize_xccdf
 from .mapping import mapping_report, parse_mapping
 from .oval import OvalInputError, parse_definitions, parse_results
 from .report import mapping_report_html
@@ -39,7 +40,7 @@ class _ArgumentParser(argparse.ArgumentParser):
 def _parser() -> argparse.ArgumentParser:
     parser = _ArgumentParser(prog="endeavor", description="Convert OVAL evidence to OSCAL Assessment Results.")
     sub = parser.add_subparsers(dest="command", required=True, parser_class=_ArgumentParser)
-    for name in ("inspect", "convert", "mapping-report", "report", "diff", "findings", "inspect-xccdf", "inspect-arf"):
+    for name in ("inspect", "convert", "mapping-report", "report", "diff", "findings", "inspect-xccdf", "inspect-arf", "inspect-evidence"):
         command = sub.add_parser(name)
         command.add_argument("--format", choices=("text", "json"), default="text", help="format handled diagnostics as text or JSON")
         if name == "diff":
@@ -51,6 +52,11 @@ def _parser() -> argparse.ArgumentParser:
             continue
         if name in ("inspect-xccdf", "inspect-arf"):
             command.add_argument("--results", required=True, type=Path)
+            continue
+        if name == "inspect-evidence":
+            source = command.add_mutually_exclusive_group(required=True)
+            source.add_argument("--xccdf", type=Path)
+            source.add_argument("--arf", type=Path)
             continue
         command.add_argument("--results", required=True, type=Path)
         command.add_argument("--definitions", required=True, type=Path)
@@ -96,6 +102,10 @@ def main(argv: list[str] | None = None) -> int:
             return ExitCode.SUCCESS
         if args.command == "inspect-arf":
             print(json.dumps(inspect_arf(args.results), indent=2, sort_keys=True))
+            return ExitCode.SUCCESS
+        if args.command == "inspect-evidence":
+            payload = normalize_xccdf(inspect_xccdf(args.xccdf)) if args.xccdf else normalize_arf(inspect_arf(args.arf))
+            print(json.dumps(payload, indent=2, sort_keys=True))
             return ExitCode.SUCCESS
         results = parse_results(args.results)
         definitions = parse_definitions(args.definitions)
