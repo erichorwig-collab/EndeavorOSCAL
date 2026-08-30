@@ -51,6 +51,7 @@ class VerticalSliceTests(unittest.TestCase):
         self.assertEqual(tailoring[0]["payload"]["id"], "xccdf_scap-workbench_tailoring_default")
         self.assertEqual(tailoring[0]["payload"]["profile-ids"], ["xccdf_com.example.www_profile_customized"])
         self.assertEqual(tailoring[0]["payload"]["version"], "1")
+        self.assertIsNone(payload["reports"][0]["xccdf-result"]["tailoring"])
         self.assertNotIn("fec021b96364", ARF_TAILORING.read_text(encoding="utf-8"))
         self.assertEqual(hashlib.sha256(ARF_TAILORING.read_bytes()).hexdigest(), "05d00bf7cc83d32dc04ebe0bdb9b9404780878b6992dc2e2d5d57d6f2c865543")
 

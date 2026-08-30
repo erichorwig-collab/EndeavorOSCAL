@@ -126,6 +126,7 @@ def _linked_xccdf_result(report: ET._Element, collection: dict[str, object], pat
         raise OvalInputError(f"ARF XCCDF report content is invalid: {_safe(path)}")
     benchmark = result.find(_q(XCCDF_NS, "benchmark"))
     profile = result.find(_q(XCCDF_NS, "profile"))
+    tailoring = result.find(_q(XCCDF_NS, "tailoring-file"))
     benchmark_id = benchmark.get("id") if benchmark is not None else None
     streams = collection["data-streams"]
     matches = [component for stream in streams for component in stream["components"] if component["payload"]["namespace"] == XCCDF_NS and component["payload"]["name"] == "Benchmark" and component["payload"]["id"] == benchmark_id]
@@ -145,6 +146,7 @@ def _linked_xccdf_result(report: ET._Element, collection: dict[str, object], pat
     return {
         "id": result.get("id"), "benchmark": {"id": benchmark_id, "href": benchmark.get("href") if benchmark is not None else None, "component-id": matches[0]["component-id"]},
         "profile": profile_id,
+        "tailoring": {"id": tailoring.get("id"), "href": tailoring.get("href"), "version": tailoring.get("version"), "time": tailoring.get("time")} if tailoring is not None else None,
         "title": (title.text or "").strip() or None if title is not None else None,
         "test-system": result.get("test-system"),
         "identity": {"name": (identity.text or "").strip() or None, "authenticated": identity.get("authenticated"), "privileged": identity.get("privileged")} if identity is not None else None,
