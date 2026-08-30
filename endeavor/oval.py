@@ -22,7 +22,9 @@ OVAL_SYSTEM_CHARACTERISTICS_NS = "http://oval.mitre.org/XMLSchema/oval-system-ch
 VALID_RESULTS = frozenset({"true", "false", "unknown", "error", "not evaluated", "not applicable"})
 SUPPORTED_CORE_SCHEMA_VERSIONS = frozenset({"5.11.3"})
 FORBIDDEN_XML = re.compile(br"<!DOCTYPE|<!ENTITY", re.IGNORECASE)
-SCHEMA_ROOT = (Path(__file__).parent / "schemas" / "oval-5.12.2").resolve()
+SCHEMA_ROOTS = {
+    "5.11.3": (Path(__file__).parent / "schemas" / "oval" / "5.11.3").resolve(),
+}
 
 
 class OvalInputError(ValueError):
@@ -32,6 +34,11 @@ class OvalInputError(ValueError):
 class _TrustedSchemaResolver(ET.Resolver):
     """Permit only vendored XSD imports while compiling trusted wrappers."""
 
+    def __init__(self, schema_root: Path) -> None:
+        super().__init__()
+        self.schema_root = schema_root
+        self.allowed_roots = (schema_root, schema_root.parents[1] / "common")
+
     def resolve(self, url: str, public_id: str | None, context: object) -> object:
         parsed = urlparse(url)
         if parsed.scheme not in ("", "file") or parsed.params or parsed.query or parsed.fragment:
@@ -39,9 +46,9 @@ class _TrustedSchemaResolver(ET.Resolver):
         raw_path = unquote(parsed.path) if parsed.scheme == "file" else url
         candidate = Path(raw_path)
         if not candidate.is_absolute():
-            candidate = SCHEMA_ROOT / candidate
+            candidate = self.schema_root / candidate
         candidate = candidate.resolve()
-        if SCHEMA_ROOT not in candidate.parents or candidate.suffix != ".xsd" or not candidate.is_file():
+        if not any(candidate == root or root in candidate.parents for root in self.allowed_roots) or candidate.suffix != ".xsd" or not candidate.is_file():
             raise OSError(f"untrusted schema import path: {url}")
         return self.resolve_filename(str(candidate), context)
 
@@ -107,13 +114,16 @@ def _read_xml(path: Path) -> bytes:
 
 
 @lru_cache(maxsize=2)
-def _schema(namespace: str) -> ET.XMLSchema:
+def _schema(version: str, namespace: str) -> ET.XMLSchema:
     name = {OVAL_RESULTS_NS: "endeavor-results-wrapper.xsd", OVAL_DEFINITIONS_NS: "endeavor-definitions-wrapper.xsd"}.get(namespace)
     if name is None:
         raise OvalInputError(f"no trusted schema for namespace {namespace}")
-    path = SCHEMA_ROOT / name
+    schema_root = SCHEMA_ROOTS.get(version)
+    if schema_root is None:
+        raise OvalInputError(f"no trusted schema bundle for OVAL {version}")
+    path = schema_root / name
     parser = ET.XMLParser(no_network=True, resolve_entities=False, load_dtd=False, huge_tree=False)
-    parser.resolvers.add(_TrustedSchemaResolver())
+    parser.resolvers.add(_TrustedSchemaResolver(schema_root))
     return ET.XMLSchema(ET.parse(str(path), parser=parser))
 
 
@@ -125,19 +135,26 @@ def _parse_root(path: Path, expected_namespace: str, expected_name: str) -> tupl
         raise OvalInputError(f"malformed XML in {path}: {exc}") from exc
     if root.tag != _q(expected_namespace, expected_name):
         raise OvalInputError(f"unsupported root element in {path}: {root.tag}")
+    version = _declared_core_schema_version(root, path)
     tree = ET.ElementTree(root)
-    if not _schema(expected_namespace).validate(tree):
-        error = _schema(expected_namespace).error_log.last_error
-        raise OvalInputError(f"OVAL 5.12.2 XSD validation failed in {path.name}: {error.message if error else 'unknown schema error'}")
+    schema = _schema(version, expected_namespace)
+    if not schema.validate(tree):
+        error = schema.error_log.last_error
+        raise OvalInputError(f"OVAL {version} XSD validation failed in {path.name}: {error.message if error else 'unknown schema error'}")
     return root, data
 
 
-def _generator(root: ET._Element, path: Path) -> Generator:
+def _generator_element(root: ET._Element, path: Path) -> ET._Element:
     generator = root.find(_q(OVAL_RESULTS_NS, "generator"))
     if generator is None:
         generator = root.find(_q(OVAL_DEFINITIONS_NS, "generator"))
     if generator is None:
         raise OvalInputError(f"missing generator in {path}")
+    return generator
+
+
+def _declared_core_schema_version(root: ET._Element, path: Path) -> str:
+    generator = _generator_element(root, path)
     core_versions = [
         _text(item)
         for item in generator.findall(_q(OVAL_COMMON_NS, "schema_version"))
@@ -145,16 +162,22 @@ def _generator(root: ET._Element, path: Path) -> Generator:
     ]
     if len(core_versions) != 1:
         raise OvalInputError(f"generator must declare exactly one core schema_version in {path}")
+    version = core_versions[0]
+    if version not in SUPPORTED_CORE_SCHEMA_VERSIONS:
+        raise OvalInputError(f"unsupported OVAL core schema version {version!r} in {path}")
+    return version
+
+
+def _generator(root: ET._Element, path: Path) -> Generator:
+    generator = _generator_element(root, path)
     values = {
         "product_name": _text(generator.find(_q(OVAL_COMMON_NS, "product_name"))),
         "product_version": _text(generator.find(_q(OVAL_COMMON_NS, "product_version"))),
-        "schema_version": core_versions[0],
+        "schema_version": _declared_core_schema_version(root, path),
         "timestamp": _text(generator.find(_q(OVAL_COMMON_NS, "timestamp"))),
     }
     if not all(values.values()):
         raise OvalInputError(f"generator is incomplete in {path}")
-    if values["schema_version"] not in SUPPORTED_CORE_SCHEMA_VERSIONS:
-        raise OvalInputError(f"unsupported OVAL core schema version {values['schema_version']!r} in {path}")
     try:
         datetime.fromisoformat(values["timestamp"].replace("Z", "+00:00"))
     except ValueError as exc:

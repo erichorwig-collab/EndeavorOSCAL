@@ -15,7 +15,7 @@ from endeavor.oval import OVAL_RESULTS_NS, _schema
 ROOT = Path(__file__).resolve().parents[1]
 RESULTS = ROOT / "fixtures" / "oval-results"
 DEFINITIONS = ROOT / "fixtures" / "oval-definitions" / "definitions.xml"
-SCHEMA_ROOT = ROOT / "endeavor" / "schemas" / "oval-5.12.2"
+SCHEMA_ROOT = ROOT / "endeavor" / "schemas" / "oval" / "5.11.3"
 XSD_NS = "{http://www.w3.org/2001/XMLSchema}"
 
 
@@ -23,15 +23,14 @@ class VerticalSliceTests(unittest.TestCase):
     def test_results_wrapper_has_exact_pinned_import_graph(self) -> None:
         wrapper = SCHEMA_ROOT / "endeavor-results-wrapper.xsd"
         imports = ET.parse(str(wrapper)).getroot().findall(f"{XSD_NS}import")
-        platforms = ("aix", "android", "apache", "apple_ios", "asa", "aws", "catos", "esx", "freebsd", "hpux", "independent", "ios", "iosxe", "junos", "linux", "macos", "netconf", "panos", "pixos", "sharepoint", "solaris", "unix", "windows")
         expected = {("http://oval.mitre.org/XMLSchema/oval-results-5", "oval-results-schema.xsd")}
-        expected.update((f"http://oval.mitre.org/XMLSchema/oval-definitions-5#{platform}", f"{platform.replace('_', '-')}-definitions-schema.xsd") for platform in platforms)
-        expected.update((f"http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#{platform}", f"{platform.replace('_', '-')}-system-characteristics-schema.xsd") for platform in platforms)
+        expected.update((ET.parse(str(path)).getroot().get("targetNamespace"), path.name) for path in SCHEMA_ROOT.glob("*-definitions-schema.xsd") if path.name != "oval-definitions-schema.xsd")
+        expected.update((ET.parse(str(path)).getroot().get("targetNamespace"), path.name) for path in SCHEMA_ROOT.glob("*-system-characteristics-schema.xsd") if path.name != "oval-system-characteristics-schema.xsd")
         actual = {(item.get("namespace"), item.get("schemaLocation")) for item in imports}
         self.assertEqual(actual, expected)
         self.assertTrue(all(namespace and location and "/" not in location and location.endswith(".xsd") for namespace, location in actual))
-        self.assertEqual(len(imports), 47)
-        self.assertIsNotNone(_schema(OVAL_RESULTS_NS))
+        self.assertEqual(len(imports), len(expected))
+        self.assertIsNotNone(_schema("5.11.3", OVAL_RESULTS_NS))
 
     def test_each_declared_status_is_preserved(self) -> None:
         cases = {

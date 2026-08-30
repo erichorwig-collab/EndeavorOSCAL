@@ -17,4 +17,4 @@ endeavor = "endeavor.cli:main"
 packages = ["endeavor"]
 
 [tool.setuptools.package-data]
-endeavor = ["schemas/**/*.json", "schemas/**/*.xsd"]
+endeavor = ["schemas/**/*.json", "schemas/**/*.xsd", "common/*.xsd"]

@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <!--Trusted local wrapper: document xsi schema hints are never used.-->
+  <xsd:import namespace="http://oval.mitre.org/XMLSchema/oval-results-5" schemaLocation="oval-results-schema.xsd"/>
+  <xsd:import namespace="http://oval.mitre.org/XMLSchema/oval-definitions-5#aix" schemaLocation="aix-definitions-schema.xsd"/>
+  <xsd:import namespace="http://oval.mitre.org/XMLSchema/oval-definitions-5#android" schemaLocation="android-definitions-schema.xsd"/>
+  <xsd:import namespace="http://oval.mitre.org/XMLSchema/oval-definitions-5#apache" schemaLocation="apache-definitions-schema.xsd"/>
+  <xsd:import namespace="http://oval.mitre.org/XMLSchema/oval-definitions-5#apple_ios" schemaLocation="apple-ios-definitions-schema.xsd"/>
+  <xsd:import namespace="http://oval.mitre.org/XMLSchema/oval-definitions-5#asa" schemaLocation="asa-definitions-schema.xsd"/>
+  <xsd:import namespace="http://oval.mitre.org/XMLSchema/oval-definitions-5#catos" schemaLocation="catos-definitions-schema.xsd"/>
+  <xsd:import namespace="http://oval.mitre.org/XMLSchema/oval-definitions-5#esx" schemaLocation="esx-definitions-schema.xsd"/>
+  <xsd:import namespace="http://oval.mitre.org/XMLSchema/oval-definitions-5#freebsd" schemaLocation="freebsd-definitions-schema.xsd"/>
+  <xsd:import namespace="http://oval.mitre.org/XMLSchema/oval-definitions-5#hpux" schemaLocation="hpux-definitions-schema.xsd"/>
+  <xsd:import namespace="http://oval.mitre.org/XMLSchema/oval-definitions-5#independent" schemaLocation="independent-definitions-schema.xsd"/>
+  <xsd:import namespace="http://oval.mitre.org/XMLSchema/oval-definitions-5#ios" schemaLocation="ios-definitions-schema.xsd"/>
+  <xsd:import namespace="http://oval.mitre.org/XMLSchema/oval-definitions-5#iosxe" schemaLocation="iosxe-definitions-schema.xsd"/>
+  <xsd:import namespace="http://oval.mitre.org/XMLSchema/oval-definitions-5#junos" schemaLocation="junos-definitions-schema.xsd"/>
+  <xsd:import namespace="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux" schemaLocation="linux-definitions-schema.xsd"/>
+  <xsd:import namespace="http://oval.mitre.org/XMLSchema/oval-definitions-5#macos" schemaLocation="macos-definitions-schema.xsd"/>
+  <xsd:import namespace="http://oval.mitre.org/XMLSchema/oval-definitions-5#netconf" schemaLocation="netconf-definitions-schema.xsd"/>
+  <xsd:import namespace="http://oval.mitre.org/XMLSchema/oval-definitions-5#pixos" schemaLocation="pixos-definitions-schema.xsd"/>
+  <xsd:import namespace="http://oval.mitre.org/XMLSchema/oval-definitions-5#sharepoint" schemaLocation="sharepoint-definitions-schema.xsd"/>
+  <xsd:import namespace="http://oval.mitre.org/XMLSchema/oval-definitions-5#solaris" schemaLocation="solaris-definitions-schema.xsd"/>
+  <xsd:import namespace="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix" schemaLocation="unix-definitions-schema.xsd"/>
+  <xsd:import namespace="http://oval.mitre.org/XMLSchema/oval-definitions-5#windows" schemaLocation="windows-definitions-schema.xsd"/>
+  <xsd:import namespace="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#aix" schemaLocation="aix-system-characteristics-schema.xsd"/>
+  <xsd:import namespace="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#android" schemaLocation="android-system-characteristics-schema.xsd"/>
+  <xsd:import namespace="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#apache" schemaLocation="apache-system-characteristics-schema.xsd"/>
+  <xsd:import namespace="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#apple_ios" schemaLocation="apple-ios-system-characteristics-schema.xsd"/>
+  <xsd:import namespace="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#asa" schemaLocation="asa-system-characteristics-schema.xsd"/>
+  <xsd:import namespace="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#catos" schemaLocation="catos-system-characteristics-schema.xsd"/>
+  <xsd:import namespace="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#esx" schemaLocation="esx-system-characteristics-schema.xsd"/>
+  <xsd:import namespace="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#freebsd" schemaLocation="freebsd-system-characteristics-schema.xsd"/>
+  <xsd:import namespace="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#hpux" schemaLocation="hpux-system-characteristics-schema.xsd"/>
+  <xsd:import namespace="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#independent" schemaLocation="independent-system-characteristics-schema.xsd"/>
+  <xsd:import namespace="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#ios" schemaLocation="ios-system-characteristics-schema.xsd"/>
+  <xsd:import namespace="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#iosxe" schemaLocation="iosxe-system-characteristics-schema.xsd"/>
+  <xsd:import namespace="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#junos" schemaLocation="junos-system-characteristics-schema.xsd"/>
+  <xsd:import namespace="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#linux" schemaLocation="linux-system-characteristics-schema.xsd"/>
+  <xsd:import namespace="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#macos" schemaLocation="macos-system-characteristics-schema.xsd"/>
+  <xsd:import namespace="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#netconf" schemaLocation="netconf-system-characteristics-schema.xsd"/>
+  <xsd:import namespace="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#pixos" schemaLocation="pixos-system-characteristics-schema.xsd"/>
+  <xsd:import namespace="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#sharepoint" schemaLocation="sharepoint-system-characteristics-schema.xsd"/>
+  <xsd:import namespace="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#solaris" schemaLocation="solaris-system-characteristics-schema.xsd"/>
+  <xsd:import namespace="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#unix" schemaLocation="unix-system-characteristics-schema.xsd"/>
+  <xsd:import namespace="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5#windows" schemaLocation="windows-system-characteristics-schema.xsd"/>
+</xsd:schema>

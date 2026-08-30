@@ -8,8 +8,9 @@ Validated OpenSCAP OVAL 5.11.3 evidence fixture and compatibility boundary.
 
 ## Completed evidence
 
-- The 5.12.2 schema set remains vendored under
-  `endeavor/schemas/oval-5.12.2` as future-release compatibility work.
+- The selected 5.11.3 profile uses the exact Fedora 43/OpenSCAP 1.4.4 schema
+  tree at `endeavor/schemas/oval/5.11.3`, plus its required shared schemas.
+  The 5.12.2 schema set remains vendored as future-release compatibility work.
 - OSCAL Assessment Results 1.2.0 JSON Schema is vendored under
   `endeavor/schemas/oscal-1.2.0`; provenance and hashes are in
   `endeavor/schemas/MANIFEST.md`.
@@ -40,8 +41,8 @@ Validated OpenSCAP OVAL 5.11.3 evidence fixture and compatibility boundary.
 
 ## Next safe task
 
-Add a separate 5.11.3 schema-vendor provenance bundle, then decide whether any
-platform-specific details should be mapped into OSCAL observations. CI is
+Decide whether any platform-specific details should be mapped into OSCAL
+observations. CI is
 present and passed remotely on commit `12765e0` (GitHub Actions run
 `33289162253`).
 
