@@ -49,6 +49,8 @@ class VerticalSliceTests(unittest.TestCase):
         tailoring = [component for component in components if component["payload"]["name"] == "Tailoring"]
         self.assertEqual(len(tailoring), 1)
         self.assertEqual(tailoring[0]["payload"]["id"], "xccdf_scap-workbench_tailoring_default")
+        self.assertEqual(tailoring[0]["payload"]["profile-ids"], ["xccdf_com.example.www_profile_customized"])
+        self.assertEqual(tailoring[0]["payload"]["version"], "1")
         self.assertNotIn("fec021b96364", ARF_TAILORING.read_text(encoding="utf-8"))
 
     def test_compatibility_matrix_names_tested_profiles(self) -> None:

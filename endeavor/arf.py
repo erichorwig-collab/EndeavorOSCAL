@@ -88,6 +88,13 @@ def _collection_manifest(request: ET._Element, path: Path) -> dict[str, object]:
             payload_record: dict[str, object] = {"namespace": ET.QName(payload).namespace, "name": ET.QName(payload).localname, "id": payload.get("id")}
             if payload.tag == _q(XCCDF_NS, "Benchmark"):
                 payload_record["profile-ids"] = [profile.get("id") for profile in payload.findall(_q(XCCDF_NS, "Profile")) if profile.get("id")]
+            if payload.tag == _q(XCCDF_NS, "Tailoring"):
+                benchmark = payload.find(_q(XCCDF_NS, "benchmark"))
+                version = payload.find(_q(XCCDF_NS, "version"))
+                payload_record["benchmark-href"] = benchmark.get("href") if benchmark is not None else None
+                payload_record["version"] = (version.text or "").strip() if version is not None else None
+                payload_record["version-time"] = version.get("time") if version is not None else None
+                payload_record["profile-ids"] = [profile.get("id") for profile in payload.findall(_q(XCCDF_NS, "Profile")) if profile.get("id")]
             component_refs.append({
                 "id": reference.get("id"), "component-id": href[1:],
                 "section": ET.QName(reference.getparent()).localname,
