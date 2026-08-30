@@ -83,10 +83,13 @@ def _collection_manifest(request: ET._Element, path: Path) -> dict[str, object]:
             payload = component[0] if len(component) == 1 else None
             if payload is None:
                 raise OvalInputError(f"ARF components must contain exactly one payload: {_safe(path)}")
+            payload_record: dict[str, object] = {"namespace": ET.QName(payload).namespace, "name": ET.QName(payload).localname, "id": payload.get("id")}
+            if payload.tag == _q(XCCDF_NS, "Benchmark"):
+                payload_record["profile-ids"] = [profile.get("id") for profile in payload.findall(_q(XCCDF_NS, "Profile")) if profile.get("id")]
             component_refs.append({
                 "id": reference.get("id"), "component-id": href[1:],
                 "section": ET.QName(reference.getparent()).localname,
-                "payload": {"namespace": ET.QName(payload).namespace, "name": ET.QName(payload).localname, "id": payload.get("id")},
+                "payload": payload_record,
                 "sha256": hashlib.sha256(ET.tostring(component, method="c14n", with_comments=False)).hexdigest(),
             })
         streams.append({"id": stream.get("id"), "scap-version": stream.get("scap-version"), "use-case": stream.get("use-case"), "components": component_refs})
@@ -119,13 +122,16 @@ def _linked_xccdf_result(report: ET._Element, collection: dict[str, object], pat
     matches = [component for stream in streams for component in stream["components"] if component["payload"]["namespace"] == XCCDF_NS and component["payload"]["name"] == "Benchmark" and component["payload"]["id"] == benchmark_id]
     if len(matches) != 1:
         raise OvalInputError(f"ARF XCCDF benchmark linkage is ambiguous or missing: {_safe(path)}")
+    profile_id = profile.get("idref") if profile is not None else None
+    if profile_id and matches[0]["payload"].get("profile-ids", []).count(profile_id) != 1:
+        raise OvalInputError(f"ARF XCCDF profile linkage is ambiguous or missing: {_safe(path)}")
     rules = []
     for rule in result.findall(_q(XCCDF_NS, "rule-result")):
         outcome = rule.find(_q(XCCDF_NS, "result"))
         rules.append({"idref": rule.get("idref"), "result": (outcome.text or "").strip() if outcome is not None else None, "time": rule.get("time"), "severity": rule.get("severity"), "weight": rule.get("weight")})
     return {
         "id": result.get("id"), "benchmark": {"id": benchmark_id, "href": benchmark.get("href") if benchmark is not None else None, "component-id": matches[0]["component-id"]},
-        "profile": profile.get("idref") if profile is not None else None,
+        "profile": profile_id,
         "start-time": result.get("start-time"), "end-time": result.get("end-time"),
         "targets": [(item.text or "").strip() for item in result.findall(_q(XCCDF_NS, "target")) if (item.text or "").strip()],
         "rule-results": rules,

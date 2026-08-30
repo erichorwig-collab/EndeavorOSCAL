@@ -42,6 +42,7 @@ class VerticalSliceTests(unittest.TestCase):
         linked = payload["reports"][0]["xccdf-result"]
         self.assertEqual(linked["profile"], "xccdf_org.ssgproject.content_profile_common")
         self.assertEqual(linked["benchmark"]["component-id"], "scap_org.open-scap_comp_ssg-fedora-xccdf-1.2.xml")
+        self.assertIn(linked["profile"], payload["report-requests"][0]["collection"]["data-streams"][0]["components"][1]["payload"]["profile-ids"])
         self.assertEqual({item["result"] for item in linked["rule-results"]}, {"pass", "fail", "notchecked", "notselected"})
         self.assertEqual(completed.stdout.encode(), ARF_GOLDEN.read_bytes())
 
@@ -81,6 +82,15 @@ class VerticalSliceTests(unittest.TestCase):
             completed = subprocess.run([sys.executable, "-m", "endeavor", "inspect-arf", "--results", str(path)], cwd=ROOT, text=True, capture_output=True, check=False)
             self.assertEqual(completed.returncode, 3)
             self.assertIn("benchmark linkage is ambiguous or missing", completed.stderr)
+
+    def test_inspect_arf_rejects_missing_linked_xccdf_profile(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "missing-profile.arf.xml"
+            source = ARF_FIXTURE.read_text(encoding="utf-8").replace('profile idref="xccdf_org.ssgproject.content_profile_common"', 'profile idref="xccdf_missing_profile"', 1)
+            path.write_text(source, encoding="utf-8")
+            completed = subprocess.run([sys.executable, "-m", "endeavor", "inspect-arf", "--results", str(path)], cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(completed.returncode, 3)
+            self.assertIn("profile linkage is ambiguous or missing", completed.stderr)
 
     def test_vendored_xccdf_schema_bundle_compiles(self) -> None:
         self.assertIsNotNone(ET.XMLSchema(ET.parse(str(XCCDF_SCHEMA))))

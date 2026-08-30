@@ -44,7 +44,10 @@
                 "payload": {
                   "id": "xccdf_org.ssgproject.content_benchmark_FEDORA",
                   "name": "Benchmark",
-                  "namespace": "http://checklists.nist.gov/xccdf/1.2"
+                  "namespace": "http://checklists.nist.gov/xccdf/1.2",
+                  "profile-ids": [
+                    "xccdf_org.ssgproject.content_profile_common"
+                  ]
                 },
                 "section": "checklists",
                 "sha256": "a8d9e493aec9349a336426b16b534cfe290670a7c789150c4ebdbbf03c17ed42"
