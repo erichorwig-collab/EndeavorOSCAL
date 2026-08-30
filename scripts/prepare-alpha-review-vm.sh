@@ -65,13 +65,13 @@ else
   (cd "$work_dir" && npm ci)
 fi
 
-cat <<EOF
+cat <<'EOF'
 
 Alpha review workspace is ready.
 
-Copy and paste this next command into the VM:
-  . "$venv_dir/bin/activate" && cd "$work_dir" && python3 scripts/validate-alpha-workflow.py --review-output /tmp/endeavor-alpha-review
+In the supplied VM, run this short noVNC-safe command next:
+  sh /shared/v
 
-After validation, copy the review output back to the host-visible share:
-  cp -a /tmp/endeavor-alpha-review /shared/
+After validation, export the review output with:
+  sh /shared/e
 EOF
