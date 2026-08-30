@@ -10,6 +10,7 @@ import tempfile
 from .convert import assessment_results
 from .diff import assessment_results_diff
 from .findings import findings_report
+from .xccdf import inspect_xccdf
 from .mapping import mapping_report, parse_mapping
 from .oval import OvalInputError, parse_definitions, parse_results
 from .report import mapping_report_html
@@ -37,7 +38,7 @@ class _ArgumentParser(argparse.ArgumentParser):
 def _parser() -> argparse.ArgumentParser:
     parser = _ArgumentParser(prog="endeavor", description="Convert OVAL evidence to OSCAL Assessment Results.")
     sub = parser.add_subparsers(dest="command", required=True, parser_class=_ArgumentParser)
-    for name in ("inspect", "convert", "mapping-report", "report", "diff", "findings"):
+    for name in ("inspect", "convert", "mapping-report", "report", "diff", "findings", "inspect-xccdf"):
         command = sub.add_parser(name)
         command.add_argument("--format", choices=("text", "json"), default="text", help="format handled diagnostics as text or JSON")
         if name == "diff":
@@ -45,6 +46,9 @@ def _parser() -> argparse.ArgumentParser:
             command.add_argument("--after", required=True, type=Path)
             continue
         if name == "findings":
+            command.add_argument("--results", required=True, type=Path)
+            continue
+        if name == "inspect-xccdf":
             command.add_argument("--results", required=True, type=Path)
             continue
         command.add_argument("--results", required=True, type=Path)
@@ -85,6 +89,9 @@ def main(argv: list[str] | None = None) -> int:
             return ExitCode.SUCCESS
         if args.command == "findings":
             print(json.dumps(findings_report(args.results), indent=2, sort_keys=True))
+            return ExitCode.SUCCESS
+        if args.command == "inspect-xccdf":
+            print(json.dumps(inspect_xccdf(args.results), indent=2, sort_keys=True))
             return ExitCode.SUCCESS
         results = parse_results(args.results)
         definitions = parse_definitions(args.definitions)

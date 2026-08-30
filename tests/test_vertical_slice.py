@@ -32,6 +32,22 @@ class VerticalSliceTests(unittest.TestCase):
         schema = ET.XMLSchema(ET.parse(str(XCCDF_SCHEMA)))
         self.assertTrue(schema.validate(ET.parse(str(XCCDF_FIXTURE))), schema.error_log)
 
+    def test_inspect_xccdf_reports_pinned_fixture_inventory(self) -> None:
+        completed = subprocess.run([sys.executable, "-m", "endeavor", "inspect-xccdf", "--results", str(XCCDF_FIXTURE)], cwd=ROOT, text=True, capture_output=True, check=False)
+        self.assertEqual(completed.returncode, 0, completed.stderr)
+        payload = json.loads(completed.stdout)
+        self.assertEqual(payload["source"]["path"], XCCDF_FIXTURE.name)
+        self.assertEqual(payload["benchmark"]["id"], "xccdf_moc.elpmaxe.www_benchmark_test")
+        self.assertEqual([(item["idref"], item["result"]) for item in payload["test-results"][0]["rule-results"]], [("xccdf_moc.elpmaxe.www_rule_1", "fail"), ("xccdf_moc.elpmaxe.www_rule_2", "pass")])
+
+    def test_inspect_xccdf_rejects_doctype(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "malicious-xccdf.xml"
+            path.write_text('<!DOCTYPE x [<!ENTITY e "boom">]><Benchmark/>', encoding="utf-8")
+            completed = subprocess.run([sys.executable, "-m", "endeavor", "inspect-xccdf", "--results", str(path)], cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(completed.returncode, 3)
+            self.assertIn("DOCTYPE and ENTITY", completed.stderr)
+
     def test_results_wrapper_has_exact_pinned_import_graph(self) -> None:
         wrapper = SCHEMA_ROOT / "endeavor-results-wrapper.xsd"
         imports = ET.parse(str(wrapper)).getroot().findall(f"{XSD_NS}import")
