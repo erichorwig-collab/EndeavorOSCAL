@@ -23,8 +23,9 @@ fixture in `fixtures/*/PROVENANCE.md`.
 ## Deferred before Governance
 
 1. ARF archive/container limits and schema validation.
-2. A real, unambiguous ARF tailoring fixture and normalization of tailoring
-   decisions.
+2. A generated-sanitized ARF tailoring result from the pinned OpenSCAP 1.4.4
+   baseline/tailoring inputs in `fixtures/xccdf-tailoring/`, and normalization
+   of tailoring decisions.
 3. A shared source-to-OSCAL evidence contract for supported XCCDF/ARF results,
    with no inferred controls or findings.
 4. Cross-format conversion goldens and a human reviewer acceptance record for
