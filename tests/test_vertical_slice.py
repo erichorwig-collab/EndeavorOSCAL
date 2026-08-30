@@ -15,6 +15,7 @@ from endeavor.oval import MAX_XML_BYTES, MAX_XML_ELEMENTS, OVAL_RESULTS_NS, _sch
 from endeavor.arf import inspect_arf
 from endeavor.evidence import normalize_arf, normalize_oval, normalize_xccdf
 from endeavor.xccdf import inspect_xccdf
+from endeavor.xccdf_mapping import parse_mapping as parse_xccdf_mapping
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -84,6 +85,11 @@ class VerticalSliceTests(unittest.TestCase):
         self.assertEqual([item["kind"] for item in evidence["sources"]], ["oval-results", "oval-definitions"])
         self.assertEqual(evidence["assertions"][0]["status"], "true")
         self.assertEqual(len(evidence["assertions"][0]["evidence"]), 2)
+
+    def test_xccdf_mapping_requires_explicit_rule_outcome(self) -> None:
+        mapping = parse_xccdf_mapping(ROOT / "fixtures" / "mappings" / "xccdf-example-v1.json")
+        self.assertEqual(mapping.mappings[0].rule_id, "xccdf_moc.elpmaxe.www_rule_1")
+        self.assertNotIn("pass", mapping.mappings[0].outcomes)
 
     def test_inspect_evidence_matches_cross_format_goldens(self) -> None:
         for flag, fixture, golden in (("--xccdf", XCCDF_FIXTURE, EVIDENCE_GOLDEN / "xccdf.json"), ("--arf", ARF_FIXTURE, EVIDENCE_GOLDEN / "arf.json")):
