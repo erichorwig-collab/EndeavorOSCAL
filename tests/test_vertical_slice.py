@@ -12,6 +12,9 @@ import unittest
 from lxml import etree as ET
 
 from endeavor.oval import MAX_XML_BYTES, MAX_XML_ELEMENTS, OVAL_RESULTS_NS, _schema
+from endeavor.arf import inspect_arf
+from endeavor.evidence import normalize_arf, normalize_xccdf
+from endeavor.xccdf import inspect_xccdf
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -63,6 +66,15 @@ class VerticalSliceTests(unittest.TestCase):
         matrix = COMPATIBILITY_MATRIX.read_text(encoding="utf-8")
         for value in ("OVAL 5.11.3", "XCCDF 1.2.1", "ARF 1.1", "OpenSCAP 1.4.4", "fixtures/generated-sanitized/", "fixtures/xccdf-results/", "fixtures/arf/"):
             self.assertIn(value, matrix)
+
+    def test_cross_format_normalizers_preserve_only_provenance(self) -> None:
+        xccdf = normalize_xccdf(inspect_xccdf(XCCDF_FIXTURE))
+        arf = normalize_arf(inspect_arf(ARF_FIXTURE))
+        self.assertEqual(xccdf["format"], "endeavor-evidence-contract")
+        self.assertEqual({item["status"] for item in xccdf["assertions"]}, {"pass", "fail"})
+        self.assertEqual({item["status"] for item in arf["assertions"] if item["kind"] == "oval-definition-result"}, {"true", "false", "not evaluated"})
+        self.assertTrue(all("finding" not in item and "control-id" not in item for item in arf["assertions"]))
+        self.assertTrue(all(item["evidence"] for item in arf["assertions"]))
 
     def test_inspect_arf_reports_pinned_collection_manifest(self) -> None:
         completed = subprocess.run([sys.executable, "-m", "endeavor", "inspect-arf", "--results", str(ARF_FIXTURE)], cwd=ROOT, text=True, capture_output=True, check=False)
