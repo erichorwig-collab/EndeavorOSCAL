@@ -25,6 +25,7 @@ Endeavor converts OpenSCAP assessment evidence into valid, provenance-preserving
 - [v0.1 upstream fixture research and intake requirements](docs/v0.1-upstream-fixture-research.md)
 - [tested source-format compatibility matrix](docs/compatibility-matrix.md)
 - [v0.2 cross-format evidence contract](docs/v0.2-cross-format-evidence-contract.md)
+- [v0.2 XCCDF-to-OSCAL mapping contract](docs/v0.2-xccdf-oscal-mapping.md)
 
 ## Status
 
