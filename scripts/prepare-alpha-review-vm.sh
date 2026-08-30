@@ -3,9 +3,20 @@
 # inside the VM after its /shared 9p review-kit mount is available.
 set -eu
 
+retry_mode=N
+if [ "${1:-}" = "--retry" ]; then
+  retry_mode=Y
+  shift
+fi
+
 source_dir=${1:-/shared/EndeavorOSCAL}
-work_dir=${ENDEAVOR_WORK_DIR:-/tmp/endeavor-work}
-venv_dir=${ENDEAVOR_VENV_DIR:-/tmp/endeavor-venv}
+if [ "$retry_mode" = Y ]; then
+  work_dir=${ENDEAVOR_WORK_DIR:-/tmp/endeavor-work-retry}
+  venv_dir=${ENDEAVOR_VENV_DIR:-/tmp/endeavor-venv-retry}
+else
+  work_dir=${ENDEAVOR_WORK_DIR:-/tmp/endeavor-work}
+  venv_dir=${ENDEAVOR_VENV_DIR:-/tmp/endeavor-venv}
+fi
 package_cache=${ENDEAVOR_APK_CACHE:-/shared/apk-cache-v3.24}
 wheelhouse=${ENDEAVOR_WHEELHOUSE:-/shared/python-wheelhouse}
 node_modules_cache=${ENDEAVOR_NODE_MODULES_CACHE:-/shared/node_modules}

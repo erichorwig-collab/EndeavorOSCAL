@@ -26,6 +26,13 @@ authoritative project checkout.
    sh /shared/s
    ```
 
+   If a prior setup attempt failed before printing **“Alpha review workspace is
+   ready”**, use the fresh-workspace retry wrapper instead:
+
+   ```sh
+   sh /shared/r
+   ```
+
 4. Run the same retained-evidence validation required by the
    [alpha tester packet](alpha-tester-packet.md):
 
