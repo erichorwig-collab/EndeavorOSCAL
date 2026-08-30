@@ -33,3 +33,8 @@ not committed. `scripts/sanitize-openscap-arf.py` replaced only the disposable
 container hostname, bridge IPv4 address, and non-loopback MAC address. The
 sanitized ARF SHA-256 is
 `05d00bf7cc83d32dc04ebe0bdb9b9404780878b6992dc2e2d5d57d6f2c865543`.
+
+To reproduce, run `scripts/generate-openscap-tailoring-arf.sh` only with
+temporarily authorized Docker access. It writes the sanitized artifact, removes
+the raw evaluator output on success, and prints the resulting hash. Disable the
+workflow by simply not invoking the script; it is not a service or CI job.
