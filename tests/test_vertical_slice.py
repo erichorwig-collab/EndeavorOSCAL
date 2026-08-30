@@ -9,7 +9,7 @@ import unittest
 
 from lxml import etree as ET
 
-from endeavor.oval import OVAL_RESULTS_NS, _schema
+from endeavor.oval import MAX_XML_BYTES, OVAL_RESULTS_NS, _schema
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -79,6 +79,50 @@ class VerticalSliceTests(unittest.TestCase):
             self.assertIn("malicious.xml", diagnostic["error"]["message"])
             self.assertNotIn(directory, completed.stderr)
             self.assertNotIn("<!DOCTYPE", completed.stderr)
+            self.assertFalse(output.exists())
+
+    def test_invalid_utf8_is_rejected_without_output(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "invalid-utf8.xml"
+            output = Path(directory) / "result.json"
+            path.write_bytes(b"<?xml version='1.0' encoding='UTF-8'?><oval_results>\xff</oval_results>")
+            completed = subprocess.run([sys.executable, "-m", "endeavor", "convert", "--results", str(path), "--definitions", str(DEFINITIONS), "--output", str(output)], cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(completed.returncode, 3)
+            self.assertIn("malformed XML", completed.stderr)
+            self.assertFalse(output.exists())
+
+    def test_xinclude_is_not_resolved_and_is_rejected_without_output(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="endeavor-xinclude-") as directory:
+            path = Path(directory) / "xinclude.xml"
+            output = Path(directory) / "result.json"
+            source = (RESULTS / "pass.xml").read_text(encoding="utf-8")
+            source = source.replace('xmlns:oval-sc="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5">', 'xmlns:oval-sc="http://oval.mitre.org/XMLSchema/oval-system-characteristics-5" xmlns:xi="http://www.w3.org/2001/XInclude">')
+            source = source.replace("<results>", f'<results><xi:include href="file://{directory}/not-opened.xml" parse="xml"/>')
+            path.write_text(source, encoding="utf-8")
+            completed = subprocess.run([sys.executable, "-m", "endeavor", "convert", "--results", str(path), "--definitions", str(DEFINITIONS), "--output", str(output)], cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(completed.returncode, 3)
+            self.assertIn("XSD validation failed", completed.stderr)
+            self.assertNotIn(directory, completed.stderr)
+            self.assertFalse(output.exists())
+
+    def test_oversized_input_is_rejected_before_parsing_without_output(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "oversized.xml"
+            output = Path(directory) / "result.json"
+            path.write_bytes(b" " * (MAX_XML_BYTES + 1))
+            completed = subprocess.run([sys.executable, "-m", "endeavor", "convert", "--results", str(path), "--definitions", str(DEFINITIONS), "--output", str(output)], cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(completed.returncode, 3)
+            self.assertIn(f"exceeds {MAX_XML_BYTES} byte limit", completed.stderr)
+            self.assertFalse(output.exists())
+
+    def test_excessive_xml_depth_is_rejected_without_output(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "too-deep.xml"
+            output = Path(directory) / "result.json"
+            path.write_text("<x>" * 300 + "</x>" * 300, encoding="utf-8")
+            completed = subprocess.run([sys.executable, "-m", "endeavor", "convert", "--results", str(path), "--definitions", str(DEFINITIONS), "--output", str(output)], cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(completed.returncode, 3)
+            self.assertIn("malformed XML", completed.stderr)
             self.assertFalse(output.exists())
 
     def test_usage_error_has_stable_exit_code(self) -> None:
