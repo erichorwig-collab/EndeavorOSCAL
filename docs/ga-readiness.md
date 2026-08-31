@@ -26,10 +26,10 @@ the broad contract expands, rather than replaces, these gates.
 | --- | --- | --- |
 | Contractual support boundary | Versioned support policy naming input profiles, OpenSCAP/OVAL versions, operating platforms, non-goals, support period, and deprecation process | Implemented in `SUPPORT.md`; GA candidate must validate it against the compatibility matrix |
 | GA-specific acceptance | A fresh named human and accessibility acceptance record for the exact `v0.1.0` tag candidate | Not started |
-| Version-aware GA gate | CI verifies tag/package/version consistency, changelog, SBOM/license review, vulnerability disposition, accepted GA record, reproducible source, and post-publication verification for the exact release | Alpha-only checker is hard-coded to the alpha candidate |
+| Version-aware GA gate | CI verifies tag/package/version consistency, changelog, SBOM/license review, vulnerability disposition, accepted GA record, reproducible source, and post-publication verification for the exact release | Implemented and fails closed until a version-specific GA readiness record is present |
 | Main protection | Active `main` ruleset requiring a pull request and passing validation, dependency review, and Python/JavaScript CodeQL, while blocking deletion and force pushes | Implemented as GitHub ruleset `21899103`; the repository owner may bypass only through a pull request. A future independent reviewer will be added before requiring an approval threshold. |
 | Untrusted-input assurance | Bounded parser/property fuzzing with regression retention and Python/JavaScript SAST on pull requests and `main` | Implemented: fixed-seed OVAL/XCCDF/ARF mutation regression runs in CI and release workflows; pinned CodeQL covers Python and JavaScript |
-| Interoperability corpus | Sanitized, provenance-recorded fixtures from each supported producer/version profile and target-distro combination | Rocky Linux 10.2 x86_64 and Ubuntu 24.04 LTS x86_64 are the chosen first-GA container targets; the documented corpus plan is ready, but the generated/sanitized evidence is still incomplete |
+| Interoperability corpus | Sanitized, provenance-recorded fixtures from each supported producer/version profile and target-distro combination | Rocky Linux 10.2 x86_64 and Ubuntu 24.04 LTS x86_64 candidates, conversion goldens, and regression checks are committed; both await independent human sanitization review and GA-record admission |
 | Installability | Wheel/sdist or equivalent supported distribution, install/upgrade/uninstall documentation, and clean-environment installed-CLI end-to-end test | Implemented for the GitHub Release channel: wheel and sdist are built reproducibly, clean-installed, checksummed, and attested; the first GA release still needs its version-specific verification record |
 | Accessibility release gate | Automated report accessibility check and repeatable manual keyboard/screen-reader GA review | Static generated-report semantic checks run in the representative workflow; a fresh GA manual keyboard/screen-reader review remains required |
 | Maintainer operations | CONTRIBUTING, support/EOL policy, maintainer/governance, incident/change-control, and release-note accessibility process | Contribution, support, conduct, and disclosure policies are present; GA release/change-control evidence remains required |
@@ -55,6 +55,8 @@ the broad contract expands, rather than replaces, these gates.
   linkage.
 - Tailoring-decision interpretation.
 - Package-registry publication and broader OSCAL output types.
+- Legacy RHEL 6.3 evaluation and ingestion support; see
+  [the future compatibility study](future-rhel6-compatibility-study.md).
 
 ## Next action
 
