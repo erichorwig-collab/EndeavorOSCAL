@@ -19,14 +19,20 @@ gh release download "$ENDEAVOR_TAG" --repo "$ENDEAVOR_REPO"
 sha256sum -c SHA256SUMS
 gh attestation verify "EndeavorOSCAL-${ENDEAVOR_TAG#v}-source.tar.gz" \
   --repo "$ENDEAVOR_REPO"
+gh attestation verify "endeavor_oscal-<PEP440-VERSION>-py3-none-any.whl" \
+  --repo "$ENDEAVOR_REPO"
+gh attestation verify "endeavor_oscal-<PEP440-VERSION>.tar.gz" \
+  --repo "$ENDEAVOR_REPO"
 ```
 
 Every checksum must report `OK`, and `gh attestation verify` must report a
-verified GitHub build provenance for this repository. Also inspect the draft's
-release notes and confirm the attached source archive, SBOM, checksum file,
-and release manifest identify the exact frozen candidate. Record the release
-URL, verifier, UTC time, and command output location in the completed GA
-release evidence.
+verified GitHub build provenance for this repository. Replace
+`<PEP440-VERSION>` with the package version recorded in `pyproject.toml` for
+the tag (for example, `1.0.0`; prerelease spellings use PEP 440 such as
+`1.0.0a1`). Also inspect the draft's release notes and confirm the attached
+wheel, sdist, Git source archive, SBOM, checksum file, and release manifest
+identify the exact frozen candidate. Record the release URL, verifier, UTC
+time, and command output location in the completed GA release evidence.
 
 Do not publish on a failed, incomplete, or ambiguous result. Correct the
 candidate through the normal review process and create a new version/tag; do

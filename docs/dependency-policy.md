@@ -15,7 +15,9 @@ validation dependency closure used by the current OVAL vertical slice.
 ## Update rule
 
 - Runtime Python dependencies are exact pins in both `pyproject.toml` and
-  `requirements.txt`; Node validation dependencies are locked in
+  `requirements.txt`; the PEP 517 release frontend is pinned in
+  `requirements-release-build.txt` and the isolated build backend is pinned in
+  `pyproject.toml`; Node validation dependencies are locked in
   `package-lock.json` and installed with `npm ci`.
 - A dependency update requires a maintainer review of the release notes,
   license, supported Python/Node versions, and relevant security advisories.

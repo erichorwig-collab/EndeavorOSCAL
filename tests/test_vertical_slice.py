@@ -51,10 +51,17 @@ class VerticalSliceTests(unittest.TestCase):
             self.assertEqual(completed.returncode, 0, completed.stderr)
             manifest = json.loads((output / "release-manifest.json").read_text(encoding="utf-8"))
             archive = output / "EndeavorOSCAL-0.1.0-alpha.1-source.tar.gz"
+            sdist = output / "endeavor_oscal-0.1.0a1.tar.gz"
+            wheel = output / "endeavor_oscal-0.1.0a1-py3-none-any.whl"
             commit = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True, capture_output=True, check=True).stdout.strip()
             self.assertEqual(manifest["source-commit"], commit)
-            self.assertEqual(manifest["artifacts"][archive.name]["sha256"], hashlib.sha256(archive.read_bytes()).hexdigest())
-            self.assertIn(f"{hashlib.sha256(archive.read_bytes()).hexdigest()}  {archive.name}", (output / "SHA256SUMS").read_text(encoding="utf-8"))
+            for artifact in (archive, sdist, wheel):
+                self.assertTrue(artifact.is_file())
+                self.assertEqual(manifest["artifacts"][artifact.name]["sha256"], hashlib.sha256(artifact.read_bytes()).hexdigest())
+                self.assertIn(f"{hashlib.sha256(artifact.read_bytes()).hexdigest()}  {artifact.name}", (output / "SHA256SUMS").read_text(encoding="utf-8"))
+            verified = subprocess.run([sys.executable, "scripts/verify-python-distributions.py", "--wheel", str(wheel), "--sdist", str(sdist), "--package-version", "0.1.0a1"], cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(verified.returncode, 0, verified.stderr)
+            self.assertEqual(json.loads(verified.stdout)["status"], "passed")
     def test_pinned_xccdf_tailoring_inputs_validate_and_hash(self) -> None:
         schema = ET.XMLSchema(ET.parse(str(XCCDF_SCHEMA)))
         self.assertTrue(schema.validate(ET.parse(str(XCCDF_BASELINE))), schema.error_log)
