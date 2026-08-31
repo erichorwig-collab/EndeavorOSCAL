@@ -27,7 +27,7 @@ the broad contract expands, rather than replaces, these gates.
 | Contractual support boundary | Versioned support policy naming input profiles, OpenSCAP/OVAL versions, operating platforms, non-goals, support period, and deprecation process | Implemented in `SUPPORT.md`; GA candidate must validate it against the compatibility matrix |
 | GA-specific acceptance | A fresh named human and accessibility acceptance record for the exact `v0.1.0` tag candidate | Not started |
 | Version-aware GA gate | CI verifies tag/package/version consistency, changelog, SBOM/license review, vulnerability disposition, accepted GA record, reproducible source, and post-publication verification for the exact release | Alpha-only checker is hard-coded to the alpha candidate |
-| Main protection | Active `main` ruleset requiring a pull request and passing validation, while blocking deletion, force pushes, and unreviewed direct writes | Not configured |
+| Main protection | Active `main` ruleset requiring a pull request and passing validation, while blocking deletion and force pushes | Implemented as GitHub ruleset `21899103`; only the repository owner is an explicit bypass actor |
 | Untrusted-input assurance | Bounded parser/property fuzzing with regression retention and Python/JavaScript SAST on pull requests and `main` | Not configured |
 | Interoperability corpus | Sanitized, provenance-recorded fixtures from each supported producer/version profile and target-distro combination | One OpenSCAP 1.4.4-centered corpus |
 | Installability | Wheel/sdist or equivalent supported distribution, install/upgrade/uninstall documentation, and clean-environment installed-CLI end-to-end test | Source archive only |
