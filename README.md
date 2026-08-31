@@ -30,6 +30,7 @@ Endeavor converts OpenSCAP assessment evidence into valid, provenance-preserving
 - [GitHub Release Python distribution guide](docs/python-distributions.md)
 - [GA support policy](SUPPORT.md)
 - [GA interoperability corpus protocol](docs/ga-interoperability-corpus.md)
+- [Rocky Linux 10.2 human sanitization review guide](docs/rocky-linux-10.2-sanitization-review-guide.md)
 - [contribution guide](CONTRIBUTING.md)
 - [code of conduct](CODE_OF_CONDUCT.md)
 - [changelog](CHANGELOG.md)
