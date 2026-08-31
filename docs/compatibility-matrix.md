@@ -4,6 +4,11 @@ This matrix defines the tested Endeavor support profile. “Inventory” means
 bounded parsing and provenance retention; it does not imply evaluator
 replacement, remediation, or automatic OSCAL control mapping.
 
+The first GA target-environment corpus is planned for Rocky Linux 10.2 x86_64
+and Ubuntu 24.04 LTS x86_64 containers. Those targets are not in this tested
+matrix until their generated, sanitized evidence satisfies the
+[admission criteria](ga-platform-corpus-plan.md#admission-criteria).
+
 | Source format | Producer / version | Tested fixture | Public command | Supported behavior | Explicit limit |
 | --- | --- | --- | --- | --- | --- |
 | OVAL Results + Definitions | OpenSCAP 1.4.4; OVAL 5.11 and 5.11.3 | `fixtures/generated-sanitized/`, plus six semantic cases in `fixtures/manifest.yaml` | `inspect`, `convert`, `findings`, `diff` | Pinned-XSD validation, all six OVAL statuses, deterministic OSCAL conversion with explicit mappings | Generated-sanitized conversion fixture is 5.11.3; OVAL 5.12/5.12.2 is future-release work |
