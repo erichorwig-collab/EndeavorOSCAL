@@ -6,9 +6,27 @@ build-backend = "setuptools.build_meta"
 name = "endeavor-oscal"
 version = "0.1.0a1"
 description = "Provenance-preserving OVAL Results to OSCAL Assessment Results converter"
+readme = "README.md"
 requires-python = ">=3.11"
 dependencies = ["lxml==6.1.2"]
 license = {text = "Apache-2.0"}
+keywords = ["oscal", "openscap", "oval", "xccdf", "scap", "compliance"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Information Technology",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Security",
+]
+
+[project.urls]
+Homepage = "https://github.com/erichorwig-collab/EndeavorOSCAL"
+Repository = "https://github.com/erichorwig-collab/EndeavorOSCAL"
+Issues = "https://github.com/erichorwig-collab/EndeavorOSCAL/issues"
 
 [project.scripts]
 endeavor = "endeavor.cli:main"
