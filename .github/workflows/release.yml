@@ -42,6 +42,20 @@ jobs:
       - name: Validate GA readiness evidence
         if: ${{ !contains(github.ref_name, '-') }}
         run: python scripts/validate-ga-release-readiness.py --tag "$GITHUB_REF_NAME" --candidate-commit "$GITHUB_SHA"
+      - name: Scan GA source with OSV
+        if: ${{ !contains(github.ref_name, '-') }}
+        uses: google/osv-scanner-action/osv-scanner-action@06b2ab4348248b456ee06c9e953637f55e03504f # v2.5.0
+        continue-on-error: true
+        with:
+          scan-args: |-
+            --output=osv-results.json
+            --format=json
+            --include-git-root
+            -r
+            ./
+      - name: Enforce GA vulnerability dispositions
+        if: ${{ !contains(github.ref_name, '-') }}
+        run: python scripts/validate-ga-vulnerability-disposition.py --report osv-results.json
       - name: Build reproducible source artifacts
         run: python scripts/build-release-source.py --version "${GITHUB_REF_NAME#v}" --ref "$GITHUB_SHA" --output-dir release
       - name: Attest published artifacts

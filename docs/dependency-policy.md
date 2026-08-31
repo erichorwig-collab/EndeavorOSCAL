@@ -33,6 +33,12 @@ validation dependency closure used by the current OVAL vertical slice.
   An exception never silently disables a scanner or creates an open-ended
   waiver.
 
+For a GA tag, the frozen checkout is scanned again and
+[`validate-ga-vulnerability-disposition.py`](../scripts/validate-ga-vulnerability-disposition.py)
+blocks unresolved High, Critical, and unclassified OSV findings. The scheduled
+OSV workflow remains advisory for ordinary development and alpha releases; see
+[the GA disposition gate](ga-vulnerability-disposition.md).
+
 Vendored OSCAL and OVAL schemas are separately tracked with source and tree
 hashes in `endeavor/schemas/MANIFEST.md`; they are not package-manager
 dependencies and must be reviewed as imported artifacts.
