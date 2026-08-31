@@ -21,6 +21,9 @@ validation dependency closure used by the current OVAL vertical slice.
   `package-lock.json` and installed with `npm ci`.
 - A dependency update requires a maintainer review of the release notes,
   license, supported Python/Node versions, and relevant security advisories.
+  The current reviewed allow-list is MIT, Apache-2.0, BSD-2-Clause, and
+  BSD-3-Clause. Apache-2.0 OR BSD-2-Clause is specifically required by the
+  pinned PyPA `packaging` release-build dependency.
 - Regenerate the SBOM, run the focused test suite, and retain the CI result in
   the change record before merging.
 - GitHub Dependency Review is the pull-request gate for newly introduced high
