@@ -83,6 +83,32 @@ class VerticalSliceTests(unittest.TestCase):
         self.assertNotIn("fec021b96364", ARF_TAILORING.read_text(encoding="utf-8"))
         self.assertEqual(hashlib.sha256(ARF_TAILORING.read_bytes()).hexdigest(), "05d00bf7cc83d32dc04ebe0bdb9b9404780878b6992dc2e2d5d57d6f2c865543")
 
+    def test_arf_sanitizer_replaces_only_schema_defined_target_facts(self) -> None:
+        source = ARF_TAILORING.read_text(encoding="utf-8")
+        source = source.replace("endeavor-tailoring-fixture", "raw-host.example.test")
+        source = source.replace("127.0.0.1", "192.0.2.7")
+        source = source.replace("0:0:0:0:0:0:0:1", "2001:db8:0:0:0:0:0:7")
+        source = source.replace("00:00:00:00:00:00", "AA:BB:CC:DD:EE:FF")
+        source = source.replace(
+            '<identity authenticated="false" privileged="false">root</identity>',
+            '<identity authenticated="false" privileged="false">operator@example.test</identity>',
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            raw = Path(directory) / "raw.arf.xml"
+            sanitized = Path(directory) / "sanitized.arf.xml"
+            raw.write_text(source, encoding="utf-8")
+            completed = subprocess.run([sys.executable, "scripts/sanitize-openscap-arf.py", str(raw), str(sanitized)], cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(completed.returncode, 0, completed.stderr)
+            payload = inspect_arf(sanitized)
+            self.assertEqual(payload["reports"][0]["xccdf-result"]["title"], "OSCAP Scan Result")
+            text = sanitized.read_text(encoding="utf-8")
+            for raw_value in ("raw-host.example.test", "192.0.2.7", "2001:db8:0:0:0:0:0:7", "AA:BB:CC:DD:EE:FF", "operator@example.test"):
+                self.assertNotIn(raw_value, text)
+            for canonical_value in ("endeavor-target", "endeavor-target.invalid", "127.0.0.1", "0:0:0:0:0:0:0:1", "00:00:00:00:00:00", "endeavor-fixture-user"):
+                self.assertIn(canonical_value, text)
+            self.assertIn("<interface_name>eth0</interface_name>", text)
+            self.assertIn("cpe:/a:redhat:openscap:1.4.4", text)
+
     def test_tailoring_arf_generator_has_valid_shell_syntax(self) -> None:
         completed = subprocess.run(["bash", "-n", "scripts/generate-openscap-tailoring-arf.sh"], cwd=ROOT, text=True, capture_output=True, check=False)
         self.assertEqual(completed.returncode, 0, completed.stderr)
