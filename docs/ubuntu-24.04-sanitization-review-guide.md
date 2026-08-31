@@ -23,7 +23,9 @@ git status --short
 git rev-parse HEAD
 ```
 
-The first command must print nothing. Review only these five files:
+The first command must print nothing. Record the exact output of
+`git rev-parse HEAD` in the decision record; do not approve a later checkout
+against an earlier review. Review only these five files:
 
 - `fixtures/ga-corpus/ubuntu-24.04-x86_64/PROVENANCE.md`
 - `fixtures/ga-corpus/ubuntu-24.04-x86_64/results.xml`
@@ -61,7 +63,10 @@ above and preserve these required meanings:
 - CPE, benchmark, component, and `/input/` references; and
 - expected rule outcomes for the deliberately failing fixture.
 
-The `/input/` paths are fixed container paths, not reviewer-host paths.
+The following non-sensitive platform facts are required and allowed: Ubuntu
+`24.04.4 LTS`, architecture `x86_64`, loopback interface `lo`, and fixed
+`/input/` container paths. They are not reviewer-host paths or an installed
+package inventory.
 
 ```sh
 rg -n -i 'localhost|hostname|fqdn|target-address|mac-address|mac_address|ip-v4|ip-v6|ip_address|identity|token|password|secret|/home/' \
@@ -104,6 +109,7 @@ version-specific GA acceptance record are also complete.
 Human sanitization review
 - Reviewer: <name or approved reviewer identifier>
 - Date (UTC): <YYYY-MM-DD>
+- Reviewed commit: <full output of git rev-parse HEAD>
 - Decision: approved | rejected
 - Evidence reviewed: results.xml, results.arf.xml, results.oscal.json,
   results.arf.oscal.json
