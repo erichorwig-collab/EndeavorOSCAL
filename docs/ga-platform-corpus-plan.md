@@ -17,9 +17,11 @@ Rocky is an independently built RHEL-compatible downstream, not “unbranded
 RHEL.” A future licensed-RHEL evaluation is still needed before representing
 vendor-supported RHEL deployments as tested.
 
-The [Rocky Linux 10.2 evidence candidate](../fixtures/ga-corpus/rocky-linux-10.2-x86_64/PROVENANCE.md)
-is retained with schema-aware conversion goldens. Its human sanitization review
-is still pending, so the compatibility matrix remains unchanged.
+The [Rocky Linux 10.2](../fixtures/ga-corpus/rocky-linux-10.2-x86_64/PROVENANCE.md)
+and [Ubuntu 24.04](../fixtures/ga-corpus/ubuntu-24.04-x86_64/PROVENANCE.md)
+evidence candidates are retained with schema-aware conversion goldens. Both
+human sanitization reviews are pending, so the compatibility matrix remains
+unchanged.
 
 ## Immutable producer inputs
 
