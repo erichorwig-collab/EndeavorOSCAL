@@ -49,8 +49,11 @@ Before either row is moved into the compatibility matrix's tested support
 profile:
 
 1. The sanitizer must be target-aware and prove that raw hostnames, interface
-   addresses, MAC addresses, execution identities, and other sensitive target
-   facts are absent from the committed output.
+   addresses, MAC addresses, and execution identities are absent from the
+   committed output. It changes only schema-defined asset-identification,
+   OVAL system-characteristics, and XCCDF identity/target fields (including
+   named asset-identifier facts); it does not perform unsafe generic
+   replacement of ARF content, identifiers, CPE names, or unrelated facts.
 2. Endeavor must inspect and convert the retained XCCDF Results and ARF without
    external access; their expected output is covered by golden tests.
 3. The full test suite, SBOM check, and human sanitization review must pass.
