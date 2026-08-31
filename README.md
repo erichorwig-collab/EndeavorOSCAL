@@ -26,6 +26,7 @@ Endeavor converts OpenSCAP assessment evidence into valid, provenance-preserving
 - [governance readiness evidence](docs/governance-readiness.md)
 - [release-candidate checklist](docs/release-candidate-checklist.md)
 - [General Availability readiness map](docs/ga-readiness.md)
+- [GitHub Release Python distribution guide](docs/python-distributions.md)
 - [GA support policy](SUPPORT.md)
 - [GA interoperability corpus protocol](docs/ga-interoperability-corpus.md)
 - [contribution guide](CONTRIBUTING.md)

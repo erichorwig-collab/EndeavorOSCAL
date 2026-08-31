@@ -1,8 +1,11 @@
-fail_on_severity: high
-fail_on_scopes:
+# Pull-request dependency gate.  Keep this allow-list synchronized with the
+# reviewed dependency inventory in docs/dependency-policy.md and sbom.cdx.json.
+fail-on-severity: high
+fail-on-scopes:
   - runtime
   - development
-license_check: false
-vulnerability_check: true
-allow_ghsas: []
-comment_summary_in_pr: on-failure
+allow-licenses:
+  - MIT
+  - Apache-2.0
+  - BSD-2-Clause
+  - BSD-3-Clause
