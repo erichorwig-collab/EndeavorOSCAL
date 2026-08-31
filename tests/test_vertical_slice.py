@@ -719,6 +719,77 @@ class VerticalSliceTests(unittest.TestCase):
         self.assertEqual(payload["status"], "ready-for-governance-planning")
         self.assertIn("docs/alpha-acceptance-record-v0.1.0-alpha.1.md", payload["evidence"])
 
+    def test_ga_release_readiness_fails_closed_without_a_versioned_record(self) -> None:
+        command = [
+            sys.executable,
+            "scripts/validate-ga-release-readiness.py",
+            "--tag",
+            "v9999.0.0",
+            "--candidate-commit",
+            "0" * 40,
+        ]
+        completed = subprocess.run(command, cwd=ROOT, text=True, capture_output=True, check=False)
+        self.assertEqual(completed.returncode, 1)
+        payload = json.loads(completed.stderr)
+        self.assertEqual(payload["format"], "endeavor-ga-release-readiness-validation")
+        self.assertEqual(payload["status"], "incomplete")
+        self.assertEqual(payload["record"], "ga-release-readiness-9999.0.0.json")
+
+    def test_ga_release_readiness_binds_tag_commit_and_evidence_hashes(self) -> None:
+        commit = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True, capture_output=True, check=True).stdout.strip()
+        with tempfile.TemporaryDirectory(dir=ROOT) as directory:
+            temporary = Path(directory)
+            evidence: dict[str, dict[str, str]] = {}
+            roles = (
+                "human-acceptance",
+                "accessibility-review",
+                "license-review",
+                "vulnerability-review",
+                "reproducible-build",
+                "release-notes",
+                "support-policy",
+                "compatibility-matrix",
+            )
+            for role in roles:
+                path = temporary / f"{role}.md"
+                path.write_text(f"Evidence for {role}\n", encoding="utf-8")
+                evidence[role] = {"path": str(path.relative_to(ROOT)), "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
+            record_path = temporary / "ga-release-readiness.json"
+            record_path.write_text(
+                json.dumps(
+                    {
+                        "format": "endeavor-ga-release-readiness",
+                        "version": "1.0.0",
+                        "status": "accepted",
+                        "tag": "v1.2.3",
+                        "candidate-commit": commit,
+                        "reviewed-at": "2026-08-31T05:00:00Z",
+                        "reviewer": "Test reviewer",
+                        "evidence": evidence,
+                    }
+                ),
+                encoding="utf-8",
+            )
+            command = [
+                sys.executable,
+                "scripts/validate-ga-release-readiness.py",
+                "--tag",
+                "v1.2.3",
+                "--candidate-commit",
+                commit,
+                "--record",
+                str(record_path),
+            ]
+            accepted = subprocess.run(command, cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(accepted.returncode, 0, accepted.stderr)
+            payload = json.loads(accepted.stdout)
+            self.assertEqual(payload["status"], "passed")
+            self.assertEqual(set(payload["evidence"]), set(roles))
+            (temporary / "license-review.md").write_text("changed\n", encoding="utf-8")
+            rejected = subprocess.run(command, cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(rejected.returncode, 1)
+            self.assertIn("license-review evidence SHA-256 does not match", rejected.stderr)
+
     def test_alpha_workflow_can_retain_a_hashed_execution_manifest(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             record_path = Path(directory) / "alpha-workflow-record.json"
