@@ -33,8 +33,14 @@ jobs:
         run: |
           python -m unittest discover -s tests -v
           python scripts/generate-sbom.py --check sbom.cdx.json
+      - name: Validate alpha readiness evidence
+        if: ${{ contains(github.ref_name, '-') }}
+        run: |
           python scripts/validate-alpha-workflow.py --record alpha-workflow-record.json
           python scripts/validate-governance-readiness.py
+      - name: Validate GA readiness evidence
+        if: ${{ !contains(github.ref_name, '-') }}
+        run: python scripts/validate-ga-release-readiness.py --tag "$GITHUB_REF_NAME" --candidate-commit "$GITHUB_SHA"
       - name: Build reproducible source artifacts
         run: python scripts/build-release-source.py --version "${GITHUB_REF_NAME#v}" --ref "$GITHUB_SHA" --output-dir release
       - name: Attest published artifacts
