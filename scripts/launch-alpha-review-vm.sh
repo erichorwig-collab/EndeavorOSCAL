@@ -27,11 +27,15 @@ fi
 
 candidate=$(git -C "$root" rev-parse --verify "${ref}^{commit}")
 mkdir -p "$runtime/share/EndeavorOSCAL"
-git -C "$root" archive --format=tar "$candidate" | tar -xf - -C "$runtime/share/EndeavorOSCAL"
+git -C "$runtime/share/EndeavorOSCAL" init -q
+git -C "$runtime/share/EndeavorOSCAL" -c protocol.file.allow=always fetch -q "$root" "$candidate"
+git -C "$runtime/share/EndeavorOSCAL" checkout -q --detach FETCH_HEAD
 
 printf '%s\n' "$candidate" >"$runtime/share/CANDIDATE-COMMIT.txt"
 cat >"$runtime/share/s" <<'EOF'
 #!/bin/sh
+ip link set eth0 up 2>/dev/null || true
+udhcpc -q -n -i eth0 >/dev/null 2>&1 || true
 exec sh /shared/EndeavorOSCAL/scripts/prepare-alpha-review-vm.sh
 EOF
 cat >"$runtime/share/r" <<'EOF'
@@ -56,7 +60,10 @@ cat >"$runtime/share/e" <<'EOF'
 set -eu
 test -d /tmp/endeavor-alpha-review
 rm -rf /shared/endeavor-alpha-review
-cp -a /tmp/endeavor-alpha-review /shared/
+mkdir -p /shared/endeavor-alpha-review
+# The 9p share does not permit preserving guest ownership.  Copy content
+# without archive metadata so a successful export has a successful exit code.
+cp -R /tmp/endeavor-alpha-review/. /shared/endeavor-alpha-review/
 EOF
 chmod 755 "$runtime/share/s" "$runtime/share/r" "$runtime/share/v" "$runtime/share/e"
 
@@ -64,7 +71,7 @@ iso="$runtime/alpine-virt-3.24.0-x86_64.iso"
 curl -fsSL --retry 3 --output "$iso" \
   https://dl-cdn.alpinelinux.org/alpine/v3.24/releases/x86_64/alpine-virt-3.24.0-x86_64.iso
 qemu-img create -f qcow2 "$runtime/storage.qcow2" 4G >/dev/null
-git clone --depth 1 --branch v1.6.0 https://github.com/novnc/noVNC.git "$runtime/novnc" >/dev/null 2>&1
+git clone --depth 1 --branch v1.6.0 --recurse-submodules https://github.com/novnc/noVNC.git "$runtime/novnc" >/dev/null 2>&1
 
 accelerator=tcg
 if [ -r /dev/kvm ] && [ -w /dev/kvm ]; then
@@ -73,7 +80,7 @@ fi
 
 if command -v systemd-run >/dev/null 2>&1 && systemctl --user show-environment >/dev/null 2>&1; then
   systemd-run --user --unit=endeavor-alpha-novnc --collect --no-block \
-    python3 -m http.server "$port" --bind 127.0.0.1 --directory "$runtime/novnc" >/dev/null
+    bash "$runtime/novnc/utils/novnc_proxy" --listen "127.0.0.1:$port" --vnc 127.0.0.1:5906 --web "$runtime/novnc" --file-only >/dev/null
   systemd-run --user --unit=endeavor-alpha-qemu --collect --no-block \
     qemu-system-x86_64 \
       -name endeavor-alpha-review \
@@ -81,6 +88,8 @@ if command -v systemd-run >/dev/null 2>&1 && systemctl --user show-environment >
       -m 2048 -smp 2 \
       -drive file="$iso",media=cdrom,readonly=on \
       -drive file="$runtime/storage.qcow2",if=virtio \
+      -netdev user,id=guestnet \
+      -device virtio-net-pci,netdev=guestnet \
       -fsdev local,id=review,path="$runtime/share",security_model=none \
       -device virtio-9p-pci,fsdev=review,mount_tag=shared \
       -vnc "127.0.0.1:6,websocket=$vnc_port" \
@@ -89,7 +98,7 @@ if command -v systemd-run >/dev/null 2>&1 && systemctl --user show-environment >
   sleep 1
   systemctl --user is-active --quiet endeavor-alpha-qemu.service
 else
-  nohup python3 -m http.server "$port" --bind 127.0.0.1 --directory "$runtime/novnc" >"$runtime/novnc.log" 2>&1 &
+  nohup bash "$runtime/novnc/utils/novnc_proxy" --listen "127.0.0.1:$port" --vnc 127.0.0.1:5906 --web "$runtime/novnc" --file-only >"$runtime/novnc.log" 2>&1 &
   novnc_pid=$!
   nohup qemu-system-x86_64 \
     -name endeavor-alpha-review \
@@ -97,6 +106,8 @@ else
     -m 2048 -smp 2 \
     -drive file="$iso",media=cdrom,readonly=on \
     -drive file="$runtime/storage.qcow2",if=virtio \
+    -netdev user,id=guestnet \
+    -device virtio-net-pci,netdev=guestnet \
     -fsdev local,id=review,path="$runtime/share",security_model=none \
     -device virtio-9p-pci,fsdev=review,mount_tag=shared \
     -vnc "127.0.0.1:6,websocket=$vnc_port" \
