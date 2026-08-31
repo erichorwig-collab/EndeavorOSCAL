@@ -16,7 +16,9 @@ The launcher stages only the selected Git commit under `/shared`, binds noVNC
 only to loopback, and prints the viewer URL and exact candidate SHA. It needs
 `qemu-base`, `curl`, `git`, and Python 3 on the host. It does not reuse a prior
 VM runtime; stop the printed process IDs and remove the explicit temporary
-runtime only after the review record is retained.
+runtime only after the review record is retained. The guest has user-mode
+networking so it can install missing bootstrap packages; noVNC is unauthenticated
+and must remain loopback-only.
 
 ## Reviewer workflow
 
@@ -70,10 +72,14 @@ runtime only after the review record is retained.
 ## VM boundaries
 
 - noVNC is bound only to `127.0.0.1:18006` on the host;
+- noVNC/VNC has no authentication, so any local host process able to reach the
+  loopback listener can view the session;
 - the VM uses a dedicated temporary disk at `/tmp/endeavor-alpha-mvp/storage`;
 - the VM mounts only this disposable review-kit snapshot as `/shared`;
-- the VM has no access to any systems or storage beyond the review kit and its
-  dedicated temporary disk.
+- the guest has QEMU user-mode network access for bootstrap package retrieval;
+- `/shared` is a disposable writable review-kit snapshot, not the authoritative
+  checkout; and
+- the guest's local root account has no password and is not a host credential.
 
 The test VM, its exported review output, and its disk can be deleted after
 acceptance is recorded.

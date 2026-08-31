@@ -18,8 +18,8 @@ python3 scripts/validate-alpha-workflow.py --review-output /tmp/endeavor-alpha-r
 For the supplied disposable Alpha-review VM, first follow the
 [Alpha VM start guide](alpha-test-vm-start-here.md). Its bootstrap creates the
 same clean checkout, virtual environment, and Node dependencies under `/tmp`.
-Then run the same validation command shown above. Export the retained output to
-`/shared/endeavor-alpha-review` and open `mapping-report.html` from that
+Then run `sh /shared/v`, rather than retyping the long host command. Export the
+retained output with `sh /shared/e` and open `mapping-report.html` from that
 host-visible directory in a normal browser.
 
 The last command prints the machine-readable validation record and retains:
