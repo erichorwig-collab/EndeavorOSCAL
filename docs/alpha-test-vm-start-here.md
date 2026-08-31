@@ -4,6 +4,20 @@ This temporary VM is limited to the Alpha review kit. The guest has a private
 copy of the project under `/shared/EndeavorOSCAL`; edits there do not change the
 authoritative project checkout.
 
+## Maintainer launch
+
+From the clean, frozen candidate checkout on the host, start a new guest with:
+
+```bash
+sh scripts/launch-alpha-review-vm.sh HEAD
+```
+
+The launcher stages only the selected Git commit under `/shared`, binds noVNC
+only to loopback, and prints the viewer URL and exact candidate SHA. It needs
+`qemu-base`, `curl`, `git`, and Python 3 on the host. It does not reuse a prior
+VM runtime; stop the printed process IDs and remove the explicit temporary
+runtime only after the review record is retained.
+
 ## Reviewer workflow
 
 1. Use the noVNC sidebar on the left edge of the viewer and choose **Clipboard**.
