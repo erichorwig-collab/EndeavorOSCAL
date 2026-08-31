@@ -43,6 +43,11 @@ ROCKY_XCCDF = ROCKY_CORPUS / "results.xml"
 ROCKY_ARF = ROCKY_CORPUS / "results.arf.xml"
 ROCKY_XCCDF_OSCAL = ROCKY_CORPUS / "results.oscal.json"
 ROCKY_ARF_OSCAL = ROCKY_CORPUS / "results.arf.oscal.json"
+UBUNTU_CORPUS = ROOT / "fixtures" / "ga-corpus" / "ubuntu-24.04-x86_64"
+UBUNTU_XCCDF = UBUNTU_CORPUS / "results.xml"
+UBUNTU_ARF = UBUNTU_CORPUS / "results.arf.xml"
+UBUNTU_XCCDF_OSCAL = UBUNTU_CORPUS / "results.oscal.json"
+UBUNTU_ARF_OSCAL = UBUNTU_CORPUS / "results.arf.oscal.json"
 COMPATIBILITY_MATRIX = ROOT / "docs" / "compatibility-matrix.md"
 EVIDENCE_GOLDEN = ROOT / "fixtures" / "evidence-golden"
 XSD_NS = "{http://www.w3.org/2001/XMLSchema}"
@@ -132,6 +137,26 @@ class VerticalSliceTests(unittest.TestCase):
             self.assertEqual(arf_completed.returncode, 0, arf_completed.stderr)
             self.assertEqual(xccdf_output.read_bytes(), ROCKY_XCCDF_OSCAL.read_bytes())
             self.assertEqual(arf_output.read_bytes(), ROCKY_ARF_OSCAL.read_bytes())
+
+    def test_ubuntu_2404_corpus_is_sanitized_schema_valid_and_convertible(self) -> None:
+        xccdf = inspect_xccdf(UBUNTU_XCCDF)
+        arf = inspect_arf(UBUNTU_ARF)
+        self.assertEqual(xccdf["source"]["sha256"], "5ec6516bc5f6ed76a145f664edb9f78314483d93582ac33bea7468e8ff045280")
+        self.assertEqual(arf["source"]["sha256"], "f124fe580de14609cf8b4500cc63e1b5efe3fa4569ce94e82de2d5bb2af43458")
+        self.assertEqual(xccdf["test-results"][0]["targets"], ["endeavor-target"])
+        self.assertEqual(xccdf["test-results"][0]["identity"]["name"], "endeavor-fixture-user")
+        self.assertEqual([item["result"] for item in xccdf["test-results"][0]["rule-results"]], ["fail", "pass"])
+        self.assertNotIn("localhost", UBUNTU_XCCDF.read_text(encoding="utf-8"))
+        self.assertNotIn("localhost", UBUNTU_ARF.read_text(encoding="utf-8"))
+        with tempfile.TemporaryDirectory() as directory:
+            xccdf_output = Path(directory) / "xccdf.json"
+            arf_output = Path(directory) / "arf.json"
+            xccdf_completed = subprocess.run([sys.executable, "-m", "endeavor", "convert-xccdf", "--results", str(UBUNTU_XCCDF), "--mapping", str(ARF_MAPPING), "--output", str(xccdf_output)], cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(xccdf_completed.returncode, 0, xccdf_completed.stderr)
+            arf_completed = subprocess.run([sys.executable, "-m", "endeavor", "convert-arf-xccdf", "--results", str(UBUNTU_ARF), "--mapping", str(ARF_MAPPING), "--output", str(arf_output)], cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(arf_completed.returncode, 0, arf_completed.stderr)
+            self.assertEqual(xccdf_output.read_bytes(), UBUNTU_XCCDF_OSCAL.read_bytes())
+            self.assertEqual(arf_output.read_bytes(), UBUNTU_ARF_OSCAL.read_bytes())
 
     def test_results_sanitizer_replaces_typed_target_facts(self) -> None:
         source = ROCKY_XCCDF.read_text(encoding="utf-8")
