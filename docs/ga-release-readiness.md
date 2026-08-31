@@ -44,3 +44,7 @@ python3 scripts/validate-ga-release-readiness.py \
 
 The command returns nonzero and a machine-readable `incomplete` result until
 the version-matched record exists and every referenced evidence hash verifies.
+
+Use the [GA human acceptance runbook](ga-human-acceptance-runbook.md) to
+create the required fresh `human-acceptance` and `accessibility-review`
+evidence. The completed alpha records are not GA evidence.
