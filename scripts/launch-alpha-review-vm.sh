@@ -66,9 +66,10 @@ curl -fsSL --retry 3 --output "$iso" \
 qemu-img create -f qcow2 "$runtime/storage.qcow2" 4G >/dev/null
 git clone --depth 1 --branch v1.6.0 https://github.com/novnc/noVNC.git "$runtime/novnc" >/dev/null 2>&1
 
-python3 -m http.server "$port" --bind 127.0.0.1 --directory "$runtime/novnc" >"$runtime/novnc.log" 2>&1 &
+nohup python3 -m http.server "$port" --bind 127.0.0.1 --directory "$runtime/novnc" >"$runtime/novnc.log" 2>&1 &
 novnc_pid=$!
-qemu-system-x86_64 \
+printf '%s\n' "$novnc_pid" >"$runtime/novnc.pid"
+nohup qemu-system-x86_64 \
   -name endeavor-alpha-review \
   -accel kvm:tcg \
   -m 2048 -smp 2 \
@@ -79,6 +80,14 @@ qemu-system-x86_64 \
   -vnc "127.0.0.1:6,websocket=$vnc_port" \
   -display none >"$runtime/qemu.log" 2>&1 &
 qemu_pid=$!
+printf '%s\n' "$qemu_pid" >"$runtime/qemu.pid"
+
+sleep 1
+if ! kill -0 "$qemu_pid" 2>/dev/null; then
+  kill "$novnc_pid" 2>/dev/null || true
+  cat "$runtime/qemu.log" >&2
+  exit 1
+fi
 
 cat >"$runtime/STOP" <<EOF
 kill $qemu_pid $novnc_pid
