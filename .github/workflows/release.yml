@@ -73,5 +73,5 @@ jobs:
           if [ "${GITHUB_REF_NAME#*-}" != "$GITHUB_REF_NAME" ]; then
             gh release create "$GITHUB_REF_NAME" release/* --title "EndeavorOSCAL $GITHUB_REF_NAME" --generate-notes --prerelease
           else
-            gh release create "$GITHUB_REF_NAME" release/* --title "EndeavorOSCAL $GITHUB_REF_NAME" --generate-notes
+            gh release create "$GITHUB_REF_NAME" release/* --title "EndeavorOSCAL $GITHUB_REF_NAME" --generate-notes --draft
           fi

@@ -73,6 +73,8 @@ python3 scripts/validate-ga-release-readiness.py \
 ```
 
 Only after this command passes, the candidate is approved under the release
-process, and the protected tag namespace permits it, create the GA tag. After
-publication, perform the separate checksum and attestation verification for
-the published release assets.
+process, and the protected tag namespace permits it, create the GA tag. A
+final GA tag creates a GitHub **draft** release. Follow the
+[GA draft-release verification runbook](ga-draft-release-verification.md) to
+verify its assets and provenance before publishing it. SemVer prerelease tags
+retain the existing immediate-prerelease publication behavior.
