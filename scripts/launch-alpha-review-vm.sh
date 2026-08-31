@@ -71,32 +71,47 @@ if [ -r /dev/kvm ] && [ -w /dev/kvm ]; then
   accelerator=kvm
 fi
 
-nohup python3 -m http.server "$port" --bind 127.0.0.1 --directory "$runtime/novnc" >"$runtime/novnc.log" 2>&1 &
-novnc_pid=$!
-printf '%s\n' "$novnc_pid" >"$runtime/novnc.pid"
-nohup qemu-system-x86_64 \
-  -name endeavor-alpha-review \
-  -accel "$accelerator" \
-  -m 2048 -smp 2 \
-  -drive file="$iso",media=cdrom,readonly=on \
-  -drive file="$runtime/storage.qcow2",if=virtio \
-  -fsdev local,id=review,path="$runtime/share",security_model=none \
-  -device virtio-9p-pci,fsdev=review,mount_tag=shared \
-  -vnc "127.0.0.1:6,websocket=$vnc_port" \
-  -display none >"$runtime/qemu.log" 2>&1 &
-qemu_pid=$!
-printf '%s\n' "$qemu_pid" >"$runtime/qemu.pid"
-
-sleep 1
-if ! kill -0 "$qemu_pid" 2>/dev/null; then
-  kill "$novnc_pid" 2>/dev/null || true
-  cat "$runtime/qemu.log" >&2
-  exit 1
+if command -v systemd-run >/dev/null 2>&1 && systemctl --user show-environment >/dev/null 2>&1; then
+  systemd-run --user --unit=endeavor-alpha-novnc --collect --no-block \
+    python3 -m http.server "$port" --bind 127.0.0.1 --directory "$runtime/novnc" >/dev/null
+  systemd-run --user --unit=endeavor-alpha-qemu --collect --no-block \
+    qemu-system-x86_64 \
+      -name endeavor-alpha-review \
+      -accel "$accelerator" \
+      -m 2048 -smp 2 \
+      -drive file="$iso",media=cdrom,readonly=on \
+      -drive file="$runtime/storage.qcow2",if=virtio \
+      -fsdev local,id=review,path="$runtime/share",security_model=none \
+      -device virtio-9p-pci,fsdev=review,mount_tag=shared \
+      -vnc "127.0.0.1:6,websocket=$vnc_port" \
+      -display none >/dev/null
+  stop_command='systemctl --user stop endeavor-alpha-qemu.service endeavor-alpha-novnc.service'
+  sleep 1
+  systemctl --user is-active --quiet endeavor-alpha-qemu.service
+else
+  nohup python3 -m http.server "$port" --bind 127.0.0.1 --directory "$runtime/novnc" >"$runtime/novnc.log" 2>&1 &
+  novnc_pid=$!
+  nohup qemu-system-x86_64 \
+    -name endeavor-alpha-review \
+    -accel "$accelerator" \
+    -m 2048 -smp 2 \
+    -drive file="$iso",media=cdrom,readonly=on \
+    -drive file="$runtime/storage.qcow2",if=virtio \
+    -fsdev local,id=review,path="$runtime/share",security_model=none \
+    -device virtio-9p-pci,fsdev=review,mount_tag=shared \
+    -vnc "127.0.0.1:6,websocket=$vnc_port" \
+    -display none >"$runtime/qemu.log" 2>&1 &
+  qemu_pid=$!
+  sleep 1
+  if ! kill -0 "$qemu_pid" 2>/dev/null; then
+    kill "$novnc_pid" 2>/dev/null || true
+    cat "$runtime/qemu.log" >&2
+    exit 1
+  fi
+  stop_command="kill $qemu_pid $novnc_pid"
 fi
 
-cat >"$runtime/STOP" <<EOF
-kill $qemu_pid $novnc_pid
-EOF
+printf '%s\n' "$stop_command" >"$runtime/STOP"
 printf '%s\n' "Candidate: $candidate"
 printf '%s\n' "Open: http://127.0.0.1:$port/vnc.html?autoconnect=true&host=127.0.0.1&port=$vnc_port"
 printf '%s\n' "VM runtime: $runtime"
