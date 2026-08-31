@@ -66,12 +66,17 @@ curl -fsSL --retry 3 --output "$iso" \
 qemu-img create -f qcow2 "$runtime/storage.qcow2" 4G >/dev/null
 git clone --depth 1 --branch v1.6.0 https://github.com/novnc/noVNC.git "$runtime/novnc" >/dev/null 2>&1
 
+accelerator=tcg
+if [ -r /dev/kvm ] && [ -w /dev/kvm ]; then
+  accelerator=kvm
+fi
+
 nohup python3 -m http.server "$port" --bind 127.0.0.1 --directory "$runtime/novnc" >"$runtime/novnc.log" 2>&1 &
 novnc_pid=$!
 printf '%s\n' "$novnc_pid" >"$runtime/novnc.pid"
 nohup qemu-system-x86_64 \
   -name endeavor-alpha-review \
-  -accel kvm:tcg \
+  -accel "$accelerator" \
   -m 2048 -smp 2 \
   -drive file="$iso",media=cdrom,readonly=on \
   -drive file="$runtime/storage.qcow2",if=virtio \
