@@ -38,6 +38,11 @@ ARF_MAPPING = ROOT / "fixtures" / "mappings" / "arf-xccdf-example-v1.json"
 ARF_TAILORING = ROOT / "fixtures" / "arf" / "openscap-1.4.4-tailoring-sanitized.arf.xml"
 ARF_LINKAGE = ROOT / "fixtures" / "linkage" / "openscap-1.4.4-tailoring-v1.json"
 ARF_LINKAGE_GOLDEN = ROOT / "fixtures" / "linkage" / "openscap-1.4.4-tailoring-v1.resolution.json"
+ROCKY_CORPUS = ROOT / "fixtures" / "ga-corpus" / "rocky-linux-10.2-x86_64"
+ROCKY_XCCDF = ROCKY_CORPUS / "results.xml"
+ROCKY_ARF = ROCKY_CORPUS / "results.arf.xml"
+ROCKY_XCCDF_OSCAL = ROCKY_CORPUS / "results.oscal.json"
+ROCKY_ARF_OSCAL = ROCKY_CORPUS / "results.arf.oscal.json"
 COMPATIBILITY_MATRIX = ROOT / "docs" / "compatibility-matrix.md"
 EVIDENCE_GOLDEN = ROOT / "fixtures" / "evidence-golden"
 XSD_NS = "{http://www.w3.org/2001/XMLSchema}"
@@ -108,6 +113,45 @@ class VerticalSliceTests(unittest.TestCase):
                 self.assertIn(canonical_value, text)
             self.assertIn("<interface_name>eth0</interface_name>", text)
             self.assertIn("cpe:/a:redhat:openscap:1.4.4", text)
+
+    def test_rocky_102_corpus_is_sanitized_schema_valid_and_convertible(self) -> None:
+        xccdf = inspect_xccdf(ROCKY_XCCDF)
+        arf = inspect_arf(ROCKY_ARF)
+        self.assertEqual(xccdf["source"]["sha256"], "45dfdb438004f550b9b30fafddfdfb3be6eabc7b5c0c004e67a5632ef0eb0e0e")
+        self.assertEqual(arf["source"]["sha256"], "2ff5492934bdaea4beee1e75ae134f55f09a29038cf818ff22a89b410663d2b4")
+        self.assertEqual(xccdf["test-results"][0]["targets"], ["endeavor-target"])
+        self.assertEqual(xccdf["test-results"][0]["identity"]["name"], "endeavor-fixture-user")
+        self.assertNotIn("localhost", ROCKY_XCCDF.read_text(encoding="utf-8"))
+        self.assertNotIn("localhost", ROCKY_ARF.read_text(encoding="utf-8"))
+        with tempfile.TemporaryDirectory() as directory:
+            xccdf_output = Path(directory) / "xccdf.json"
+            arf_output = Path(directory) / "arf.json"
+            xccdf_completed = subprocess.run([sys.executable, "-m", "endeavor", "convert-xccdf", "--results", str(ROCKY_XCCDF), "--mapping", str(ARF_MAPPING), "--output", str(xccdf_output)], cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(xccdf_completed.returncode, 0, xccdf_completed.stderr)
+            arf_completed = subprocess.run([sys.executable, "-m", "endeavor", "convert-arf-xccdf", "--results", str(ROCKY_ARF), "--mapping", str(ARF_MAPPING), "--output", str(arf_output)], cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(arf_completed.returncode, 0, arf_completed.stderr)
+            self.assertEqual(xccdf_output.read_bytes(), ROCKY_XCCDF_OSCAL.read_bytes())
+            self.assertEqual(arf_output.read_bytes(), ROCKY_ARF_OSCAL.read_bytes())
+
+    def test_results_sanitizer_replaces_typed_target_facts(self) -> None:
+        source = ROCKY_XCCDF.read_text(encoding="utf-8")
+        source = source.replace("endeavor-target.invalid", "raw-host.example.test")
+        source = source.replace("endeavor-target", "raw-host")
+        source = source.replace("127.0.0.1", "192.0.2.7")
+        source = source.replace("0:0:0:0:0:0:0:1", "2001:db8:0:0:0:0:0:7")
+        source = source.replace("00:00:00:00:00:00", "AA:BB:CC:DD:EE:FF")
+        source = source.replace("endeavor-fixture-user", "operator@example.test")
+        with tempfile.TemporaryDirectory() as directory:
+            raw = Path(directory) / "raw.xml"
+            sanitized = Path(directory) / "sanitized.xml"
+            raw.write_text(source, encoding="utf-8")
+            completed = subprocess.run([sys.executable, "scripts/sanitize-openscap-results.py", str(raw), str(sanitized)], cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(completed.returncode, 0, completed.stderr)
+            payload = inspect_xccdf(sanitized)
+            self.assertEqual(payload["test-results"][0]["targets"], ["endeavor-target"])
+            text = sanitized.read_text(encoding="utf-8")
+            for raw_value in ("raw-host.example.test", "raw-host", "192.0.2.7", "2001:db8:0:0:0:0:0:7", "AA:BB:CC:DD:EE:FF", "operator@example.test"):
+                self.assertNotIn(raw_value, text)
 
     def test_tailoring_arf_generator_has_valid_shell_syntax(self) -> None:
         completed = subprocess.run(["bash", "-n", "scripts/generate-openscap-tailoring-arf.sh"], cwd=ROOT, text=True, capture_output=True, check=False)

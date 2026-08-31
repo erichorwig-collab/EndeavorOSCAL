@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Benchmark xmlns="http://checklists.nist.gov/xccdf/1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="xccdf_com.example.www_benchmark_dummy" resolved="1" xml:lang="en-US">
+  <status>accepted</status>
+  <version>1.0</version>
+  <model system="urn:xccdf:scoring:default"/>
+  <Profile id="xccdf_com.example.www_profile_baseline1">
+    <title xmlns:xhtml="http://www.w3.org/1999/xhtml" xml:lang="en-US">Baseline Testing Profile 1</title>
+    <description xmlns:xhtml="http://www.w3.org/1999/xhtml" xml:lang="en-US">This profile is for testing. This profile selects both rules.</description>
+    <select idref="xccdf_com.example.www_rule_first" selected="true"/>
+    <select idref="xccdf_com.example.www_rule_second" selected="true"/>
+  </Profile>
+  <Profile id="xccdf_com.example.www_profile_baseline2">
+    <title xmlns:xhtml="http://www.w3.org/1999/xhtml" xml:lang="en-US">Baseline Testing Profile 2</title>
+    <description xmlns:xhtml="http://www.w3.org/1999/xhtml" xml:lang="en-US">This profile is for testing. This profile selects only the second rule.</description>
+    <select idref="xccdf_com.example.www_rule_first" selected="false"/>
+    <select idref="xccdf_com.example.www_rule_second" selected="true"/>
+  </Profile>
+  <Rule id="xccdf_com.example.www_rule_first" selected="false" role="full" severity="unknown">
+    <title xmlns:xhtml="http://www.w3.org/1999/xhtml" xml:lang="en-US">The first rule -- always fails</title>
+    <fix xmlns:xhtml="http://www.w3.org/1999/xhtml" id="fix_for_failing_rule" system="urn:xccdf:fix:script:sh">echo "Fix the first rule"</fix>
+    <check system="http://oval.mitre.org/XMLSchema/oval-definitions-5">
+      <check-content-ref name="oval:x:def:1" href="baseline.oval.xml"/>
+    </check>
+  </Rule>
+  <Rule id="xccdf_com.example.www_rule_second" selected="false" role="full" severity="unknown">
+    <title xmlns:xhtml="http://www.w3.org/1999/xhtml" xml:lang="en-US">The second rule -- always passes</title>
+    <fix xmlns:xhtml="http://www.w3.org/1999/xhtml" id="fix_for_failing_rule" system="urn:xccdf:fix:script:sh">echo "Fix the second rule"</fix>
+    <check system="http://oval.mitre.org/XMLSchema/oval-definitions-5">
+      <check-content-ref name="oval:x:def:2" href="baseline.oval.xml"/>
+    </check>
+  </Rule>
+  <TestResult id="xccdf_org.open-scap_testresult_default-profile" start-time="2026-08-31T18:13:47+00:00" end-time="2026-08-31T18:13:47+00:00" version="1.0" test-system="cpe:/a:redhat:openscap:1.4.4">
+    <benchmark href="/input/openscap-1.4.4-baseline.xccdf.xml" id="xccdf_com.example.www_benchmark_dummy"/>
+    <title>OSCAP Scan Result</title>
+    <identity authenticated="false" privileged="false">endeavor-fixture-user</identity>
+    <target>endeavor-target</target>
+    <target-address>127.0.0.1</target-address>
+    <target-address>0:0:0:0:0:0:0:1</target-address>
+    <target-facts>
+      <fact name="urn:xccdf:fact:scanner:name" type="string">OpenSCAP</fact>
+      <fact name="urn:xccdf:fact:scanner:version" type="string">1.4.4</fact>
+      <fact name="urn:xccdf:fact:asset:identifier:fqdn" type="string">endeavor-target.invalid</fact>
+      <fact name="urn:xccdf:fact:asset:identifier:host_name" type="string">endeavor-target.invalid</fact>
+      <fact name="urn:xccdf:fact:ethernet:MAC" type="string">00:00:00:00:00:00</fact>
+      <fact name="urn:xccdf:fact:asset:identifier:mac" type="string">00:00:00:00:00:00</fact>
+      <fact name="urn:xccdf:fact:asset:identifier:ipv4" type="string">127.0.0.1</fact>
+      <fact name="urn:xccdf:fact:asset:identifier:ipv6" type="string">0:0:0:0:0:0:0:1</fact>
+    </target-facts>
+    <rule-result idref="xccdf_com.example.www_rule_first" role="full" time="2026-08-31T18:13:47+00:00" severity="unknown" weight="1.000000">
+      <result>notselected</result>
+    </rule-result>
+    <rule-result idref="xccdf_com.example.www_rule_second" role="full" time="2026-08-31T18:13:47+00:00" severity="unknown" weight="1.000000">
+      <result>notselected</result>
+    </rule-result>
+    <score system="urn:xccdf:scoring:default" maximum="100.000000">0.000000</score>
+  </TestResult>
+</Benchmark>
