@@ -19,7 +19,7 @@ REQUIRED_FILES = (
     ".github/workflows/dependency-review.yml",
     ".github/workflows/osv-scanner.yml",
     ".github/workflows/release.yml",
-    "docs/alpha-acceptance-record-2026-08-30.md",
+    "docs/alpha-acceptance-record-v0.1.0-alpha.1.md",
     "docs/compatibility-matrix.md",
     "docs/dependency-policy.md",
     "docs/governance-readiness.md",
@@ -28,9 +28,10 @@ REQUIRED_FILES = (
     "security/vulnerability-exceptions.schema.json",
     "sbom.cdx.json",
 )
-ACCEPTANCE_RECORD = "docs/alpha-acceptance-record-2026-08-30.md"
-ACCEPTANCE_MARKER = "> Status: **accepted** by the named reviewer below."
-CONCLUSION_MARKER = "- [x] Accepted for the alpha gate."
+ACCEPTANCE_RECORD = "docs/alpha-acceptance-record-v0.1.0-alpha.1.md"
+ACCEPTANCE_COMMIT = "83352a59db5ba2dfc4e64e65d23e6e4e01263ce5"
+ACCEPTANCE_MARKER = "> Status: **accepted** following named human review."
+CONCLUSION_MARKER = "- [X] Accepted for the alpha gate."
 
 
 def main() -> int:
@@ -38,7 +39,12 @@ def main() -> int:
     record_path = ROOT / ACCEPTANCE_RECORD
     if record_path.is_file():
         record = record_path.read_text(encoding="utf-8")
-        if ACCEPTANCE_MARKER not in record or CONCLUSION_MARKER not in record:
+        if (
+            ACCEPTANCE_MARKER not in record
+            or CONCLUSION_MARKER not in record
+            or f"- Reviewed commit SHA: {ACCEPTANCE_COMMIT}" not in record
+            or "Result: passed" not in record
+        ):
             missing.append("accepted alpha conclusion")
     security_path = ROOT / "SECURITY.md"
     if security_path.is_file() and "Report a vulnerability" not in security_path.read_text(encoding="utf-8"):

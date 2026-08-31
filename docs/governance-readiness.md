@@ -21,7 +21,7 @@ the source tests, SBOM comparison, and representative alpha workflow.
 | Representative mapped-evidence workflow | `scripts/validate-alpha-workflow.py` |
 | Retained alpha execution manifest | CI artifact `alpha-workflow-manifest` (30-day retention) |
 | Dependency inventory consistency | `sbom.cdx.json`, checked by `scripts/generate-sbom.py --check` |
-| Human alpha acceptance | `docs/alpha-acceptance-record-2026-08-30.md` |
+| Human alpha acceptance | `docs/alpha-acceptance-record-v0.1.0-alpha.1.md` (candidate `83352a59db5ba2dfc4e64e65d23e6e4e01263ce5`) |
 | Tested support boundaries | `docs/compatibility-matrix.md` |
 
 ## Standards-aligned baseline

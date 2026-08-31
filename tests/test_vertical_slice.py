@@ -717,7 +717,7 @@ class VerticalSliceTests(unittest.TestCase):
         payload = json.loads(first.stdout)
         self.assertEqual(payload["format"], "endeavor-governance-readiness")
         self.assertEqual(payload["status"], "ready-for-governance-planning")
-        self.assertIn("docs/alpha-acceptance-record-2026-08-30.md", payload["evidence"])
+        self.assertIn("docs/alpha-acceptance-record-v0.1.0-alpha.1.md", payload["evidence"])
 
     def test_alpha_workflow_can_retain_a_hashed_execution_manifest(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
