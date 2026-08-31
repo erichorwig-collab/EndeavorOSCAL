@@ -50,13 +50,15 @@ the source tests, SBOM comparison, and representative alpha workflow.
 ## Release evidence baseline
 
 Only a `v*` tag can invoke the publication workflow. It re-runs the validation
-suite against the frozen commit, builds the source archive twice with Git,
-requires byte equality, then publishes the source archive, SBOM, manifest, and
-SHA-256 checksums through GitHub Releases. GitHub artifact attestations provide
-keyless OIDC/Sigstore provenance for those release assets. A release is not
-authorized merely because this workflow exists: the candidate checklist still
-requires tag protection, a human acceptance record for the exact candidate
-commit, and independent checksum/attestation verification.
+suite against the frozen commit, builds the source archive and standard Python
+wheel/sdist twice, requires byte equality, then publishes those artifacts, an
+SBOM, a manifest, and SHA-256 checksums through a GitHub Release. Final GA
+releases are created as drafts until the draft-verification procedure is
+recorded. GitHub artifact attestations provide keyless OIDC/Sigstore provenance
+for those release assets. A release is not authorized merely because this
+workflow exists: the candidate checklist still requires tag protection, a
+human acceptance record for the exact candidate commit, and independent
+checksum/attestation verification.
 
 See [the quality strategy](quality-and-accessibility.md) and
 [dependency policy](dependency-policy.md) for those release controls.
