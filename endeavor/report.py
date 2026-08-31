@@ -29,7 +29,7 @@ def mapping_report_html(report: dict[str, object]) -> str:
     for key in ("evaluated", "mapped", "unmapped", "stale-mappings"):
         before.append(f"<dt>{_text(key)}</dt><dd>{_text(summary[key])}</dd>")
     before.extend([
-        "</dl>",
+        "</dl></section>",
         '<p>Mapping: <code>' + _text(mapping["path"]) + "</code> (SHA-256 <code>" + _text(mapping["sha256"]) + "</code>).</p>",
         '<section aria-labelledby="mapped"><h2 id="mapped">Mapped evaluated definitions</h2>',
         "<table><caption>Explicit OVAL-to-OSCAL targets</caption><thead><tr><th scope=\"col\">OVAL definition ID</th><th scope=\"col\">Result</th><th scope=\"col\">Targets</th></tr></thead><tbody>",

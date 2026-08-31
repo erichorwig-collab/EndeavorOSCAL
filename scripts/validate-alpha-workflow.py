@@ -70,12 +70,14 @@ def main(argv: list[str] | None = None) -> int:
         findings = json.loads(run(sys.executable, "-m", "endeavor", "findings", "--results", str(failed)).stdout)
         delta = json.loads(run(sys.executable, "-m", "endeavor", "diff", "--before", str(passed), "--after", str(failed)).stdout)
         run(sys.executable, "-m", "endeavor", "report", "--results", str(RESULTS / "fail.xml"), "--definitions", str(DEFINITIONS), "--mapping", str(MAPPING), "--output", str(report))
+        report_accessibility = json.loads(run(sys.executable, "scripts/validate-report-accessibility.py", "--report", str(report)).stdout)
         html = report.read_text(encoding="utf-8")
         assert coverage["summary"] == {"evaluated": 1, "mapped": 1, "unmapped": 0, "stale-mappings": 0}
         assert findings["summary"] == {"findings": 1}
         assert findings["findings"][0]["target"]["state"] == "not-satisfied"
         assert delta["changed"] == [{"oval-definition-id": "oval:org.endeavor:def:1", "before": "true", "after": "false"}]
         assert "<main>" in html and 'scope="col"' in html and "example-v1.json" in html
+        assert report_accessibility["status"] == "passed"
         record: dict[str, object] = {
             "format": "endeavor-alpha-workflow-validation",
             "version": "1.1.0",

@@ -25,7 +25,12 @@ WCAG applies to Endeavor's web reports, documentation site, and any interactive 
 - Accessible names and live announcements for conversion progress and validation errors.
 - Responsive reflow at 320 CSS pixels; no information loss at 200% zoom.
 - Error messages identify the artifact, location, cause, and recovery action without exposing sensitive content.
-- Automated axe-core checks plus manual keyboard and screen-reader smoke tests in CI/release review.
+- CI runs deterministic static checks for document language/metadata, landmarks,
+  heading hierarchy, labelled sections, semantic table headers/captions,
+  accessible image/link names, and keyboard-risk markup. These checks do not
+  emulate a browser, rendered layout, keyboard use, or a screen reader.
+  Manual keyboard and screen-reader smoke tests remain required in release
+  review.
 
 ### CLI and documentation requirements
 
