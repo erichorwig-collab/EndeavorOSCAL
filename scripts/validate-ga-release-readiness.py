@@ -11,6 +11,7 @@ from pathlib import Path
 import re
 import subprocess
 import sys
+import tomllib
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -61,6 +62,17 @@ def _candidate_commit() -> str:
     if not COMMIT.fullmatch(commit):
         raise ValueError("could not resolve a full candidate commit SHA")
     return commit
+
+
+def _package_version() -> str:
+    try:
+        project = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))["project"]
+        version = project["version"]
+    except (OSError, KeyError, TypeError, tomllib.TOMLDecodeError) as error:
+        raise ValueError("could not read the project package version") from error
+    if not isinstance(version, str) or not version:
+        raise ValueError("project package version must be a non-empty string")
+    return version
 
 
 def _evidence_path(value: object, role: str, record_path: Path) -> Path:
@@ -129,6 +141,8 @@ def main(argv: list[str] | None = None) -> int:
         candidate = args.candidate_commit or _candidate_commit()
         payload = json.loads(record.read_text(encoding="utf-8"))
         verified = validate(payload, tag, candidate, record, enforce_filename=args.record is None)
+        if _package_version() != tag.removeprefix("v"):
+            raise ValueError("project package version does not match the requested GA tag")
     except (OSError, ValueError, json.JSONDecodeError) as error:
         print(
             json.dumps(

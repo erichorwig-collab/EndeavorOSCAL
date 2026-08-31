@@ -44,6 +44,9 @@ python3 scripts/validate-ga-release-readiness.py \
 
 The command returns nonzero and a machine-readable `incomplete` result until
 the version-matched record exists and every referenced evidence hash verifies.
+It also requires the `pyproject.toml` package version to exactly equal the tag
+without its leading `v`; an alpha or development version cannot be released as
+a GA tag.
 
 Use the [GA human acceptance runbook](ga-human-acceptance-runbook.md) to
 create the required fresh `human-acceptance` and `accessibility-review`

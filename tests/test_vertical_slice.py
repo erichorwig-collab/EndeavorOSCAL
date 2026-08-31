@@ -780,11 +780,13 @@ class VerticalSliceTests(unittest.TestCase):
                 "--record",
                 str(record_path),
             ]
-            accepted = subprocess.run(command, cwd=ROOT, text=True, capture_output=True, check=False)
-            self.assertEqual(accepted.returncode, 0, accepted.stderr)
-            payload = json.loads(accepted.stdout)
-            self.assertEqual(payload["status"], "passed")
-            self.assertEqual(set(payload["evidence"]), set(roles))
+            import runpy
+            gate = runpy.run_path(ROOT / "scripts" / "validate-ga-release-readiness.py")
+            verified = gate["validate"](json.loads(record_path.read_text(encoding="utf-8")), "v1.2.3", commit, record_path, enforce_filename=False)
+            self.assertEqual(set(verified), set(roles))
+            rejected_version = subprocess.run(command, cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(rejected_version.returncode, 1)
+            self.assertIn("project package version does not match", rejected_version.stderr)
             (temporary / "license-review.md").write_text("changed\n", encoding="utf-8")
             rejected = subprocess.run(command, cwd=ROOT, text=True, capture_output=True, check=False)
             self.assertEqual(rejected.returncode, 1)
