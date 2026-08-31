@@ -12,6 +12,7 @@ Endeavor converts OpenSCAP assessment evidence into valid, provenance-preserving
 ## Documentation
 
 - [OpenSCAP user experience and feature inventory](docs/openscap-user-experience.md)
+- [OpenSCAP 1.4.4 feature-gap map and parity roadmap](docs/openscap-1.4.4-feature-map.md)
 - [OSCAL parity and improvement design](docs/oscal-experience-design.md)
 - [Quality, security, and accessibility strategy](docs/quality-and-accessibility.md)
 - [v0.1 OVAL Results to OSCAL mapping contract](docs/v0.1-oval-results-mapping.md)
