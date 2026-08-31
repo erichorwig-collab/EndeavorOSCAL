@@ -16,7 +16,7 @@ BUILD_TOOLCHAIN = (
     ("build", "1.3.0", "MIT"),
     ("packaging", "26.3", "Apache-2.0 OR BSD-2-Clause"),
     ("pyproject-hooks", "1.2.0", "MIT"),
-    ("setuptools", "80.9.0", "MIT"),
+    ("setuptools", "83.0.0", "MIT"),
 )
 
 
@@ -45,7 +45,7 @@ def generate() -> dict[str, object]:
     if (ROOT / "requirements-release-build.txt").read_text(encoding="utf-8").splitlines() != ["# Pinned PEP 517 frontend and its direct runtime dependencies for release builds.", *expected_build_requirements]:
         raise ValueError("requirements-release-build.txt must match the pinned release build toolchain")
     build_system = pyproject.get("build-system", {})
-    if build_system.get("requires") != ["setuptools==80.9.0"]:
+    if build_system.get("requires") != ["setuptools==83.0.0"]:
         raise ValueError("pyproject.toml must pin setuptools for release builds")
     name = project["name"]
     version = project["version"]
