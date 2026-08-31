@@ -52,6 +52,15 @@ else
   python=/tmp/endeavor-venv/bin/python
   work=/tmp/endeavor-work
 fi
+# Detect an accidental wrong or modified guest workspace before validation.
+# This is an operator-integrity check, not protection from a hostile root guest:
+# `/shared` remains writable and any exported evidence is re-checked on host.
+expected=$(cat /shared/CANDIDATE-COMMIT.txt)
+actual=$(git -C "$work" rev-parse HEAD)
+if [ "$actual" != "$expected" ] || ! git -C "$work" diff --quiet || ! git -C "$work" diff --cached --quiet; then
+  echo "Review workspace commit does not match the staged candidate." >&2
+  exit 1
+fi
 cd "$work"
 exec "$python" scripts/validate-alpha-workflow.py --review-output /tmp/endeavor-alpha-review
 EOF
