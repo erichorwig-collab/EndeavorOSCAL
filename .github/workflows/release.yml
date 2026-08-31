@@ -32,6 +32,7 @@ jobs:
       - name: Validate frozen release source
         run: |
           python -m unittest discover -s tests -v
+          python scripts/fuzz-untrusted-xml.py --seed 20260831 --cases 24
           python scripts/generate-sbom.py --check sbom.cdx.json
       - name: Validate alpha readiness evidence
         if: ${{ contains(github.ref_name, '-') }}

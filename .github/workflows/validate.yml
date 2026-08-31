@@ -26,6 +26,8 @@ jobs:
         run: npm ci
       - name: Run v0.1 validation suite
         run: python -m unittest discover -s tests -v
+      - name: Run deterministic untrusted XML fuzz regression
+        run: python scripts/fuzz-untrusted-xml.py --seed 20260831 --cases 24
       - name: Verify committed SBOM
         run: python scripts/generate-sbom.py --check sbom.cdx.json
       - name: Exercise representative alpha workflow
