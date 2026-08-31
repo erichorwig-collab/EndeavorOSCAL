@@ -45,8 +45,7 @@ the source tests, SBOM comparison, and representative alpha workflow.
   decisions.
 - Cross-format conversion remains limited to the documented, explicitly mapped
   sources; it must not infer findings or controls.
-- License review, changelog, and accessible release notes remain
-  public-release controls.
+- Accessible release notes remain a public-release control.
 
 ## Release evidence baseline
 

@@ -24,6 +24,7 @@ REQUIRED_FILES = (
     "docs/dependency-policy.md",
     "docs/governance-readiness.md",
     "docs/quality-and-accessibility.md",
+    "docs/release-license-review-v0.1.0-alpha.1.md",
     "security/vulnerability-exceptions.json",
     "security/vulnerability-exceptions.schema.json",
     "sbom.cdx.json",
@@ -81,7 +82,7 @@ def main() -> int:
             "source-to-OSCAL scope expansion",
             "release-tag protection",
             "independent release-artifact verification",
-            "license review and accessible release notes",
+            "accessible release notes",
         ],
     }
     if missing:
