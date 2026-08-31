@@ -41,9 +41,8 @@
 - [x] Build the source bundle twice from the exact Git commit in pinned CI and
   require byte equality before publishing. Retain the manifest and checksums.
 - [x] Protect the release-tag namespace before creating the first candidate tag.
-- [ ] Independently verify the downloaded source bundle SHA-256 and GitHub
-  attestation with `gh attestation verify <artifact> --repo
-  erichorwig-collab/EndeavorOSCAL`.
+- [x] Independently verify the downloaded source bundle SHA-256 and GitHub
+  attestation; see `docs/release-verification-v0.1.0-alpha.1.md`.
 
 ## Approval record
 

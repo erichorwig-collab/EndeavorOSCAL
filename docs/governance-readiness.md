@@ -35,7 +35,7 @@ the source tests, SBOM comparison, and representative alpha workflow.
 | Independent vulnerability inventory | Implemented advisory | `.github/workflows/osv-scanner.yml` runs weekly/manual OSV scans and uploads SARIF without making database drift a merge gate. |
 | Supply-chain posture visibility | Implemented advisory | `.github/workflows/scorecard.yml` runs the official OpenSSF Scorecard workflow weekly and on `main`, retains SARIF for five days, and uploads it to code scanning. CI actions are pinned to full commit SHAs. No score threshold is a merge or release gate. |
 | Software inventory | Implemented | Deterministic CycloneDX 1.5 `sbom.cdx.json`, checked in CI. |
-| Release provenance | Implemented baseline | The tag-only workflow produces a Git source archive, SBOM, manifest, and checksums, then creates GitHub artifact attestations. Tag protection and independent verification remain candidate gates. |
+| Release provenance | Implemented and exercised | The protected `v0.1.0-alpha.1` tag produced a Git source archive, SBOM, manifest, SHA-256 checksums, and GitHub artifact attestations. Independent verification is recorded in `docs/release-verification-v0.1.0-alpha.1.md`. |
 
 ## Explicitly deferred from this gate
 

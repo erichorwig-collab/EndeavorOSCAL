@@ -82,7 +82,8 @@ git push origin v0.1.0-alpha.1
 
 That push invokes the release workflow. It creates the GitHub Release only if
 the frozen source passes all validation and builds the source archive twice
-with byte-identical output.
+with byte-identical output. Tags with a SemVer prerelease suffix (for example,
+`v0.1.0-alpha.1`) are published as GitHub prereleases.
 
 ## 3. Review dependency licenses
 
