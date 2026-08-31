@@ -27,6 +27,7 @@ Endeavor converts OpenSCAP assessment evidence into valid, provenance-preserving
 - [release-candidate checklist](docs/release-candidate-checklist.md)
 - [General Availability readiness map](docs/ga-readiness.md)
 - [GA support policy](SUPPORT.md)
+- [GA interoperability corpus protocol](docs/ga-interoperability-corpus.md)
 - [contribution guide](CONTRIBUTING.md)
 - [code of conduct](CODE_OF_CONDUCT.md)
 - [changelog](CHANGELOG.md)
