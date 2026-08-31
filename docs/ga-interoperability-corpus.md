@@ -16,8 +16,15 @@ environment. For the narrow GA profile, the required set is:
 | ARF 1.1 | One locally resolved XCCDF report and one authoritative linkage-manifest case | `inspect-arf`, `convert-arf-xccdf`, and linkage resolution without network access |
 
 The first GA target environments are Linux x86_64 systems evaluated by
-OpenSCAP 1.4.4. A new environment becomes supported only when its corpus item
-and compatibility-matrix row are added in the same change.
+OpenSCAP 1.4.4. The GA corpus must include Rocky Linux 10.2 x86_64 and Ubuntu
+24.04 LTS x86_64 targets. The first covers the RHEL-compatible enterprise Linux
+family; the second covers a Debian-family LTS. Their pinned producer paths and
+container-only boundary are in the [GA platform-corpus plan](ga-platform-corpus-plan.md).
+The exact image, OpenSCAP package build or source hash, and target facts must
+be recorded in each corpus item's `PROVENANCE.md`; this is required test
+coverage, not a claim that every RHEL or Ubuntu deployment is supported. A new
+environment becomes supported only when its corpus item and
+compatibility-matrix row are added in the same change.
 
 ## Intake record
 
