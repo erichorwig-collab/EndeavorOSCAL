@@ -36,7 +36,8 @@ the broad contract expands, rather than replaces, these gates.
 
 ## Recommended GA controls
 
-- Enable Dependabot vulnerability alerts and security updates.
+- Dependabot vulnerability alerts and automated security fixes are enabled;
+  review and disposition alerts under the vulnerability-release gate.
 - Make High/Critical dependency findings release-blocking unless covered by an
   exact, approved, expiring exception.
 - Document whether GitHub OIDC artifact attestations are the GA trust mechanism
