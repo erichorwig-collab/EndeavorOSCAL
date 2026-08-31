@@ -28,9 +28,9 @@ begin.
 - The alpha supports the documented OVAL, XCCDF, and bounded ARF evidence
   profiles only. ARF archive ingestion, tailoring-decision interpretation, and
   unmapped source-to-OSCAL expansion remain out of scope.
-- The release workflow is configured but no release tag or public release has
-  been created. A named human acceptance record for the frozen candidate commit
-  is still required.
+- `v0.1.0-alpha.1` is a published prerelease. Its human acceptance, license
+  review, checksum verification, and artifact-attestation verification are
+  recorded under `docs/`.
 
 ## Release-entry rule
 

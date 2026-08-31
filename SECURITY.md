@@ -4,7 +4,8 @@
 
 | Version | Supported |
 | --- | --- |
-| Current `main` pre-alpha line | Yes |
+| Current `main` development line | Yes |
+| `v0.1.0-alpha.1` prerelease | Yes, alpha scope only |
 | Earlier revisions | No |
 
 ## Reporting a vulnerability

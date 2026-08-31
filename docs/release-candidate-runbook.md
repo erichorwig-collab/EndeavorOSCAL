@@ -28,8 +28,8 @@ Do not grant a broad bypass to ordinary contributors. After saving, confirm
 that the ruleset is **Active** and applies to `refs/tags/v0.1.0-alpha.1`.
 
 Repository administrator access (or GitHub's **Edit repository rules**
-permission) is required. This repository currently has no rulesets, so this is
-an outstanding manual administrative gate.
+permission) is required. The `Protect Endeavor release tags` ruleset is active
+for the published alpha; retain this control for every future release.
 
 ## 2. Freeze and test the candidate
 

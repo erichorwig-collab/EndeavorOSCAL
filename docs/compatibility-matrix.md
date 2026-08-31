@@ -19,11 +19,11 @@ replacement, remediation, or automatic OSCAL control mapping.
 outputs and exercises hostile-input rejections. `.github/workflows/validate.yml`
 runs that suite, validates the SBOM, and executes the representative alpha
 workflow and the governance-readiness evidence checker. The accepted human
-review record is `docs/alpha-acceptance-record-2026-08-30.md`. Fixture source
+review record is `docs/alpha-acceptance-record-v0.1.0-alpha.1.md`. Fixture source
 provenance and input hashes are recorded beside each fixture in
 `fixtures/*/PROVENANCE.md`.
 
-## Deferred before Governance
+## Deferred after alpha
 
 1. ARF archive/container ingestion beyond the explicit archive rejection.
 2. A generated-sanitized ARF tailoring result from the pinned OpenSCAP 1.4.4
@@ -33,4 +33,4 @@ provenance and input hashes are recorded beside each fixture in
    XCCDF report, with no inferred controls or findings.
 
 The alpha human-review gate is complete; its accepted record is retained in
-`docs/alpha-acceptance-record-2026-08-30.md`.
+`docs/alpha-acceptance-record-v0.1.0-alpha.1.md`.

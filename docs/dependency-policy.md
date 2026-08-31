@@ -1,6 +1,6 @@
 # Dependency and SBOM policy
 
-Endeavor's pre-alpha dependency inventory is the committed, deterministic
+Endeavor's alpha dependency inventory is the committed, deterministic
 [CycloneDX 1.5 SBOM](../sbom.cdx.json). Regenerate it with:
 
 ```bash
