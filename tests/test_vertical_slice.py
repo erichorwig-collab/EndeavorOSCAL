@@ -51,6 +51,7 @@ UBUNTU_XCCDF_OSCAL = UBUNTU_CORPUS / "results.oscal.json"
 UBUNTU_ARF_OSCAL = UBUNTU_CORPUS / "results.arf.oscal.json"
 COMPATIBILITY_MATRIX = ROOT / "docs" / "compatibility-matrix.md"
 RELEASE_WORKFLOW = ROOT / ".github" / "workflows" / "release.yml"
+PYTHON_BUILD_LOCK_VALIDATOR = ROOT / "scripts" / "validate-python-build-lock.py"
 EVIDENCE_GOLDEN = ROOT / "fixtures" / "evidence-golden"
 XSD_NS = "{http://www.w3.org/2001/XMLSchema}"
 
@@ -781,6 +782,15 @@ class VerticalSliceTests(unittest.TestCase):
         self.assertNotIn("pip install", publish)
         self.assertNotIn("npm ci", publish)
         self.assertNotIn("scripts/", publish)
+
+    def test_python_build_lock_is_hash_verified_and_used_by_ci(self) -> None:
+        completed = subprocess.run([sys.executable, str(PYTHON_BUILD_LOCK_VALIDATOR)], cwd=ROOT, text=True, capture_output=True, check=False)
+        self.assertEqual(completed.returncode, 0, completed.stderr)
+        self.assertIn("Python build lock is valid.", completed.stdout)
+        for workflow_path in (ROOT / ".github" / "workflows" / "validate.yml", RELEASE_WORKFLOW):
+            workflow = workflow_path.read_text(encoding="utf-8")
+            self.assertIn("--require-hashes --only-binary=:all: -r requirements-python-build.lock", workflow)
+        self.assertIn('"--no-isolation"', (ROOT / "scripts" / "build-release-source.py").read_text(encoding="utf-8"))
 
     def test_conversion_is_byte_stable(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

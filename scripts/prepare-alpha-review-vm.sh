@@ -4,10 +4,15 @@
 set -eu
 
 retry_mode=N
-if [ "${1:-}" = "--retry" ]; then
-  retry_mode=Y
+allow_online_bootstrap=N
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    --retry) retry_mode=Y ;;
+    --allow-online-bootstrap) allow_online_bootstrap=Y ;;
+    *) break ;;
+  esac
   shift
-fi
+done
 
 source_dir=${1:-/shared/EndeavorOSCAL}
 if [ "$retry_mode" = Y ]; then
@@ -17,9 +22,10 @@ else
   work_dir=${ENDEAVOR_WORK_DIR:-/tmp/endeavor-work}
   venv_dir=${ENDEAVOR_VENV_DIR:-/tmp/endeavor-venv}
 fi
-package_cache=${ENDEAVOR_APK_CACHE:-/shared/apk-cache-v3.24}
-wheelhouse=${ENDEAVOR_WHEELHOUSE:-/shared/python-wheelhouse}
-node_modules_cache=${ENDEAVOR_NODE_MODULES_CACHE:-/shared/node_modules}
+cache_root=${ENDEAVOR_OFFLINE_CACHE:-/shared/offline-cache}
+package_cache="$cache_root/apk"
+wheelhouse="$cache_root/python"
+npm_cache="$cache_root/npm"
 
 if [ "$(id -u)" -ne 0 ]; then
   echo "Run this script as the VM's local root user." >&2
@@ -37,10 +43,15 @@ if [ -e "$work_dir" ] || [ -e "$venv_dir" ]; then
 fi
 
 set -- "$package_cache"/*.apk
-if [ -f "$1" ]; then
-  echo "Installing pre-fetched Alpine packages from $package_cache"
-  apk add --no-network --no-cache --force-non-repository "$@"
+if [ "$allow_online_bootstrap" = N ]; then
+  [ -f "$1" ] && [ -f "$wheelhouse/lxml-6.1.2-cp314-cp314-musllinux_1_2_x86_64.whl" ] && [ -d "$npm_cache" ] || {
+    echo "Verified offline review cache is incomplete; do not use online bootstrap for GA." >&2
+    exit 1
+  }
+  echo "Installing verified pre-fetched Alpine packages from $package_cache"
+  apk add --no-network --no-cache "$@"
 else
+  echo "WARNING: online bootstrap is legacy-only and is not eligible for GA evidence." >&2
   series=$(cut -d. -f1,2 /etc/alpine-release)
   cat >/etc/apk/repositories <<EOF
 https://dl-cdn.alpinelinux.org/alpine/v${series}/main
@@ -53,16 +64,16 @@ fi
 cp -a "$source_dir" "$work_dir"
 python3 -m venv "$venv_dir"
 
-if [ -d "$wheelhouse" ] && [ -f "$wheelhouse/lxml-6.1.2-cp314-cp314-musllinux_1_2_x86_64.whl" ]; then
+if [ "$allow_online_bootstrap" = N ]; then
   "$venv_dir/bin/python" -m pip install --disable-pip-version-check --no-index --find-links "$wheelhouse" -r "$work_dir/requirements.txt"
 else
   "$venv_dir/bin/python" -m pip install --disable-pip-version-check -r "$work_dir/requirements.txt"
 fi
 
-if [ -d "$node_modules_cache" ]; then
-  cp -a "$node_modules_cache" "$work_dir/node_modules"
+if [ "$allow_online_bootstrap" = N ]; then
+  (cd "$work_dir" && npm ci --offline --ignore-scripts --cache "$npm_cache")
 else
-  (cd "$work_dir" && npm ci)
+  (cd "$work_dir" && npm ci --ignore-scripts)
 fi
 
 cat <<'EOF'

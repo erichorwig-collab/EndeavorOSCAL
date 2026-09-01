@@ -44,15 +44,19 @@ python3 scripts/generate-sbom.py --check sbom.cdx.json
 python3 scripts/validate-governance-readiness.py
 ```
 
-Use the disposable VM only with a review-kit snapshot made from that exact
-commit. In the VM, run the short commands one at a time:
+Use the disposable VM only with a review-kit snapshot and verified offline cache
+made for that exact commit. In the VM, run the short commands one at a time:
 
 ```sh
 mkdir -p /shared
 ```
 
 ```sh
-mount -t 9p shared /shared
+mount -t 9p -o ro shared /shared
+```
+
+```sh
+mkdir -p /export && mount -t 9p export /export
 ```
 
 ```sh

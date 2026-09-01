@@ -23,13 +23,15 @@ a temporary review-kit snapshot, and writes that SHA to
 - a 4 GiB qcow2 disk under the explicit temporary runtime directory.
 
 The guest is Alpine Linux, runs as its local `root` only because package setup
-requires it, and receives the frozen review kit through a 9p mount tagged
-`shared`. The guest-side bootstrap is
+requires it, and receives the frozen review kit through a read-only 9p mount
+tagged `shared`. A separate writable 9p mount tagged `export` receives only
+the retained review output. The guest-side bootstrap is
 `scripts/prepare-alpha-review-vm.sh`.
 
 The source checks protect the launch inputs before QEMU or noVNC executes.
-They do not replace the pending GA requirement for a hash-manifested offline
-APK, Python-wheel, and npm cache.
+The launcher now requires a hash-manifested offline APK, Python-wheel, and npm
+cache by default. Its `ENDEAVOR_VM_ALLOW_ONLINE_BOOTSTRAP=1` escape hatch is
+legacy-only and cannot produce GA evidence.
 
 ## Network and storage boundaries
 
@@ -37,8 +39,9 @@ APK, Python-wheel, and npm cache.
 | --- | --- |
 | noVNC viewer | `127.0.0.1:18006` only |
 | QEMU VNC websocket | `127.0.0.1:5706` only |
-| Guest networking | QEMU user-mode networking; bootstrap may fetch public packages only when a pre-fetched cache is absent |
-| Review-kit mount | `/shared`, containing only the frozen snapshot and intended package caches |
+| Guest networking | Absent by default; legacy online bootstrap requires an explicit host opt-in and is not GA eligible |
+| Candidate mount | Read-only `/shared`, containing the frozen snapshot, wrappers, and validated offline cache |
+| Export mount | Writable `/export`, empty at launch and limited to retained review artifacts |
 | Guest disk | `/tmp/endeavor-alpha-mvp/storage.qcow2` |
 | Host source checkout | copied into the review kit; never mounted read/write |
 | Docker | not used by this VM workflow; no Docker permission is required |
@@ -62,7 +65,11 @@ mkdir -p /shared
 ```
 
 ```sh
-mount -t 9p shared /shared
+mount -t 9p -o ro shared /shared
+```
+
+```sh
+mkdir -p /export && mount -t 9p export /export
 ```
 
 ```sh
@@ -77,8 +84,9 @@ sh /shared/v
 sh /shared/e
 ```
 
-`s` bootstraps the workspace, `v` performs retained-evidence validation, and
-`e` exports review output without preserving guest ownership metadata. Open
+`s` bootstraps only from the verified offline cache, `v` performs
+retained-evidence validation, and `e` exports only the retained review files.
+Open
 the exported report on the host, not from the guest browser.
 
 ## Inactive-state verification
