@@ -9,8 +9,10 @@
 - Local branch at handoff: `main`, tracking `origin/main`.
 - Current baseline: this committed handoff. At resume, record the authoritative
   candidate with `git rev-parse HEAD` rather than relying on a stale SHA here.
-- Latest completed work: Ubuntu 24.04 human-review packet, PDF, and review
-  boundary clarification are merged through protected pull requests.
+- Latest completed work: a reproducible Alpine 3.24 offline-review-cache
+  stager and its user-namespace regression coverage are merged through
+  protected pull requests. The cache was staged and semantically consumed
+  without guest networking; see the cache state below.
 - Docker access: do **not** enable it for the current state. The verification
   VM is also intentionally inactive.
 - Security review: see `docs/security-best-practices-review-2026-08-31.md`.
@@ -32,6 +34,23 @@ The first GA release remains the narrow evidence-adapter contract:
   run Endeavor natively there; its modern runtime requires Python 3.11+.
 
 ## Evidence and human gates
+
+### Offline review cache
+
+- A validated cache for commit
+  `8b46c5932c7eba4bcfa5db004292acbc59579aef` is retained outside Git at
+  `/home/elo/Work/Endeavor-review-cache/8b46c5932c7eba4bcfa5db004292acbc59579aef`.
+  It is owned by `elo`, mode `0700`, and its `SHA256SUMS` digest is
+  `dabb01db5c3e57c222794a6c5aa63180dcf467d452816bd303d81ad98c7a4b17`.
+- Its provenance records Alpine `3.24.1` and the immutable image digest
+  `alpine@sha256:28bd5fe8b56d1bd048e5babf5b10710ebe0bae67db86916198a6eec434943f8b`.
+  A networkless disposable-container check successfully installed the staged
+  APK closure, `lxml==6.1.2`, and the npm lockfile dependencies.
+- The disposable image and containers were removed. Do not launch the review
+  VM merely because the cache exists. Rebuild the cache after any candidate,
+  `requirements.txt`, or `package-lock.json` change using
+  `scripts/stage-alpha-review-cache.sh` and
+  `scripts/validate-alpha-review-cache.py`.
 
 Two automated corpus candidates are ready but **not yet supported**:
 
