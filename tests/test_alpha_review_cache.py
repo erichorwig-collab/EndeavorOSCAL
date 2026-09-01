@@ -14,6 +14,7 @@ VALIDATOR = ROOT / "scripts" / "validate-alpha-review-cache.py"
 EXPORT_VERIFIER = ROOT / "scripts" / "verify-alpha-review-export.py"
 LAUNCHER = ROOT / "scripts" / "launch-alpha-review-vm.sh"
 BOOTSTRAP = ROOT / "scripts" / "prepare-alpha-review-vm.sh"
+STAGER = ROOT / "scripts" / "stage-alpha-review-cache.sh"
 
 
 def _digest(path: Path) -> str:
@@ -73,6 +74,15 @@ class AlphaReviewCacheTests(unittest.TestCase):
         self.assertIn("apk add --no-network --no-cache", bootstrap)
         self.assertIn("--no-index --find-links", bootstrap)
         self.assertIn("npm ci --offline --ignore-scripts", bootstrap)
+
+    def test_cache_stager_is_disposable_and_hash_bound(self) -> None:
+        stager = STAGER.read_text(encoding="utf-8")
+        self.assertIn("apk fetch --recursive", stager)
+        self.assertIn("--only-binary=:all:", stager)
+        self.assertIn("npm ci --ignore-scripts --cache", stager)
+        self.assertIn("CACHE-METADATA", stager)
+        self.assertIn("STAGING-PROVENANCE", stager)
+        self.assertIn("refusing to overwrite", stager)
 
     def test_host_export_verifier_accepts_only_host_expected_artifacts(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
