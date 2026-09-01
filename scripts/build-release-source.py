@@ -83,7 +83,9 @@ def run_build(source: Path, destination: Path, epoch: str) -> list[Path]:
     environment["SOURCE_DATE_EPOCH"] = epoch
     environment["PYTHONHASHSEED"] = "0"
     completed = subprocess.run(
-        [sys.executable, "-m", "build", "--sdist", "--wheel", "--outdir", str(destination), str(source)],
+        # CI installs the exact, hash-verified backend first.  Do not let PEP
+        # 517 create a second environment that retrieves an unhashed backend.
+        [sys.executable, "-m", "build", "--no-isolation", "--sdist", "--wheel", "--outdir", str(destination), str(source)],
         cwd=source,
         env=environment,
         text=True,

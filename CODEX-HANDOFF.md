@@ -14,8 +14,8 @@
 - Docker access: do **not** enable it for the current state. The verification
   VM is also intentionally inactive.
 - Security review: see `docs/security-best-practices-review-2026-08-31.md`.
-  SEC-01 is mitigated; SEC-02 still requires a hash-manifested offline guest
-  dependency cache and separate source/export mounts before a GA VM review.
+  SEC-01 and SEC-02 are mitigated. SEC-05 still requires host-side comparison
+  of exported guest evidence before a GA VM review.
 
 ## Product decision and GA boundary
 

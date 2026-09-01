@@ -38,7 +38,7 @@ and publishes. The privileged job performs no checkout, dependency install,
 or repository-script execution. Python requirement hashes remain a defense in
 depth supply-chain task, but the publication-token exposure is mitigated.
 
-### SEC-02 - High: verification VM downloads are not integrity-pinned — partially mitigated
+### SEC-02 - High: verification VM downloads are not integrity-pinned — mitigated
 
 `scripts/launch-alpha-review-vm.sh` downloads the Alpine ISO without checksum
 verification and clones noVNC by mutable tag before running `novnc_proxy`
@@ -50,8 +50,11 @@ The launcher now verifies Alpine `3.24.0` ISO SHA-256
 `6cd1a38ae05cf96a5d0cbb2ddd6c630834babfeca1ecc5d1f05ec0b06b886102`
 before QEMU uses it and rejects noVNC unless tag `v1.6.0` resolves to immutable
 commit `a8dfd6a3ea3c74244f5ebdaa5a7f1023007a7820`. Before a GA VM review,
-add a hash-manifested offline APK/wheel/npm cache and make it the required
-review path. The current VM remains intentionally inactive.
+uses a required cache bundle whose metadata binds the frozen candidate and the
+requirements/package-lock hashes, and validates every cache file by SHA-256.
+Strict mode does not configure a guest network device and uses offline APK,
+pip, and npm operations. The explicit legacy online mode is labeled
+non-GA-only. The current VM remains intentionally inactive.
 
 ### SEC-03 - Medium: mapping targets can create schema-invalid output — resolved
 
@@ -78,16 +81,13 @@ object hook. Regression tests cover both mapping formats.
 
 ### SEC-05 - Medium: VM boundary and snapshot integrity
 
-The previous VM guide described a fully isolated guest even though it has
-user-mode outbound networking and a writable 9p review share. This handoff
-updates `docs/alpha-test-vm-start-here.md` and
-`docs/verification-vm-build-and-configuration.md` to describe the real
-boundary. The VM wrapper now also detects an accidentally wrong or modified
-workspace before validation.
+The VM now uses a read-only candidate 9p mount and a separate, empty writable
+export mount. Strict mode has no guest network device. The VM wrapper also
+detects an accidentally wrong or modified workspace before validation.
 
-This is not protection against a hostile root guest: a writable shared mount
-cannot provide that. Before GA, use separate read-only candidate and narrowly
-writable export shares, then validate all exported evidence on the host.
+This is not protection against a hostile root guest: output remains
+guest-produced until host-side export verification compares it to trusted
+candidate evidence. Add that host verification before GA.
 
 ### SEC-06 - Low: malformed empty XCCDF can bypass stable diagnostics — resolved
 
@@ -132,8 +132,8 @@ sanitization-reviewed.
 
 ## Recommended remediation order
 
-1. Complete SEC-02's offline cache manifest and SEC-05's read-only-source /
-   narrowly writable-export split before any GA VM review.
+1. Add host-side export verification before treating guest output as trusted
+   GA evidence.
 2. Complete SEC-07 by naming the independent reviewer and requiring the
    corresponding GitHub environment or protected-review approval.
 3. Hash-pin Python build requirements as a defense-in-depth follow-up before
