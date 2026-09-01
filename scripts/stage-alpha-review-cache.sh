@@ -9,6 +9,12 @@ set -eu
 source_dir=${1:-/source}
 output_dir=${2:-/output}
 
+# The read-only host bind mount can have a different owner in a user-namespaced
+# Docker daemon. Scope Git's safe-directory exception to this explicit source.
+source_git() {
+  git -c safe.directory="$source_dir" -C "$source_dir" "$@"
+}
+
 if [ "$(id -u)" -ne 0 ]; then
   echo "Run this cache stager as root inside its disposable Alpine environment." >&2
   exit 1
@@ -29,12 +35,12 @@ fi
 
 apk update
 apk add --no-cache python3 py3-pip nodejs npm git
-if ! git -C "$source_dir" rev-parse --is-inside-work-tree >/dev/null 2>&1 || \
-   [ -n "$(git -C "$source_dir" status --porcelain)" ]; then
+if ! source_git rev-parse --is-inside-work-tree >/dev/null 2>&1 || \
+   [ -n "$(source_git status --porcelain)" ]; then
   echo "Stage only a clean, frozen Git candidate checkout." >&2
   exit 1
 fi
-candidate=$(git -C "$source_dir" rev-parse HEAD)
+candidate=$(source_git rev-parse HEAD)
 requirements_sha256=$(sha256sum "$source_dir/requirements.txt" | awk '{print $1}')
 package_lock_sha256=$(sha256sum "$source_dir/package-lock.json" | awk '{print $1}')
 work_dir=$(mktemp -d /tmp/endeavor-cache-source.XXXXXX)
