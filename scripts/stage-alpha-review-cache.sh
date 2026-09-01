@@ -17,11 +17,6 @@ if [ ! -f "$source_dir/requirements.txt" ] || [ ! -f "$source_dir/package-lock.j
   echo "Candidate source is incomplete: $source_dir" >&2
   exit 1
 fi
-if ! git -C "$source_dir" rev-parse --is-inside-work-tree >/dev/null 2>&1 || \
-   [ -n "$(git -C "$source_dir" status --porcelain)" ]; then
-  echo "Stage only a clean, frozen Git candidate checkout." >&2
-  exit 1
-fi
 if [ -L "$output_dir" ]; then
   echo "Cache output must not be a symlink." >&2
   exit 1
@@ -40,6 +35,11 @@ trap 'rm -rf "$work_dir"' EXIT HUP INT TERM
 
 apk update
 apk add --no-cache python3 py3-pip nodejs npm git
+if ! git -C "$source_dir" rev-parse --is-inside-work-tree >/dev/null 2>&1 || \
+   [ -n "$(git -C "$source_dir" status --porcelain)" ]; then
+  echo "Stage only a clean, frozen Git candidate checkout." >&2
+  exit 1
+fi
 mkdir -p "$output_dir/apk" "$output_dir/python" "$output_dir/npm"
 # Fetch the recursive dependency closure that the guest installs with apk.
 apk fetch --recursive --output "$output_dir/apk" \
