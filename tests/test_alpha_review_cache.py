@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import json
 import subprocess
 import sys
 from pathlib import Path
@@ -10,6 +11,7 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
 VALIDATOR = ROOT / "scripts" / "validate-alpha-review-cache.py"
+EXPORT_VERIFIER = ROOT / "scripts" / "verify-alpha-review-export.py"
 LAUNCHER = ROOT / "scripts" / "launch-alpha-review-vm.sh"
 BOOTSTRAP = ROOT / "scripts" / "prepare-alpha-review-vm.sh"
 
@@ -72,3 +74,25 @@ class AlphaReviewCacheTests(unittest.TestCase):
         self.assertIn("--no-index --find-links", bootstrap)
         self.assertIn("npm ci --offline --ignore-scripts", bootstrap)
 
+    def test_host_export_verifier_accepts_only_host_expected_artifacts(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            temporary = Path(directory)
+            expected = temporary / "expected.json"
+            review = temporary / "review"
+            export = temporary / "export"
+            destination = temporary / "verified"
+            candidate = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True, capture_output=True, check=True).stdout.strip()
+            generated = subprocess.run([sys.executable, "scripts/validate-alpha-workflow.py", "--record", str(expected), "--review-output", str(review)], cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(generated.returncode, 0, generated.stderr)
+            export.mkdir()
+            for name in ("pass.json", "fail.json", "mapping-report.html"):
+                (export / name).write_bytes((review / name).read_bytes())
+            command = [sys.executable, str(EXPORT_VERIFIER), "--candidate", str(ROOT), "--expected", str(expected), "--export", str(export), "--candidate-commit", candidate, "--destination", str(destination)]
+            completed = subprocess.run(command, cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(completed.returncode, 0, completed.stderr)
+            self.assertEqual(json.loads(completed.stdout)["status"], "passed")
+            self.assertTrue((destination / "export-verification.json").is_file())
+            (export / "pass.json").write_text("tampered", encoding="utf-8")
+            rejected = subprocess.run([*command[:-1], str(temporary / "rejected")], cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(rejected.returncode, 1)
+            self.assertIn("does not match", rejected.stderr)
