@@ -19,7 +19,8 @@ if [ "$(id -u)" -ne 0 ]; then
   echo "Run this cache stager as root inside its disposable Alpine environment." >&2
   exit 1
 fi
-if [ ! -f "$source_dir/requirements.txt" ] || [ ! -f "$source_dir/package-lock.json" ]; then
+if [ ! -f "$source_dir/requirements.txt" ] || [ ! -f "$source_dir/package.json" ] || \
+   [ ! -f "$source_dir/package-lock.json" ]; then
   echo "Candidate source is incomplete: $source_dir" >&2
   exit 1
 fi
@@ -50,12 +51,12 @@ mkdir -p "$output_dir/apk" "$output_dir/python" "$output_dir/npm"
 apk fetch --recursive --output "$output_dir/apk" \
   python3 py3-pip py3-virtualenv nodejs npm git
 
-# Work on a writable copy: npm ci must create node_modules, while the frozen
-# candidate is mounted read-only by the staging wrapper.
-cp -a "$source_dir/." "$work_dir/"
+# npm ci only needs these two manifests. Copying the full candidate would try
+# to retain host ownership in a user-namespaced staging container.
+cp "$source_dir/package.json" "$source_dir/package-lock.json" "$work_dir/"
 python3 -m pip wheel --disable-pip-version-check --no-cache-dir \
   --only-binary=:all: --no-deps --wheel-dir "$output_dir/python" \
-  -r "$work_dir/requirements.txt"
+  -r "$source_dir/requirements.txt"
 (cd "$work_dir" && npm ci --ignore-scripts --cache "$output_dir/npm")
 
 wheel="$output_dir/python/lxml-6.1.2-cp314-cp314-musllinux_1_2_x86_64.whl"

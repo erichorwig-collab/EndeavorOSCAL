@@ -85,6 +85,8 @@ class AlphaReviewCacheTests(unittest.TestCase):
         self.assertIn("refusing to overwrite", stager)
         self.assertLess(stager.index("apk add --no-cache"), stager.index("candidate=$(source_git"))
         self.assertIn("safe.directory", stager)
+        self.assertIn('cp "$source_dir/package.json" "$source_dir/package-lock.json"', stager)
+        self.assertNotIn('cp -a "$source_dir/."', stager)
 
     def test_host_export_verifier_accepts_only_host_expected_artifacts(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
