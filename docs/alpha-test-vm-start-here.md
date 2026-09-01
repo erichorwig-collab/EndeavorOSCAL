@@ -62,14 +62,17 @@ and must remain loopback-only.
    ```
 
 5. Export the retained report to the host-visible review share, then open
-   `mapping-report.html` from that exported directory in the host browser at
-   normal zoom:
+   nothing from the raw export yet:
 
    ```sh
    sh /shared/e
    ```
 
-6. Complete `docs/alpha-acceptance-template.md` after reviewing the retained
+6. The maintainer stops the VM using its printed `STOP` command, then runs the
+   printed host verification command. Open `mapping-report.html` only from the
+   new `verified-export` directory after that command reports `"status":"passed"`.
+
+7. Complete `docs/alpha-acceptance-template.md` after reviewing the retained
    evidence. Return the completed record to the project maintainer through the
    approved collaboration channel; do not place credentials or sensitive
    evidence in this VM.
@@ -85,6 +88,8 @@ and must remain loopback-only.
 - strict review mode has no QEMU network device;
 - the cache, candidate snapshot, and exported review files are disposable and
   never alter the authoritative checkout; and
+- raw guest export is untrusted until the host verifier copies matching bytes
+  into its host-owned `verified-export` directory; and
 - the guest's local root account has no password and is not a host credential.
 
 The test VM, its exported review output, and its disk can be deleted after

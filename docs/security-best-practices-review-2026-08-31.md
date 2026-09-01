@@ -79,15 +79,17 @@ them (`endeavor/arf_linkage.py:46-52` and 90-97).
 OVAL, XCCDF, and linkage-manifest JSON now use one duplicate-member rejecting
 object hook. Regression tests cover both mapping formats.
 
-### SEC-05 - Medium: VM boundary and snapshot integrity
+### SEC-05 - Medium: VM boundary and snapshot integrity — mitigated
 
 The VM now uses a read-only candidate 9p mount and a separate, empty writable
 export mount. Strict mode has no guest network device. The VM wrapper also
 detects an accidentally wrong or modified workspace before validation.
 
-This is not protection against a hostile root guest: output remains
-guest-produced until host-side export verification compares it to trusted
-candidate evidence. Add that host verification before GA.
+Raw output is still guest-produced, but the launcher now creates a trusted,
+candidate-bound expected artifact manifest before the guest starts. After the
+guest is stopped, the host verifier accepts only the exact three expected
+regular files, rechecks hashes and report accessibility, and copies verified
+bytes to a new host-owned directory. Do not open raw guest export.
 
 ### SEC-06 - Low: malformed empty XCCDF can bypass stable diagnostics — resolved
 
@@ -132,9 +134,5 @@ sanitization-reviewed.
 
 ## Recommended remediation order
 
-1. Add host-side export verification before treating guest output as trusted
-   GA evidence.
-2. Complete SEC-07 by naming the independent reviewer and requiring the
+1. Complete SEC-07 by naming the independent reviewer and requiring the
    corresponding GitHub environment or protected-review approval.
-3. Hash-pin Python build requirements as a defense-in-depth follow-up before
-   the first GA tag.

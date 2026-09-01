@@ -86,8 +86,10 @@ sh /shared/e
 
 `s` bootstraps only from the verified offline cache, `v` performs
 retained-evidence validation, and `e` exports only the retained review files.
-Open
-the exported report on the host, not from the guest browser.
+Stop the guest using the printed `STOP` command, then run the printed host
+verification command. It compares the export to a host-created,
+candidate-bound expected manifest and copies verified bytes into a new
+host-owned directory. Open only that copied report in the host browser.
 
 ## Inactive-state verification
 

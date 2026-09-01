@@ -42,6 +42,11 @@ if [ -n "$offline_cache" ] && { [ ! -d "$offline_cache" ] || [ -L "$offline_cach
 fi
 
 candidate=$(git -C "$root" rev-parse --verify "${ref}^{commit}")
+head=$(git -C "$root" rev-parse HEAD)
+if [ "$candidate" != "$head" ] || ! git -C "$root" diff --quiet || ! git -C "$root" diff --cached --quiet; then
+    echo "Launch only a clean checkout at its current HEAD; freeze a release candidate before VM review." >&2
+    exit 1
+fi
 mkdir -p "$runtime/candidate/EndeavorOSCAL" "$runtime/export"
 chmod 700 "$runtime/export"
 git -C "$runtime/candidate/EndeavorOSCAL" init -q
@@ -56,6 +61,11 @@ if [ -n "$offline_cache" ]; then
         --requirements "$runtime/candidate/EndeavorOSCAL/requirements.txt" \
         --package-lock "$runtime/candidate/EndeavorOSCAL/package-lock.json"
 fi
+
+# Create the trusted, host-owned expected artifact manifest before exposing the
+# candidate to the guest. A guest record alone cannot prove hostile-root output.
+python3 "$root/scripts/validate-alpha-workflow.py" \
+    --record "$runtime/candidate/EXPECTED-ALPHA-REVIEW-MANIFEST.json" >/dev/null
 
 printf '%s\n' "$candidate" >"$runtime/candidate/CANDIDATE-COMMIT.txt"
 cat >"$runtime/candidate/s" <<EOF
@@ -186,4 +196,5 @@ printf '%s\n' "$stop_command" >"$runtime/STOP"
 printf '%s\n' "Candidate: $candidate"
 printf '%s\n' "Open: http://127.0.0.1:$port/vnc.html?autoconnect=true&host=127.0.0.1&port=$vnc_port"
 printf '%s\n' "VM runtime: $runtime"
+printf '%s\n' "After stopping the guest, verify and copy export on the host: python3 $root/scripts/verify-alpha-review-export.py --candidate $runtime/candidate/EndeavorOSCAL --expected $runtime/candidate/EXPECTED-ALPHA-REVIEW-MANIFEST.json --export $runtime/export/endeavor-alpha-review --candidate-commit $candidate --destination $runtime/verified-export"
 printf '%s\n' "After review, stop both processes using: sh $runtime/STOP"

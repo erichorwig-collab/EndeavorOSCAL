@@ -71,8 +71,9 @@ sh /shared/v
 sh /shared/e
 ```
 
-Open the exported `mapping-report.html` on the host at normal zoom. Complete a
-new acceptance record copied from
+Stop the VM with its printed `STOP` command. Then run the printed host export
+verification command and open `mapping-report.html` only from its new
+host-owned `verified-export` directory. Complete a new acceptance record copied from
 [`alpha-acceptance-template.md`](alpha-acceptance-template.md), naming this
 candidate SHA. The disposable VM may then be deleted.
 
