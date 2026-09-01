@@ -7,13 +7,15 @@
 
 - Repository: `erichorwig-collab/EndeavorOSCAL`.
 - Local branch at handoff: `main`, tracking `origin/main`.
-- Current main commit: `cdca6d1` (`Clarify Ubuntu corpus review boundaries`).
+- Current baseline: this committed handoff. At resume, record the authoritative
+  candidate with `git rev-parse HEAD` rather than relying on a stale SHA here.
 - Latest completed work: Ubuntu 24.04 human-review packet, PDF, and review
   boundary clarification are merged through protected pull requests.
 - Docker access: do **not** enable it for the current state. The verification
   VM is also intentionally inactive.
 - Security review: see `docs/security-best-practices-review-2026-08-31.md`.
-  SEC-01 and SEC-02 are high-priority pre-GA release/VM assurance work.
+  SEC-01 is mitigated; SEC-02 still requires a hash-manifested offline guest
+  dependency cache and separate source/export mounts before a GA VM review.
 
 ## Product decision and GA boundary
 
@@ -55,7 +57,8 @@ admission records and the version-specific GA record are complete.
    exact commit. Alpha acceptance does not substitute.
 5. Run the version-bound vulnerability, license, SBOM, reproducible-build, and
    GA readiness checks.
-6. Resolve the pre-GA items in `docs/security-best-practices-review-2026-08-31.md`.
+6. Complete the remaining pre-GA assurance items in
+   `docs/security-best-practices-review-2026-08-31.md`.
 7. Create the protected tag, inspect the generated draft release, verify
    SHA-256 checksums and GitHub OIDC attestations, then publish.
 

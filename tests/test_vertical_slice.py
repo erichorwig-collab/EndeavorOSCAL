@@ -11,10 +11,11 @@ import unittest
 
 from lxml import etree as ET
 
-from endeavor.oval import MAX_XML_BYTES, MAX_XML_ELEMENTS, OVAL_RESULTS_NS, _schema, parse_definitions, parse_results
+from endeavor.oval import MAX_XML_BYTES, MAX_XML_ELEMENTS, OVAL_RESULTS_NS, OvalInputError, _schema, parse_definitions, parse_results
 from endeavor.arf import inspect_arf
 from endeavor.evidence import normalize_arf, normalize_oval, normalize_xccdf
 from endeavor.xccdf import inspect_xccdf
+from endeavor.mapping import parse_mapping as parse_oval_mapping
 from endeavor.xccdf_mapping import parse_mapping as parse_xccdf_mapping
 from endeavor.xccdf_convert import assessment_results as xccdf_assessment_results, assessment_results_from_arf
 from endeavor.convert import assessment_results as oval_assessment_results
@@ -49,6 +50,7 @@ UBUNTU_ARF = UBUNTU_CORPUS / "results.arf.xml"
 UBUNTU_XCCDF_OSCAL = UBUNTU_CORPUS / "results.oscal.json"
 UBUNTU_ARF_OSCAL = UBUNTU_CORPUS / "results.arf.oscal.json"
 COMPATIBILITY_MATRIX = ROOT / "docs" / "compatibility-matrix.md"
+RELEASE_WORKFLOW = ROOT / ".github" / "workflows" / "release.yml"
 EVIDENCE_GOLDEN = ROOT / "fixtures" / "evidence-golden"
 XSD_NS = "{http://www.w3.org/2001/XMLSchema}"
 
@@ -721,6 +723,64 @@ class VerticalSliceTests(unittest.TestCase):
             diagnostic = json.loads(completed.stderr)
             self.assertEqual(diagnostic["error"]["code"], "input-invalid")
             self.assertNotIn(directory, completed.stderr)
+
+    def test_mapping_duplicate_members_are_rejected_before_conversion(self) -> None:
+        fixtures = ((MAPPING, parse_oval_mapping), (ARF_MAPPING, parse_xccdf_mapping))
+        with tempfile.TemporaryDirectory() as directory:
+            for source, parser in fixtures:
+                with self.subTest(mapping=source.name):
+                    duplicate = Path(directory) / source.name
+                    duplicate.write_text(source.read_text(encoding="utf-8").replace('"version": "1.0.0",', '"version": "1.0.0", "version": "1.0.0",', 1), encoding="utf-8")
+                    with self.assertRaisesRegex(OvalInputError, "not valid JSON"):
+                        parser(duplicate)
+
+    def test_mapping_target_id_must_be_an_oscal_token(self) -> None:
+        fixtures = ((MAPPING, parse_oval_mapping), (ARF_MAPPING, parse_xccdf_mapping))
+        with tempfile.TemporaryDirectory() as directory:
+            for source, parser in fixtures:
+                with self.subTest(mapping=source.name):
+                    invalid = Path(directory) / source.name
+                    invalid.write_text(source.read_text(encoding="utf-8").replace('"target-id": "ac-2.1_obj.1"', '"target-id": "has space"', 1), encoding="utf-8")
+                    with self.assertRaisesRegex(OvalInputError, "target-id must be an OSCAL token"):
+                        parser(invalid)
+
+    def test_xccdf_without_test_result_has_stable_input_diagnostic(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="endeavor-private-xccdf-") as directory:
+            source = Path(directory) / "empty.xml"
+            output = Path(directory) / "result.json"
+            root = ET.parse(str(XCCDF_FIXTURE)).getroot()
+            for test in root.findall("{http://checklists.nist.gov/xccdf/1.2}TestResult"):
+                root.remove(test)
+            source.write_bytes(ET.tostring(root))
+            self.assertTrue(ET.XMLSchema(ET.parse(str(XCCDF_SCHEMA))).validate(ET.parse(str(source))))
+            completed = subprocess.run([sys.executable, "-m", "endeavor", "convert-xccdf", "--format", "json", "--results", str(source), "--mapping", str(ARF_MAPPING), "--output", str(output)], cwd=ROOT, text=True, capture_output=True, check=False)
+            self.assertEqual(completed.returncode, 3)
+            self.assertEqual(completed.stdout, "")
+            diagnostic = json.loads(completed.stderr)
+            self.assertEqual(diagnostic["error"]["code"], "input-invalid")
+            self.assertIn("XCCDF Results must contain at least one TestResult: empty.xml", diagnostic["error"]["message"])
+            self.assertNotIn("Traceback", completed.stderr)
+            self.assertNotIn(directory, completed.stderr)
+            self.assertFalse(output.exists())
+
+    def test_release_workflow_keeps_build_steps_unprivileged(self) -> None:
+        workflow = RELEASE_WORKFLOW.read_text(encoding="utf-8")
+        build, publish = workflow.split("\n  publish:\n", 1)
+        self.assertIn("permissions: {}", workflow)
+        self.assertIn("  build:\n", build)
+        self.assertIn("      contents: read", build)
+        self.assertIn("persist-credentials: false", build)
+        self.assertIn("actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a", build)
+        self.assertIn("needs: build", publish)
+        self.assertIn("actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131", publish)
+        self.assertIn("sha256sum --check --strict SHA256SUMS", publish)
+        self.assertIn("contents: write", publish)
+        self.assertIn("id-token: write", publish)
+        self.assertIn("attestations: write", publish)
+        self.assertNotIn("actions/checkout", publish)
+        self.assertNotIn("pip install", publish)
+        self.assertNotIn("npm ci", publish)
+        self.assertNotIn("scripts/", publish)
 
     def test_conversion_is_byte_stable(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

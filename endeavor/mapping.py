@@ -8,6 +8,8 @@ import json
 from pathlib import Path
 import stat
 
+from lxml import etree as ET
+
 from .oval import OvalDocument, OvalInputError
 
 
@@ -72,11 +74,33 @@ def _require_text(value: object, role: str) -> str:
     return value
 
 
+def _json_object(pairs: list[tuple[str, object]]) -> dict[str, object]:
+    """Build a JSON object while rejecting ambiguous duplicate members."""
+    value: dict[str, object] = {}
+    for key, item in pairs:
+        if key in value:
+            raise ValueError("duplicate JSON object key")
+        value[key] = item
+    return value
+
+
+def _require_target_id(value: object) -> str:
+    """Require an OSCAL TokenDatatype identifier before creating output."""
+    identifier = _require_text(value, "target-id")
+    try:
+        # lxml enforces XML NCName syntax, which is the OSCAL TokenDatatype
+        # constraint used by the bundled Assessment Results schema.
+        ET.Element(identifier)
+    except (TypeError, ValueError) as exc:
+        raise OvalInputError("mapping target-id must be an OSCAL token") from exc
+    return identifier
+
+
 def parse_mapping(path: Path) -> MappingDocument:
     raw = _read_mapping(path)
     try:
-        value = json.loads(raw)
-    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        value = json.loads(raw, object_pairs_hook=_json_object)
+    except (UnicodeDecodeError, json.JSONDecodeError, ValueError) as exc:
         raise OvalInputError(f"mapping is not valid JSON: {_safe_name(path)}") from exc
     root = _require_exact_keys(value, {"format", "version", "oscal-version", "mappings"}, "document")
     if root["format"] != MAPPING_FORMAT or root["version"] != MAPPING_VERSION or root["oscal-version"] != OSCAL_VERSION:
@@ -89,7 +113,7 @@ def parse_mapping(path: Path) -> MappingDocument:
         entry = _require_exact_keys(item, {"oval-definition-id", "target", "outcomes"}, "entry")
         oval_identifier = _require_text(entry["oval-definition-id"], "oval-definition-id")
         target_value = _require_exact_keys(entry["target"], {"type", "target-id"}, "target")
-        target = Target(_require_text(target_value["type"], "target type"), _require_text(target_value["target-id"], "target-id"))
+        target = Target(_require_text(target_value["type"], "target type"), _require_target_id(target_value["target-id"]))
         if target.type not in TARGET_TYPES:
             raise OvalInputError("mapping target type is unsupported")
         if not isinstance(entry["outcomes"], dict) or not entry["outcomes"] or not set(entry["outcomes"]).issubset(OUTCOMES):
