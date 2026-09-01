@@ -10,7 +10,7 @@ import re
 from lxml import etree as ET
 
 from .arf import ARF_NS, DS_NS, OVAL_RESULTS_NS, XCCDF_NS, inspect_arf
-from .mapping import MAX_MAPPING_BYTES, _read_mapping, _require_exact_keys, _require_text
+from .mapping import MAX_MAPPING_BYTES, _json_object, _read_mapping, _require_exact_keys, _require_text
 from .oval import OvalInputError
 
 FORMAT = "endeavor-arf-linkage-manifest"
@@ -41,15 +41,6 @@ class LinkageDocument:
     arf_sha256: str
     oval: tuple[Link, ...]
     tailoring: tuple[Link, ...]
-
-
-def _json_object(pairs: list[tuple[str, object]]) -> dict[str, object]:
-    value: dict[str, object] = {}
-    for key, item in pairs:
-        if key in value:
-            raise ValueError("duplicate JSON object key")
-        value[key] = item
-    return value
 
 
 def _hash(value: object, role: str) -> str:

@@ -77,10 +77,26 @@ EOF
 chmod 755 "$runtime/share/s" "$runtime/share/r" "$runtime/share/v" "$runtime/share/e"
 
 iso="$runtime/alpine-virt-3.24.0-x86_64.iso"
-curl -fsSL --retry 3 --output "$iso" \
+iso_sha256=6cd1a38ae05cf96a5d0cbb2ddd6c630834babfeca1ecc5d1f05ec0b06b886102
+iso_partial="$iso.partial"
+trap 'rm -f "$iso_partial"' 0 1 2 15
+curl -fsSL --retry 3 --output "$iso_partial" \
   https://dl-cdn.alpinelinux.org/alpine/v3.24/releases/x86_64/alpine-virt-3.24.0-x86_64.iso
+printf '%s  %s\n' "$iso_sha256" "$iso_partial" | sha256sum --check --status - || {
+    echo "Alpine ISO checksum verification failed." >&2
+    exit 1
+}
+mv "$iso_partial" "$iso"
+trap - 0 1 2 15
 qemu-img create -f qcow2 "$runtime/storage.qcow2" 4G >/dev/null
-git clone --depth 1 --branch v1.6.0 --recurse-submodules https://github.com/novnc/noVNC.git "$runtime/novnc" >/dev/null 2>&1
+novnc_commit=a8dfd6a3ea3c74244f5ebdaa5a7f1023007a7820
+# The tag selects the shallow source; the immutable commit check binds what is
+# subsequently executed, so a moved tag is rejected before noVNC starts.
+git -c protocol.file.allow=never clone --depth 1 --branch v1.6.0 --recurse-submodules https://github.com/novnc/noVNC.git "$runtime/novnc" >/dev/null 2>&1
+if [ "$(git -C "$runtime/novnc" rev-parse HEAD)" != "$novnc_commit" ]; then
+    echo "noVNC source commit verification failed." >&2
+    exit 1
+fi
 
 accelerator=tcg
 if [ -r /dev/kvm ] && [ -w /dev/kvm ]; then

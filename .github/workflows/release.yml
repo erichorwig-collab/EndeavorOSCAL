@@ -4,20 +4,21 @@ on:
   push:
     tags: ['v*']
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
-  publish:
+  build:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-      id-token: write
-      attestations: write
+      contents: read
+    outputs:
+      artifact-id: ${{ steps.release-artifact.outputs.artifact-id }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
+          # Validation never needs the checkout token after this step.
+          persist-credentials: false
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: "3.13"
@@ -64,6 +65,39 @@ jobs:
             --wheel release/*.whl \
             --sdist release/endeavor_oscal-*.tar.gz \
             --package-version "$(python -c \"import tomllib; print(tomllib.load(open('pyproject.toml', 'rb'))['project']['version'])\")"
+      - id: release-artifact
+        name: Transfer checksummed release artifacts to publication
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: release-${{ github.sha }}
+          path: release/
+          if-no-files-found: error
+          retention-days: 1
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    # Configure required reviewers for this environment before the first GA tag.
+    environment: release
+    permissions:
+      contents: write
+      id-token: write
+      attestations: write
+    steps:
+      - name: Retrieve the immutable build artifact
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+        with:
+          artifact-ids: ${{ needs.build.outputs.artifact-id }}
+          path: release
+      - name: Verify artifact boundary before publication
+        env:
+          RELEASE_VERSION: ${{ github.ref_name }}
+          RELEASE_COMMIT: ${{ github.sha }}
+        run: |
+          test "$(find release -mindepth 1 -maxdepth 1 -type f | wc -l)" -eq 6
+          test -z "$(find release -mindepth 1 -type l -print -quit)"
+          (cd release && sha256sum --check --strict SHA256SUMS)
+          python -c "import json, os, pathlib; manifest = json.loads(pathlib.Path('release/release-manifest.json').read_text(encoding='utf-8')); assert manifest['release-version'] == os.environ['RELEASE_VERSION'].removeprefix('v'); assert manifest['source-commit'] == os.environ['RELEASE_COMMIT']"
       - name: Attest published artifacts
         uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
         with:

@@ -18,14 +18,18 @@ starts anything, it resolves the supplied ref to an immutable commit, creates
 a temporary review-kit snapshot, and writes that SHA to
 `CANDIDATE-COMMIT.txt`. It then obtains:
 
-- Alpine Linux `3.24.0` virtual ISO;
-- noVNC `v1.6.0`; and
+- Alpine Linux `3.24.0` virtual ISO, verified against its recorded SHA-256;
+- noVNC `v1.6.0`, verified as commit `a8dfd6a3ea3c74244f5ebdaa5a7f1023007a7820`; and
 - a 4 GiB qcow2 disk under the explicit temporary runtime directory.
 
 The guest is Alpine Linux, runs as its local `root` only because package setup
 requires it, and receives the frozen review kit through a 9p mount tagged
 `shared`. The guest-side bootstrap is
 `scripts/prepare-alpha-review-vm.sh`.
+
+The source checks protect the launch inputs before QEMU or noVNC executes.
+They do not replace the pending GA requirement for a hash-manifested offline
+APK, Python-wheel, and npm cache.
 
 ## Network and storage boundaries
 

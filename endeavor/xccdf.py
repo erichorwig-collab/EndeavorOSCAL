@@ -130,6 +130,8 @@ def inspect_xccdf(path: Path) -> dict[str, object]:
     if root.tag != _q("Benchmark") or not _schema().validate(ET.ElementTree(root)):
         raise OvalInputError(f"XCCDF 1.2 validation failed: {_safe(path)}")
     tests = [_test_result(test, root, path) for test in root.findall(_q("TestResult"))]
+    if not tests:
+        raise OvalInputError(f"XCCDF Results must contain at least one TestResult: {_safe(path)}")
     if len({test["id"] for test in tests}) != len(tests):
         raise OvalInputError(f"XCCDF TestResult identifiers must be unique: {_safe(path)}")
     return {
