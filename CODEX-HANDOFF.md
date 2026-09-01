@@ -37,20 +37,17 @@ The first GA release remains the narrow evidence-adapter contract:
 
 ### Offline review cache
 
-- A validated cache for commit
-  `8b46c5932c7eba4bcfa5db004292acbc59579aef` is retained outside Git at
-  `/home/elo/Work/Endeavor-review-cache/8b46c5932c7eba4bcfa5db004292acbc59579aef`.
-  It is owned by `elo`, mode `0700`, and its `SHA256SUMS` digest is
-  `dabb01db5c3e57c222794a6c5aa63180dcf467d452816bd303d81ad98c7a4b17`.
-- Its provenance records Alpine `3.24.1` and the immutable image digest
-  `alpine@sha256:28bd5fe8b56d1bd048e5babf5b10710ebe0bae67db86916198a6eec434943f8b`.
-  A networkless disposable-container check successfully installed the staged
-  APK closure, `lxml==6.1.2`, and the npm lockfile dependencies.
-- The disposable image and containers were removed. Do not launch the review
-  VM merely because the cache exists. Rebuild the cache after any candidate,
-  `requirements.txt`, or `package-lock.json` change using
+- The reproducible stager was proven in Alpine `3.24.1` with immutable image
+  digest `alpine@sha256:28bd5fe8b56d1bd048e5babf5b10710ebe0bae67db86916198a6eec434943f8b`.
+  A networkless disposable-container check installed the staged APK closure,
+  `lxml==6.1.2`, and the npm lockfile dependencies successfully.
+- No candidate-bound cache is retained while `main` is still changing. Do not
+  launch the review VM merely because the staging workflow exists. After a
+  clean release candidate is frozen, stage and validate a fresh cache with
   `scripts/stage-alpha-review-cache.sh` and
-  `scripts/validate-alpha-review-cache.py`.
+  `scripts/validate-alpha-review-cache.py`; the cache contract rejects any
+  candidate, `requirements.txt`, or `package-lock.json` mismatch.
+- The disposable images and containers used for staging were removed.
 
 Two automated corpus candidates are ready but **not yet supported**:
 
