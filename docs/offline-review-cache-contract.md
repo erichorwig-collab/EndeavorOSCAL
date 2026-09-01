@@ -47,6 +47,12 @@ unlisted files.
 5. Write the metadata using hashes from the selected candidate, generate the
    sorted SHA-256 manifest, and retain the staging provenance with the release
    record.
+
+   The repository provides `scripts/stage-alpha-review-cache.sh` for this
+   operation. Run it only inside a disposable Alpine 3.24 staging environment,
+   with a clean candidate mounted read-only at `/source` and a new empty host
+   directory mounted at `/output`. It writes `STAGING-PROVENANCE`, which is
+   covered by `SHA256SUMS`; retain that file with the release evidence.
 6. Run the validator before any launch:
 
    ```sh
