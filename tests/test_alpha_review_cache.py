@@ -83,7 +83,8 @@ class AlphaReviewCacheTests(unittest.TestCase):
         self.assertIn("CACHE-METADATA", stager)
         self.assertIn("STAGING-PROVENANCE", stager)
         self.assertIn("refusing to overwrite", stager)
-        self.assertLess(stager.index("apk add --no-cache"), stager.index("candidate=$(git"))
+        self.assertLess(stager.index("apk add --no-cache"), stager.index("candidate=$(source_git"))
+        self.assertIn("safe.directory", stager)
 
     def test_host_export_verifier_accepts_only_host_expected_artifacts(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
