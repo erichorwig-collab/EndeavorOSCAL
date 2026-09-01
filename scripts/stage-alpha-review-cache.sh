@@ -27,12 +27,6 @@ if [ -n "$(find "$output_dir" -mindepth 1 -maxdepth 1 -print -quit)" ]; then
   exit 1
 fi
 
-candidate=$(git -C "$source_dir" rev-parse HEAD)
-requirements_sha256=$(sha256sum "$source_dir/requirements.txt" | awk '{print $1}')
-package_lock_sha256=$(sha256sum "$source_dir/package-lock.json" | awk '{print $1}')
-work_dir=$(mktemp -d /tmp/endeavor-cache-source.XXXXXX)
-trap 'rm -rf "$work_dir"' EXIT HUP INT TERM
-
 apk update
 apk add --no-cache python3 py3-pip nodejs npm git
 if ! git -C "$source_dir" rev-parse --is-inside-work-tree >/dev/null 2>&1 || \
@@ -40,6 +34,11 @@ if ! git -C "$source_dir" rev-parse --is-inside-work-tree >/dev/null 2>&1 || \
   echo "Stage only a clean, frozen Git candidate checkout." >&2
   exit 1
 fi
+candidate=$(git -C "$source_dir" rev-parse HEAD)
+requirements_sha256=$(sha256sum "$source_dir/requirements.txt" | awk '{print $1}')
+package_lock_sha256=$(sha256sum "$source_dir/package-lock.json" | awk '{print $1}')
+work_dir=$(mktemp -d /tmp/endeavor-cache-source.XXXXXX)
+trap 'rm -rf "$work_dir"' EXIT HUP INT TERM
 mkdir -p "$output_dir/apk" "$output_dir/python" "$output_dir/npm"
 # Fetch the recursive dependency closure that the guest installs with apk.
 apk fetch --recursive --output "$output_dir/apk" \
