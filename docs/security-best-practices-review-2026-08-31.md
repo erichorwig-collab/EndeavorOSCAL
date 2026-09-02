@@ -117,9 +117,10 @@ or a separately signed reviewer record for corpus and GA acceptance evidence.
   trusted vendored-schema resolution, and non-symlink inputs.
 - Atomic output replacement with owner-only temporary files.
 - Escaped HTML reporting and deterministic OSCAL serialization.
-- SHA-pinned GitHub Actions, Dependency Review, CodeQL, OSV advisory scan,
-  OpenSSF Scorecard, SBOM validation, fixed-seed parser fuzzing, and
-  fail-closed vulnerability disposition.
+- SHA-pinned GitHub Actions, a checksum-pinned Betterleaks full-history scan
+  with redaction and no live validation, Dependency Review, CodeQL, OSV
+  advisory scan, OpenSSF Scorecard, SBOM validation, fixed-seed parser
+  fuzzing, and fail-closed vulnerability disposition.
 - Protected `main` and `v*` tag rules, reproducible source builds, checksums,
   and GitHub keyless OIDC/Sigstore artifact attestations.
 

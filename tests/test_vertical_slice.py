@@ -51,6 +51,7 @@ UBUNTU_XCCDF_OSCAL = UBUNTU_CORPUS / "results.oscal.json"
 UBUNTU_ARF_OSCAL = UBUNTU_CORPUS / "results.arf.oscal.json"
 COMPATIBILITY_MATRIX = ROOT / "docs" / "compatibility-matrix.md"
 RELEASE_WORKFLOW = ROOT / ".github" / "workflows" / "release.yml"
+BETTERLEAKS_WORKFLOW = ROOT / ".github" / "workflows" / "betterleaks.yml"
 PYTHON_BUILD_LOCK_VALIDATOR = ROOT / "scripts" / "validate-python-build-lock.py"
 EVIDENCE_GOLDEN = ROOT / "fixtures" / "evidence-golden"
 XSD_NS = "{http://www.w3.org/2001/XMLSchema}"
@@ -782,6 +783,33 @@ class VerticalSliceTests(unittest.TestCase):
         self.assertNotIn("pip install", publish)
         self.assertNotIn("npm ci", publish)
         self.assertNotIn("scripts/", publish)
+
+    def test_betterleaks_workflow_is_checksum_pinned_and_non_validating(self) -> None:
+        workflow = BETTERLEAKS_WORKFLOW.read_text(encoding="utf-8")
+        policy = (ROOT / ".betterleaks.toml").read_text(encoding="utf-8")
+        wrapper = (ROOT / "scripts" / "run-betterleaks.sh").read_text(encoding="utf-8")
+
+        self.assertIn("contents: read", workflow)
+        self.assertIn("fetch-depth: 0", workflow)
+        self.assertIn("persist-credentials: false", workflow)
+        self.assertIn("betterleaks_1.8.1_linux_x64.tar.gz", workflow)
+        self.assertIn("efa407244e1ea8e35f582b8a42becdeac08bdead04f68eb752adda722d583c2a", workflow)
+        self.assertIn("sha256sum --check --status", workflow)
+        self.assertNotIn("--validation", workflow)
+        self.assertNotIn("--validation", wrapper)
+        self.assertNotIn("--validation-env-vars", workflow)
+        self.assertNotIn("github", wrapper)
+        self.assertIn("--redact=100", wrapper)
+        self.assertIn("--confidence high", wrapper)
+        self.assertIn("--ignore-gitleaks-allow", wrapper)
+        self.assertIn("--timeout 300", wrapper)
+        self.assertIn(".betterleaksignore", wrapper)
+        self.assertIn(".gitleaksignore", wrapper)
+        self.assertIn("env -i PATH=/usr/bin:/bin", workflow)
+        self.assertFalse((ROOT / ".betterleaksignore").exists())
+        self.assertFalse((ROOT / ".gitleaksignore").exists())
+        self.assertIn("[extend]", policy)
+        self.assertIn("useDefault = true", policy)
 
     def test_python_build_lock_is_hash_verified_and_used_by_ci(self) -> None:
         completed = subprocess.run([sys.executable, str(PYTHON_BUILD_LOCK_VALIDATOR)], cwd=ROOT, text=True, capture_output=True, check=False)

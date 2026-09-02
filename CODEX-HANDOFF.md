@@ -84,9 +84,10 @@ admission records and the version-specific GA record are complete.
   and deletion are blocked.
 - Release tags matching `v*` are protected; the release maintainer is the
   explicit bypass.
-- GitHub Actions are SHA-pinned; Dependabot, OSV advisory scanning, CodeQL,
-  OpenSSF Scorecard, SBOM validation, fixed-seed XML fuzz regression, and
-  hostile-input tests are configured.
+- GitHub Actions are SHA-pinned; Betterleaks scans complete Git history with
+  full redaction and no live validation; Dependabot, OSV advisory scanning,
+  CodeQL, OpenSSF Scorecard, SBOM validation, fixed-seed XML fuzz regression,
+  and hostile-input tests are configured.
 - GitHub keyless OIDC/Sigstore artifact attestations are the selected release
   provenance mechanism; long-lived maintainer signing keys are deferred.
 - The independent `main` approval threshold remains intentionally deferred

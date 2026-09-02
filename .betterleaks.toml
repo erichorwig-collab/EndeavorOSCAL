@@ -1,0 +1,7 @@
+# Endeavor owns the scanner policy while inheriting Betterleaks' maintained
+# default rules.  CI never enables the optional live-secret validation mode.
+title = "Endeavor repository secret-scanning policy"
+betterleaksMinVersion = "v1.8.1"
+
+[extend]
+useDefault = true

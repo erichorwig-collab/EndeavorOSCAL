@@ -17,6 +17,7 @@ REQUIRED_FILES = (
     ".github/dependabot.yml",
     ".github/workflows/scorecard.yml",
     ".github/workflows/dependency-review.yml",
+    ".github/workflows/betterleaks.yml",
     ".github/workflows/osv-scanner.yml",
     ".github/workflows/release.yml",
     "docs/alpha-acceptance-record-v0.1.0-alpha.1.md",
@@ -62,11 +63,13 @@ def main() -> int:
     exception_check = subprocess.run([sys.executable, str(ROOT / "scripts" / "validate-vulnerability-exceptions.py")], cwd=ROOT, text=True, capture_output=True, check=False)
     if exception_check.returncode:
         missing.append("valid, unexpired vulnerability exception record")
-    for relative in (".github/workflows/validate.yml", ".github/workflows/scorecard.yml", ".github/workflows/dependency-review.yml", ".github/workflows/osv-scanner.yml", ".github/workflows/release.yml"):
+    for relative in (".github/workflows/validate.yml", ".github/workflows/betterleaks.yml", ".github/workflows/scorecard.yml", ".github/workflows/dependency-review.yml", ".github/workflows/osv-scanner.yml", ".github/workflows/release.yml"):
         path = ROOT / relative
         if path.is_file():
             actions = re.findall(r"^\s*uses:\s+[^@\s]+@([^\s#]+)", path.read_text(encoding="utf-8"), flags=re.MULTILINE)
-            if not actions or any(not re.fullmatch(r"[0-9a-f]{40}", action) for action in actions):
+            # Betterleaks intentionally uses no third-party Action: it downloads
+            # and checksum-verifies the project-pinned CLI in a shell step.
+            if (relative != ".github/workflows/betterleaks.yml" and not actions) or any(not re.fullmatch(r"[0-9a-f]{40}", action) for action in actions):
                 missing.append(f"pinned GitHub Actions in {relative}")
     payload: dict[str, object] = {
         "format": "endeavor-governance-readiness",
